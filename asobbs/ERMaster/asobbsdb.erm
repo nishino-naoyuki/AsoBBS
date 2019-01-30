@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>0.8</zoom>
-	<x>279</x>
-	<y>206</y>
+	<x>511</x>
+	<y>303</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -138,7 +138,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2017-02-01 13:35:51</creation_date>
-			<updated_date>2019-01-29 18:52:05</updated_date>
+			<updated_date>2019-01-30 09:53:11</updated_date>
 			<model_property>
 				<name>プロジェクト名</name>
 				<value></value>
@@ -991,22 +991,6 @@
 			<physical_name>USER_ID</physical_name>
 			<type>integer</type>
 		</word>
-		<word>
-			<id>51</id>
-			<length>null</length>
-			<decimal>null</decimal>
-			<array>false</array>
-			<array_dimension>null</array_dimension>
-			<unsigned>false</unsigned>
-			<zerofill>false</zerofill>
-			<binary>false</binary>
-			<args></args>
-			<char_semantics>false</char_semantics>
-			<description></description>
-			<logical_name>ユーザーID</logical_name>
-			<physical_name>USER_ID</physical_name>
-			<type>integer</type>
-		</word>
 	</dictionary>
 	<tablespace_set>
 	</tablespace_set>
@@ -1504,8 +1488,8 @@
 			<width>186</width>
 				<font_name>メイリオ</font_name>
 				<font_size>9</font_size>
-			<x>887</x>
-			<y>624</y>
+			<x>903</x>
+			<y>708</y>
 			<color>
 				<r>128</r>
 				<g>128</g>
@@ -1514,7 +1498,7 @@
 			<connections>
 				<relation>
 					<id>2</id>
-					<source>8</source>
+					<source>10</source>
 					<target>3</target>
 						<source_xp>-1</source_xp>
 						<source_yp>-1</source_yp>
@@ -1536,7 +1520,7 @@
 				</relation>
 				<relation>
 					<id>3</id>
-					<source>10</source>
+					<source>8</source>
 					<target>3</target>
 						<source_xp>-1</source_xp>
 						<source_yp>-1</source_yp>
@@ -1567,7 +1551,7 @@
 				<normal_column>
 					<id>9</id>
 					<referenced_column>27</referenced_column>
-					<relation>2</relation>
+					<relation>3</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
@@ -1601,7 +1585,7 @@
 				<normal_column>
 					<id>10</id>
 					<referenced_column>44</referenced_column>
-					<relation>3</relation>
+					<relation>2</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name>ユーザーID</logical_name>
@@ -1785,8 +1769,8 @@
 			<width>228</width>
 				<font_name>メイリオ</font_name>
 				<font_size>9</font_size>
-			<x>1156</x>
-			<y>612</y>
+			<x>1171</x>
+			<y>564</y>
 			<color>
 				<r>128</r>
 				<g>128</g>
@@ -1796,6 +1780,28 @@
 				<relation>
 					<id>4</id>
 					<source>9</source>
+					<target>5</target>
+						<source_xp>-1</source_xp>
+						<source_yp>-1</source_yp>
+						<target_xp>-1</target_xp>
+						<target_yp>-1</target_yp>
+						<color>
+							<r>0</r>
+							<g>0</g>
+							<b>0</b>
+						</color>
+					<child_cardinality>1..n</child_cardinality>
+					<parent_cardinality>1</parent_cardinality>
+					<reference_for_pk>true</reference_for_pk>
+					<name></name>
+					<on_delete_action>RESTRICT</on_delete_action>
+					<on_update_action>RESTRICT</on_update_action>
+					<referenced_column>null</referenced_column>
+					<referenced_complex_unique_key>null</referenced_complex_unique_key>
+				</relation>
+				<relation>
+					<id>5</id>
+					<source>10</source>
 					<target>5</target>
 						<source_xp>-1</source_xp>
 						<source_yp>-1</source_yp>
@@ -1858,17 +1864,18 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>51</word_id>
 					<id>15</id>
+					<referenced_column>44</referenced_column>
+					<relation>5</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
-					<logical_name></logical_name>
+					<logical_name>ユーザーID</logical_name>
 					<physical_name></physical_name>
 					<type>integer</type>
 					<constraint></constraint>
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
-					<foreign_key>false</foreign_key>
+					<foreign_key>true</foreign_key>
 					<not_null>true</not_null>
 					<primary_key>true</primary_key>
 					<unique_key>false</unique_key>
@@ -1951,7 +1958,7 @@
 			</color>
 			<connections>
 				<relation>
-					<id>5</id>
+					<id>6</id>
 					<source>8</source>
 					<target>6</target>
 						<source_xp>-1</source_xp>
@@ -2016,7 +2023,7 @@
 				<normal_column>
 					<id>18</id>
 					<referenced_column>27</referenced_column>
-					<relation>5</relation>
+					<relation>6</relation>
 					<description>カテゴリが属しているルームID</description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
@@ -2154,7 +2161,7 @@
 			</color>
 			<connections>
 				<relation>
-					<id>6</id>
+					<id>7</id>
 					<source>10</source>
 					<target>7</target>
 						<source_xp>-1</source_xp>
@@ -2176,7 +2183,7 @@
 					<referenced_complex_unique_key>null</referenced_complex_unique_key>
 				</relation>
 				<relation>
-					<id>7</id>
+					<id>8</id>
 					<source>10</source>
 					<target>7</target>
 						<source_xp>-1</source_xp>
@@ -2307,7 +2314,7 @@
 				<normal_column>
 					<id>24</id>
 					<referenced_column>44</referenced_column>
-					<relation>6</relation>
+					<relation>8</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name>送信元ＩＤ</logical_name>
@@ -2433,7 +2440,7 @@
 			</color>
 			<connections>
 				<relation>
-					<id>8</id>
+					<id>9</id>
 					<source>10</source>
 					<target>8</target>
 						<source_xp>-1</source_xp>
@@ -2455,7 +2462,7 @@
 					<referenced_complex_unique_key>null</referenced_complex_unique_key>
 				</relation>
 				<relation>
-					<id>9</id>
+					<id>10</id>
 					<source>10</source>
 					<target>8</target>
 						<source_xp>-1</source_xp>
@@ -2586,7 +2593,7 @@
 				<normal_column>
 					<id>30</id>
 					<referenced_column>44</referenced_column>
-					<relation>9</relation>
+					<relation>10</relation>
 					<description>作成ユーザーID</description>
 					<unique_key_name></unique_key_name>
 					<logical_name>作成ユーザーID</logical_name>
@@ -2653,7 +2660,7 @@
 				<normal_column>
 					<id>32</id>
 					<referenced_column>44</referenced_column>
-					<relation>8</relation>
+					<relation>9</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name>更新ユーザーID</logical_name>
@@ -2712,7 +2719,7 @@
 			</color>
 			<connections>
 				<relation>
-					<id>10</id>
+					<id>11</id>
 					<source>6</source>
 					<target>9</target>
 						<source_xp>-1</source_xp>
@@ -2777,7 +2784,7 @@
 				<normal_column>
 					<id>34</id>
 					<referenced_column>17</referenced_column>
-					<relation>10</relation>
+					<relation>11</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
@@ -3133,7 +3140,7 @@
 			</color>
 			<connections>
 				<relation>
-					<id>11</id>
+					<id>12</id>
 					<source>4</source>
 					<target>10</target>
 						<source_xp>-1</source_xp>
@@ -3155,7 +3162,7 @@
 					<referenced_complex_unique_key>null</referenced_complex_unique_key>
 				</relation>
 				<relation>
-					<id>12</id>
+					<id>13</id>
 					<source>0</source>
 					<target>10</target>
 						<source_xp>-1</source_xp>
@@ -3451,7 +3458,7 @@
 				<normal_column>
 					<id>52</id>
 					<referenced_column>12</referenced_column>
-					<relation>11</relation>
+					<relation>12</relation>
 					<description>ユーザーの所属学科&#x0D;&#x0A;ROLEが「先生」の場合も必要&#x0D;&#x0A;どこにも所属していない場合は&#x0D;&#x0A;学科「その他」のIDが入る</description>
 					<unique_key_name></unique_key_name>
 					<logical_name>学科ID</logical_name>
@@ -3485,7 +3492,7 @@
 				<normal_column>
 					<id>53</id>
 					<referenced_column>0</referenced_column>
-					<relation>12</relation>
+					<relation>13</relation>
 					<description>役割ID</description>
 					<unique_key_name></unique_key_name>
 					<logical_name>ロールID</logical_name>

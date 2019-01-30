@@ -100,33 +100,14 @@ public class UserTblEntity implements Serializable {
 	private Integer grade;
 
 	/** チャットテーブル 一覧. */
-    @OneToMany
-    @JoinColumn(name="fromUserTbl")
+    @OneToMany(mappedBy = "fromUserTbl")
 	private Set<ChatTableEntity> chatTableSet;
-
-	/** 履歴テーブル 一覧. */
-    @OneToMany
-    @JoinColumn(name="userId")
-	private Set<HistoryTblEntity> historyTblSet;
-
-	/** ルームテーブル 一覧. */
-    @OneToMany
-    @JoinColumn(name="userId")
-	private Set<RoomTblEntity> roomTblSet;
-
-	/** ルームユーザーテーブル 一覧. */
-    @OneToMany
-    @JoinColumn(name="userId")
-	private Set<RoomUserTblEntity> roomUserTblSet;
 
 	/**
 	 * コンストラクタ.
 	 */
 	public UserTblEntity() {
 		this.chatTableSet = new HashSet<ChatTableEntity>();
-		this.historyTblSet = new HashSet<HistoryTblEntity>();
-		this.roomTblSet = new HashSet<RoomTblEntity>();
-		this.roomUserTblSet = new HashSet<RoomUserTblEntity>();
 	}
 
 	/**
@@ -576,92 +557,6 @@ public class UserTblEntity implements Serializable {
 		return this.chatTableSet;
 	}
 
-	/**
-	 * 履歴テーブル 一覧を設定します.
-	 * 
-	 * @param historyTblSet
-	 *            履歴テーブル 一覧
-	 */
-	public void setHistoryTblSet(Set<HistoryTblEntity> historyTblSet) {
-		this.historyTblSet = historyTblSet;
-	}
-
-	/**
-	 * 履歴テーブル を追加します.
-	 * 
-	 * @param historyTbl
-	 *            履歴テーブル
-	 */
-	public void addHistoryTbl(HistoryTblEntity historyTbl) {
-		this.historyTblSet.add(historyTbl);
-	}
-
-	/**
-	 * 履歴テーブル 一覧を取得します.
-	 * 
-	 * @return 履歴テーブル 一覧
-	 */
-	public Set<HistoryTblEntity> getHistoryTblSet() {
-		return this.historyTblSet;
-	}
-
-	/**
-	 * ルームテーブル 一覧を設定します.
-	 * 
-	 * @param roomTblSet
-	 *            ルームテーブル 一覧
-	 */
-	public void setRoomTblSet(Set<RoomTblEntity> roomTblSet) {
-		this.roomTblSet = roomTblSet;
-	}
-
-	/**
-	 * ルームテーブル を追加します.
-	 * 
-	 * @param roomTbl
-	 *            ルームテーブル
-	 */
-	public void addRoomTbl(RoomTblEntity roomTbl) {
-		this.roomTblSet.add(roomTbl);
-	}
-
-	/**
-	 * ルームテーブル 一覧を取得します.
-	 * 
-	 * @return ルームテーブル 一覧
-	 */
-	public Set<RoomTblEntity> getRoomTblSet() {
-		return this.roomTblSet;
-	}
-
-	/**
-	 * ルームユーザーテーブル 一覧を設定します.
-	 * 
-	 * @param roomUserTblSet
-	 *            ルームユーザーテーブル 一覧
-	 */
-	public void setRoomUserTblSet(Set<RoomUserTblEntity> roomUserTblSet) {
-		this.roomUserTblSet = roomUserTblSet;
-	}
-
-	/**
-	 * ルームユーザーテーブル を追加します.
-	 * 
-	 * @param roomUserTbl
-	 *            ルームユーザーテーブル
-	 */
-	public void addRoomUserTbl(RoomUserTblEntity roomUserTbl) {
-		this.roomUserTblSet.add(roomUserTbl);
-	}
-
-	/**
-	 * ルームユーザーテーブル 一覧を取得します.
-	 * 
-	 * @return ルームユーザーテーブル 一覧
-	 */
-	public Set<RoomUserTblEntity> getRoomUserTblSet() {
-		return this.roomUserTblSet;
-	}
 
 	/**
 	 * {@inheritDoc}

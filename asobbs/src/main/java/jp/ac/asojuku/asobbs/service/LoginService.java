@@ -35,6 +35,7 @@ public class LoginService {
 		//ハッシュ計算する
 		String hashedPwd  = Digest.createPassword(mail, password);
 		
+		//ログインユーザー検索
 		UserTblEntity entity = userRepository.getUser(mail, hashedPwd);
 		
 		if( entity!= null ) {
@@ -46,9 +47,14 @@ public class LoginService {
 			dto.setGrade(entity.getGrade());
 			dto.setNickName(entity.getNickName());
 			dto.setRole( RoleId.search(entity.getRoleMaster().getRoleId()) );
+			dto.setRoleName(entity.getRoleMaster().getRoleName());
 			dto.setCourseName( entity.getCourseMaster().getCourseName() );
 			dto.setGrade(entity.getGrade());
 		}
+		
+		//TODO:パスワードの有効期限チェック
+		//TODO:ログイン失敗回数チェック
+		//TODO:履歴の出力
 		
 		return dto;
 	}

@@ -28,7 +28,7 @@ public class RoomUserTblEntity implements Serializable {
 
 	/** ルームテーブル. */
 	@OneToOne
-    @JoinColumn(name="roomId")
+    @JoinColumn(name="roomId",insertable=false ,updatable=false)
 	private RoomTblEntity roomTbl;
 
 	/** ユーザーテーブル. */

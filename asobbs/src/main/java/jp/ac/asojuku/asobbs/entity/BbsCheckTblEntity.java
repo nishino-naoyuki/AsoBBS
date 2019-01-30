@@ -30,8 +30,12 @@ public class BbsCheckTblEntity implements Serializable {
 
 	/** 掲示板テーブル. */
 	@OneToOne
-    @JoinColumn(name="bbsId")
+    @JoinColumn(name="bbsId",insertable=false ,updatable=false)
 	private BbsTblEntity bbsTbl;
+
+	@OneToOne
+    @JoinColumn(name="userId",insertable=false ,updatable=false)
+	private UserTblEntity userTbl;
 
 	/** 確認日時. */
 	private Date checkDate;
@@ -78,6 +82,14 @@ public class BbsCheckTblEntity implements Serializable {
 	 */
 	public BbsTblEntity getBbsTbl() {
 		return this.bbsTbl;
+	}
+
+	public UserTblEntity getUserTbl() {
+		return userTbl;
+	}
+
+	public void setUserTbl(UserTblEntity userTbl) {
+		this.userTbl = userTbl;
 	}
 
 	/**

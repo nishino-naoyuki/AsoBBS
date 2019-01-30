@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ユーザー登録</title>
+
+	<meta id="parent" th:replace="/header/include1"></meta>
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="parent" th:replace="/header/title"></div>
+            </div>
+            <!-- /.navbar-header -->
+			<!-- ヘッダー -->
+			<div id="parent" th:replace="/header/header"></div>
+			<!-- ヘッダー -->
+            
+            <!-- /.navbar-top-links -->
+			<!-- サイドバー -->
+			<div id="parent" th:replace="/header/sidebar"></div>
+			<!-- サイドバー -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">ユーザー登録</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        		項目登録
+                        </div>
+                        <form action="/user/confirm"  method="post" >
+		               	<div class="panel-body">
+		               		<div class="table-responsive">
+		               			<table class="table table-bordered table-hover" id="form">
+		               				<tbody>
+	                                	<tr>
+	                                		<th>ロール[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<select id="role" class="form-control" name="role">
+	                                				<option value="0">学生</option>
+	                                				<option value="1">教員</option>
+	                                			</select>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>学籍番号[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+							                    <input type="text" name="studentNo" class="typeahead" placeholder="学籍番号" value="<%= (tasGrpDto!=null ? tasGrpDto.getName():"") %>">
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>メールアドレス[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+							                    <input type="text" name="mailadress" class="typeahead" placeholder="メールアドレス" value="<%= (tasGrpDto!=null ? tasGrpDto.getName():"") %>">
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>ニックネーム[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+							                    <input type="text" name="nickname" class="typeahead" placeholder="ニックネーム" value="<%= (tasGrpDto!=null ? tasGrpDto.getName():"") %>">
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>学科[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<select id="course" class="form-control" name="course_id">
+	                                				<option th:each="dto:${courseList}" th:value="${dto.courseId}" th:text="${dto.courseName}"></option>
+	                                			</select>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>パスワード[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+							                    <input type="password" name="password1" class="typeahead" placeholder="パスワードを入力してください" value="">
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>パスワード（確認）[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+							                    <input type="password" name="password2" class="typeahead" placeholder="パスワードを入力してください" value="">
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>入学年度[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+							                    <input type="text" name="admission_year" class="typeahead" placeholder="入学年度を入力してください" value="">
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+		               				</tbody>
+		               			</table>
+		               			<div class="panel-footer">
+			                     	<div class="col-xs-12 text-right">
+		               					<div><input type="button" class="btn btn-default" value="登録" onclick="return alert('OK');"></div>
+		               				</div>
+		               			</div>
+		               		</div>
+		               	</div>
+		               	</form>
+                    </div>
+                    
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        	CSV登録
+                        </div>
+		               	<div class="panel-body">
+                            <div class="row">
+			                     <div class="col-xs-12 text-right">
+			                         <div><input type="file" class="btn btn-default" ></div>
+			                         <div><input type="button" class="btn btn-default" value="CSV登録" id="csv_start" ></div>
+			                     </div>
+                            </div>
+		               	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+	
+	<div id="parent" th:replace="/header/include2"></div>
+	
+	<script>
+
+	$('#csv_start').on('click', function() {
+		if( !confirm("処理を開始します。途中で中断はできません。\nよろしいですか？")){
+			return;
+		}
+		
+		//Ajax！
+	});
+	
+	</script>
+</body>
+</html>

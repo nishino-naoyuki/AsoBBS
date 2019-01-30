@@ -12,6 +12,6 @@ import jp.ac.asojuku.asobbs.entity.UserTblEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserTblEntity,String>,JpaSpecificationExecutor<UserTblEntity> {
 
-	@Query("select u from UserEntity u where mailadress = :mail and password = :password")
+	@Query("select u from UserTblEntity u where mailadress = :mail and password = :password")
 	public UserTblEntity getUser(@Param("mail")String mail,@Param("password")String password);
 }

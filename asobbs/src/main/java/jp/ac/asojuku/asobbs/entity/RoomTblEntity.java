@@ -52,21 +52,20 @@ public class RoomTblEntity implements Serializable {
 	private UserTblEntity updateUserTbl;
 
 	/** カテゴリテーブル 一覧. */
-	@OneToMany
-    @JoinColumn(name="categoryId")
+	@OneToMany(mappedBy = "categoryId")
 	private Set<CategoryTblEntity> categoryTblSet;
 
-	/** ルームユーザーテーブル 一覧. */
-	@OneToMany
-    @JoinColumn(name="userId",insertable=false ,updatable=false)
-	private Set<RoomUserTblEntity> roomUserTblSet;
+//	/** ルームユーザーテーブル 一覧. */
+//	@OneToMany(mappedBy = "roomUserTblId")
+//    //@JoinColumn(name="userId",insertable=false ,updatable=false)
+//	private Set<RoomUserTblEntity> roomUserTblSet;
 
 	/**
 	 * コンストラクタ.
 	 */
 	public RoomTblEntity() {
 		this.categoryTblSet = new HashSet<CategoryTblEntity>();
-		this.roomUserTblSet = new HashSet<RoomUserTblEntity>();
+//		this.roomUserTblSet = new HashSet<RoomUserTblEntity>();
 	}
 
 	/**
@@ -212,34 +211,34 @@ public class RoomTblEntity implements Serializable {
 		return this.categoryTblSet;
 	}
 
-	/**
-	 * ルームユーザーテーブル 一覧を設定します.
-	 * 
-	 * @param roomUserTblSet
-	 *            ルームユーザーテーブル 一覧
-	 */
-	public void setRoomUserTblSet(Set<RoomUserTblEntity> roomUserTblSet) {
-		this.roomUserTblSet = roomUserTblSet;
-	}
-
-	/**
-	 * ルームユーザーテーブル を追加します.
-	 * 
-	 * @param roomUserTbl
-	 *            ルームユーザーテーブル
-	 */
-	public void addRoomUserTbl(RoomUserTblEntity roomUserTbl) {
-		this.roomUserTblSet.add(roomUserTbl);
-	}
-
-	/**
-	 * ルームユーザーテーブル 一覧を取得します.
-	 * 
-	 * @return ルームユーザーテーブル 一覧
-	 */
-	public Set<RoomUserTblEntity> getRoomUserTblSet() {
-		return this.roomUserTblSet;
-	}
+//	/**
+//	 * ルームユーザーテーブル 一覧を設定します.
+//	 * 
+//	 * @param roomUserTblSet
+//	 *            ルームユーザーテーブル 一覧
+//	 */
+//	public void setRoomUserTblSet(Set<RoomUserTblEntity> roomUserTblSet) {
+//		this.roomUserTblSet = roomUserTblSet;
+//	}
+//
+//	/**
+//	 * ルームユーザーテーブル を追加します.
+//	 * 
+//	 * @param roomUserTbl
+//	 *            ルームユーザーテーブル
+//	 */
+//	public void addRoomUserTbl(RoomUserTblEntity roomUserTbl) {
+//		this.roomUserTblSet.add(roomUserTbl);
+//	}
+//
+//	/**
+//	 * ルームユーザーテーブル 一覧を取得します.
+//	 * 
+//	 * @return ルームユーザーテーブル 一覧
+//	 */
+//	public Set<RoomUserTblEntity> getRoomUserTblSet() {
+//		return this.roomUserTblSet;
+//	}
 
 	/**
 	 * {@inheritDoc}

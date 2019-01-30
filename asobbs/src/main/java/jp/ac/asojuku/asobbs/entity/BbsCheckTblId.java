@@ -5,6 +5,9 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,9 +22,8 @@ public class BbsCheckTblId implements Serializable {
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	@Embedded
 	/** 掲示板テーブル. */
-	private BbsTblEntity bbsTbl;
+	private Integer bbsId;
 
 	/** ユーザーID. */
 	private Integer userId;
@@ -32,24 +34,6 @@ public class BbsCheckTblId implements Serializable {
 	public BbsCheckTblId() {
 	}
 
-	/**
-	 * 掲示板テーブル を設定します.
-	 * 
-	 * @param bbsTbl
-	 *            掲示板テーブル
-	 */
-	public void setBbsTbl(BbsTblEntity bbsTbl) {
-		this.bbsTbl = bbsTbl;
-	}
-
-	/**
-	 * 掲示板テーブル を取得します.
-	 * 
-	 * @return 掲示板テーブル
-	 */
-	public BbsTblEntity getBbsTbl() {
-		return this.bbsTbl;
-	}
 
 	/**
 	 * ユーザーID を設定します.
@@ -70,48 +54,15 @@ public class BbsCheckTblId implements Serializable {
 		return this.userId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((bbsTbl == null) ? 0 : bbsTbl.hashCode());
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-		return result;
+
+	public Integer getBbsId() {
+		return bbsId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		BbsCheckTblId other = (BbsCheckTblId) obj;
-		if (bbsTbl == null) {
-			if (other.bbsTbl != null) {
-				return false;
-			}
-		} else if (!bbsTbl.equals(other.bbsTbl)) {
-			return false;
-		}
-		if (userId == null) {
-			if (other.userId != null) {
-				return false;
-			}
-		} else if (!userId.equals(other.userId)) {
-			return false;
-		}
-		return true;
+
+	public void setBbsId(Integer bbsId) {
+		this.bbsId = bbsId;
 	}
+
 
 }

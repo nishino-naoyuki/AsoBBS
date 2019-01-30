@@ -64,16 +64,15 @@ public class BbsTblEntity implements Serializable {
 	/** 更新ユーザーID. */
 	private Integer updateUserId;
 
-	/** 掲示板確認テーブル 一覧. */
-	@OneToMany
-    @JoinColumn(name="bbsCheckTblId")
-	private Set<BbsCheckTblEntity> bbsCheckTblSet;
+//	/** 掲示板確認テーブル 一覧. */
+//	@OneToMany(mappedBy = "bbsCheckTblId")
+//	private Set<BbsCheckTblEntity> bbsCheckTblSet;
 
 	/**
 	 * コンストラクタ.
 	 */
 	public BbsTblEntity() {
-		this.bbsCheckTblSet = new HashSet<BbsCheckTblEntity>();
+//		this.bbsCheckTblSet = new HashSet<BbsCheckTblEntity>();
 	}
 
 	/**
@@ -285,34 +284,34 @@ public class BbsTblEntity implements Serializable {
 		return this.updateUserId;
 	}
 
-	/**
-	 * 掲示板確認テーブル 一覧を設定します.
-	 * 
-	 * @param bbsCheckTblSet
-	 *            掲示板確認テーブル 一覧
-	 */
-	public void setBbsCheckTblSet(Set<BbsCheckTblEntity> bbsCheckTblSet) {
-		this.bbsCheckTblSet = bbsCheckTblSet;
-	}
-
-	/**
-	 * 掲示板確認テーブル を追加します.
-	 * 
-	 * @param bbsCheckTbl
-	 *            掲示板確認テーブル
-	 */
-	public void addBbsCheckTbl(BbsCheckTblEntity bbsCheckTbl) {
-		this.bbsCheckTblSet.add(bbsCheckTbl);
-	}
-
-	/**
-	 * 掲示板確認テーブル 一覧を取得します.
-	 * 
-	 * @return 掲示板確認テーブル 一覧
-	 */
-	public Set<BbsCheckTblEntity> getBbsCheckTblSet() {
-		return this.bbsCheckTblSet;
-	}
+//	/**
+//	 * 掲示板確認テーブル 一覧を設定します.
+//	 * 
+//	 * @param bbsCheckTblSet
+//	 *            掲示板確認テーブル 一覧
+//	 */
+//	public void setBbsCheckTblSet(Set<BbsCheckTblEntity> bbsCheckTblSet) {
+//		this.bbsCheckTblSet = bbsCheckTblSet;
+//	}
+//
+//	/**
+//	 * 掲示板確認テーブル を追加します.
+//	 * 
+//	 * @param bbsCheckTbl
+//	 *            掲示板確認テーブル
+//	 */
+//	public void addBbsCheckTbl(BbsCheckTblEntity bbsCheckTbl) {
+//		this.bbsCheckTblSet.add(bbsCheckTbl);
+//	}
+//
+//	/**
+//	 * 掲示板確認テーブル 一覧を取得します.
+//	 * 
+//	 * @return 掲示板確認テーブル 一覧
+//	 */
+//	public Set<BbsCheckTblEntity> getBbsCheckTblSet() {
+//		return this.bbsCheckTblSet;
+//	}
 
 	/**
 	 * {@inheritDoc}

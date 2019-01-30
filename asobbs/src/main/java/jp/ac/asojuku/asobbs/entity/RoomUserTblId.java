@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 /**
  * ルームユーザーテーブル composite-id クラス.
@@ -17,12 +19,11 @@ public class RoomUserTblId implements Serializable {
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	@Embedded
 	/** ルームテーブル. */
-	private RoomTblEntity roomTbl;
+	private Integer roomId;
 
 	/** ユーザーテーブル. */
-	private UserTblEntity userTbl;
+	private Integer userId;
 
 	/**
 	 * コンストラクタ.
@@ -30,86 +31,21 @@ public class RoomUserTblId implements Serializable {
 	public RoomUserTblId() {
 	}
 
-	/**
-	 * ルームテーブル を設定します.
-	 * 
-	 * @param roomTbl
-	 *            ルームテーブル
-	 */
-	public void setRoomTbl(RoomTblEntity roomTbl) {
-		this.roomTbl = roomTbl;
+	public Integer getRoomId() {
+		return roomId;
 	}
 
-	/**
-	 * ルームテーブル を取得します.
-	 * 
-	 * @return ルームテーブル
-	 */
-	public RoomTblEntity getRoomTbl() {
-		return this.roomTbl;
+	public void setRoomId(Integer roomId) {
+		this.roomId = roomId;
 	}
 
-	/**
-	 * ユーザーテーブル を設定します.
-	 * 
-	 * @param userTbl
-	 *            ユーザーテーブル
-	 */
-	public void setUserTbl(UserTblEntity userTbl) {
-		this.userTbl = userTbl;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	/**
-	 * ユーザーテーブル を取得します.
-	 * 
-	 * @return ユーザーテーブル
-	 */
-	public UserTblEntity getUserTbl() {
-		return this.userTbl;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((roomTbl == null) ? 0 : roomTbl.hashCode());
-		result = prime * result + ((userTbl == null) ? 0 : userTbl.hashCode());
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		RoomUserTblId other = (RoomUserTblId) obj;
-		if (roomTbl == null) {
-			if (other.roomTbl != null) {
-				return false;
-			}
-		} else if (!roomTbl.equals(other.roomTbl)) {
-			return false;
-		}
-		if (userTbl == null) {
-			if (other.userTbl != null) {
-				return false;
-			}
-		} else if (!userTbl.equals(other.userTbl)) {
-			return false;
-		}
-		return true;
-	}
 
 }

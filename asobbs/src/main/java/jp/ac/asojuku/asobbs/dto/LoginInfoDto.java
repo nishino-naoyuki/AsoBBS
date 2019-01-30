@@ -10,6 +10,7 @@ public class LoginInfoDto {
 	private String mail;
 	private String nickName;
 	private RoleId role;
+	private String roleName;
 	private String courseName;
 	private int grade;
 	
