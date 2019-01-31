@@ -61,58 +61,49 @@
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                        		項目登録
+                        		項目登録　この情報を登録します。よろしければ登録ボタンをクリックしてください。
                         </div>
-                        <form action="/user/cofirm"  method="post" >
 		               	<div class="panel-body">
-		               	<div th:if="${errs.isHasErr()}">
-		               		<p id="error" th:each="err:${errs.getList()}" th:text="${err.message}"></p>
-		               	</div>
 		               		<div class="table-responsive">
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>
 	                                		<th>ロール[必須]</th>
 	                                		<td>
-	                                		<div class="form-group">
-	                                			<select id="role" class="form-control" name="role">
-	                                				<option value="0">学生</option>
-	                                				<option value="1">教員</option>
-	                                			</select>
-	                                		</div>
+	                                		<div class="form-group" th:if="${session['createUserDto'].roleId}">
+	                                		教員
+							                 </div>
+	                                		<div class="form-group" th:unless="${session['createUserDto'].roleId}">
+	                                		学生
+							                 </div>
 	                                		</td>
 	                                	</tr>
 	                                	<tr>
 	                                		<th>学籍番号[必須]</th>
 	                                		<td>
-	                                		<div class="form-group">
-							                    <input type="text" name="studentNo" class="typeahead" placeholder="学籍番号" th:value="${createUserDto.studentNo}">
-	                                		</div>
+	                                		<div class="form-group" th:text="${session['createUserDto'].studentNo}">
+							                 </div>
 	                                		</td>
 	                                	</tr>
 	                                	<tr>
 	                                		<th>メールアドレス[必須]</th>
 	                                		<td>
-	                                		<div class="form-group">
-							                    <input type="text" name="mailadress" class="typeahead" placeholder="メールアドレス" th:value="${createUserDto.mailadress}">
+	                                		<div class="form-group" th:text="${session['createUserDto'].mailadress}">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
 	                                	<tr>
 	                                		<th>ニックネーム[必須]</th>
 	                                		<td>
-	                                		<div class="form-group">
-							                    <input type="text" name="nickname" class="typeahead" placeholder="ニックネーム" th:value="${createUserDto.nickname}">
-	                                		</div>
+	                                		<div class="form-group" th:text="${session['createUserDto'].nickname}">
+							                   </div>
 	                                		</td>
 	                                	</tr>
 	                                	<tr>
 	                                		<th>学科[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<select id="course" class="form-control" name="course_id">
-	                                				<option th:each="dto:${courseList}" th:value="${dto.courseId}" th:text="${dto.courseName}" th:selected="${dto.courseId == createUserDto.courseId}"></option>
-	                                			</select>
+	                                			
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -120,51 +111,30 @@
 	                                		<th>パスワード[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="password" name="password1" class="typeahead" placeholder="パスワードを入力してください" value="">
-	                                		</div>
-	                                		</td>
-	                                	</tr>
-	                                	<tr>
-	                                		<th>パスワード（確認）[必須]</th>
-	                                		<td>
-	                                		<div class="form-group">
-							                    <input type="password" name="password2" class="typeahead" placeholder="パスワードを入力してください" value="">
+							                    ●●●●
 	                                		</div>
 	                                		</td>
 	                                	</tr>
 	                                	<tr>
 	                                		<th>入学年度[必須]</th>
 	                                		<td>
-	                                		<div class="form-group">
-							                    <input type="text" name="admission_year" class="typeahead" placeholder="入学年度を入力してください" th:value="${createUserDto.admissionYear}">
-	                                		</div>
+	                                		<div class="form-group" th:text="${session['createUserDto'].admissionYear}">
+							                    </div>
 	                                		</td>
 	                                	</tr>
 		               				</tbody>
 		               			</table>
 		               			<div class="panel-footer">
 			                     	<div class="col-xs-12 text-right">
-		               					<div><input type="submit" class="btn btn-default" value="登録"></div>
+			                     	<form action="/user/insert" method="POST">
+		               					<div><input type="submit" class="btn btn-default" value="登録" onclick="return alert('OK');"></div>
+		               				</form>
 		               				</div>
 		               			</div>
 		               		</div>
 		               	</div>
-		               	</form>
                     </div>
                     
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                        	CSV登録
-                        </div>
-		               	<div class="panel-body">
-                            <div class="row">
-			                     <div class="col-xs-12 text-right">
-			                         <div><input type="file" class="btn btn-default" ></div>
-			                         <div><input type="button" class="btn btn-default" value="CSV登録" id="csv_start" ></div>
-			                     </div>
-                            </div>
-		               	</div>
-                    </div>
                 </div>
             </div>
         </div>

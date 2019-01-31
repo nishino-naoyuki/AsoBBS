@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 /**
@@ -211,6 +213,17 @@ public class RoomTblEntity implements Serializable {
 		return this.categoryTblSet;
 	}
 
+	@PrePersist
+    public void onPrePersist() {
+		setCreateDate(new Date());
+		setUpdateDate(new Date());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+    	setUpdateDate(new Date());
+    }
+    
 //	/**
 //	 * ルームユーザーテーブル 一覧を設定します.
 //	 * 

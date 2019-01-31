@@ -6,6 +6,8 @@ package jp.ac.asojuku.asobbs.err;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import jp.ac.asojuku.asobbs.config.MessageProperty;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 
@@ -15,6 +17,7 @@ import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
  * @author nishino
  *
  */
+@Component
 public class ActionErrors {
 
 	private List<ActionError> errList;
@@ -51,5 +54,12 @@ public class ActionErrors {
 	 */
 	public boolean isHasErr(){
 		return ( errList.size() == 0 ? false:true );
+	}
+	
+	/**
+	 * エラーリストを全件削除します
+	 */
+	public void clear() {
+		errList.clear();
 	}
 }

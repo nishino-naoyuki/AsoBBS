@@ -50,6 +50,7 @@ public class LoginController {
 	 * @param password
 	 * @param mv
 	 * @return
+	 * @throws AsoBbsSystemErrException 
 	 */
 	@RequestMapping(value= {"/auth"}, method=RequestMethod.POST)
 	public String auth(
@@ -57,24 +58,20 @@ public class LoginController {
 			@RequestParam("mail")String mail, 
     		@RequestParam("password")String password,
     		ModelAndView mv
-			) {
+			) throws AsoBbsSystemErrException {
 
 		String url;
 		//login
 		LoginInfoDto loginInfo = null;
-		try {
-			//ログイン処理を行う
-			loginInfo = loginService.login(mail,password);
-			if( loginInfo != null) {
-				//セッションにログイン情報を保存
-				session.setAttribute(SessionConst.LOGININFO,loginInfo);
-				url = "redirect:dashboad";
-			}else {
-				url = fowardLoginError(redirectAttributes);
-			}
-		} catch (AsoBbsSystemErrException e) {
-			e.printStackTrace();
-			url = "redirect:login";
+		//ログイン処理を行う
+		loginInfo = loginService.login(mail,password);
+		if( loginInfo != null) {
+			//セッションにログイン情報を保存
+			session.setAttribute(SessionConst.LOGININFO,loginInfo);
+			url = "redirect:dashboad";
+		}else {
+			url = fowardLoginError(redirectAttributes);
+			throw new AsoBbsSystemErrException(password);
 		}
 		
         return url;

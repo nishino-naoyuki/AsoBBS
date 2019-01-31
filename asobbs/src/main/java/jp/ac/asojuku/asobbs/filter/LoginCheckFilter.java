@@ -26,7 +26,7 @@ public class LoginCheckFilter implements Filter {
 	//チェック除外画面
 	private String excludeDispList[] =
 		{
-			"/login","/auth","/logout","/css/.+","/img/.+","/sbadmin/.+","favicon.ico"
+			"/login","/auth","/logout","/css/.+","/img/.+","/sbadmin/.+","favicon.ico","/error/.*"
 		};
 
 	@Autowired

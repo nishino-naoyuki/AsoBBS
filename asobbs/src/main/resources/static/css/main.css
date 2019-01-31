@@ -1,0 +1,72 @@
+div #error {
+	color:red;
+}
+div #pankuzu {
+	color:blue;
+
+}
+
+
+
+div#title h1 {
+	background-image: url("../img/back.png");
+	color: #eeeeee;
+}
+
+#loading{
+    border:1px dashed #999;
+    padding:15px;
+    position: fixed;
+    top:50%;
+    left:50%;
+    background-color:#FFF;
+    filter: alpha(opacity=85);
+    -moz-opacity:0.85;
+    opacity:0.85;
+    z-index:1000;
+}
+
+#loading .loadingMsg{
+    text-align:center;
+    padding-top:100px;
+    width:100px;
+    background-image:url("../img/gif/loading.gif");
+    background-position: center top;
+    background-repeat: no-repeat;
+    font-family: "ÉÅÉCÉäÉI"!important;
+}
+
+.avatar_relative {
+    position: relative;
+    width: 100px;
+    height: 200px;
+}
+.avatar_absolute {
+    position: absolute;
+}
+
+
+.avatar_relative_small {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+.avatar_absolute_small {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+}
+
+.avatar_relative_mini {
+    position: relative;
+    width: 50px;
+}
+.avatar_absolute_mini {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+
+.close {
+    float: center;
+}

@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 /**
@@ -556,7 +558,16 @@ public class UserTblEntity implements Serializable {
 	public Set<ChatTableEntity> getChatTableSet() {
 		return this.chatTableSet;
 	}
+	@PrePersist
+    public void onPrePersist() {
+		setEntryDate(new Date());
+		setUpdateDate(new Date());
+    }
 
+    @PreUpdate
+    public void onPreUpdate() {
+    	setUpdateDate(new Date());
+    }
 
 	/**
 	 * {@inheritDoc}
