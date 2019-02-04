@@ -1,5 +1,10 @@
 package jp.ac.asojuku.asobbs.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -10,8 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import jp.ac.asojuku.asobbs.config.AppSettingProperty;
 import jp.ac.asojuku.asobbs.dto.CourseDto;
 import jp.ac.asojuku.asobbs.dto.CreateUserDto;
 import jp.ac.asojuku.asobbs.err.ActionErrors;
@@ -19,6 +26,7 @@ import jp.ac.asojuku.asobbs.err.ErrorCode;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.service.CourseService;
 import jp.ac.asojuku.asobbs.service.UserService;
+import jp.ac.asojuku.asobbs.util.FileUtils;
 import jp.ac.asojuku.asobbs.validator.UserValidator;
 
 @Controller
@@ -136,6 +144,7 @@ public class UserController {
         
         return "redirect:/user/complete_user";
     }
+
 	
 	/**
 	 * リクエストパラメータのチェック
@@ -158,11 +167,19 @@ public class UserController {
 		
 		ActionErrors errs = new ActionErrors();
 		
+		//学籍番号
+		if( userService.isExistStudentNo(studentNo) ) {
+			errs.add(ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_STUDENTNO);
+		}
+		
 		//ニックネーム
 		UserValidator.useNickName(nickname,errs);
 		
 		//メールアドレス
 		UserValidator.mailAddress(mailadress,errs);
+		if( userService.isExistMailadress(mailadress) ) {
+			errs.add(ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_MEIL);
+		}
 
 		//学科ID
 		UserValidator.courseId(course_id,list,errs);
@@ -214,4 +231,5 @@ public class UserController {
 		return dto;
 		
 	}
+
 }

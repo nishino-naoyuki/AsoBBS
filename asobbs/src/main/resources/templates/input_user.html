@@ -159,8 +159,13 @@
 		               	<div class="panel-body">
                             <div class="row">
 			                     <div class="col-xs-12 text-right">
-			                         <div><input type="file" class="btn btn-default" ></div>
+			                	<div id="error">
+			                		<p id="errorMsg" ></p>
+			                	</div>
+			                     <form id="data_upload_form" enctype="multipart/form-data" method="post">
+			                         <div><input type="file" class="btn btn-default"  name="upload_file"></div>
 			                         <div><input type="button" class="btn btn-default" value="CSV登録" id="csv_start" ></div>
+			                      </form>
 			                     </div>
                             </div>
 		               	</div>
@@ -179,13 +184,76 @@
 	<script>
 
 	$('#csv_start').on('click', function() {
+		//alert("csv_start")
+		// 要素規定の動作をキャンセルする
+        //event.preventDefault();
+		
 		if( !confirm("処理を開始します。途中で中断はできません。\nよろしいですか？")){
 			return;
 		}
 		
+        var ajaxUrl = "/file/csvinput";
+        //alert(ajaxUrl)
 		//Ajax！
+        if(window.FormData){
+        	var formData = new FormData($('#data_upload_form').get()[0]);
+        	$.ajax({
+                type : "POST",                  // HTTP通信の種類
+                url  : ajaxUrl,                 // リクエストを送信する先のURL
+                dataType : "json",              // サーバーから返されるデータの型
+                data : formData,                // サーバーに送信するデータ
+                processData : false,
+                contentType: false,
+
+    	        beforeSend : function(xhr, settings) {
+    	            // disturb double submit
+    	            $("#csv_start").attr('disabled', true);
+    	    		dispLoading("CSV登録処理中...");
+    	        },
+    	        complete : function(xhr, textStatus) {
+    	            // allow resubmit
+    	            $("#csv_start").attr('disabled', false);
+    	        }
+    	        
+            }).done(function(json) {        // Ajax通信が成功した時の処理
+                $("#csv_start").attr('disabled', false);
+    			//エラーメッセージがある場合はエラーを表示する
+        		if( json.errorMsg != null){
+    	    		$("#errorMsg").text(json.errorMsg);
+        		}else if(json.now > 0){
+        			alert("登録完了しました！\n処理件数"+json.total+"件");
+        		}
+                removeLoading();
+            }).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
+                alert("アップロードが失敗しました。"+textStatus+" errorThrown:"+errorThrown);
+            });
+        }else{
+        	alert("アップロードに対応できていないブラウザです。");
+        }
 	});
 	
+
+	// Loadingイメージ表示関数
+	function dispLoading(msg){
+	    // 画面表示メッセージ
+	    var dispMsg = "";
+
+	    $("#loading").remove();
+	    // 引数が空の場合は画像のみ
+	    if( msg != "" ){
+	        dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
+	    }
+	    // ローディング画像が表示されていない場合のみ表示
+	    //if($("#loading").size() == 0){
+	        $("body").append("<div id='loading'>" + dispMsg + "</div>");
+	    //}
+	}
+
+
+	// Loadingイメージ削除関数
+	function removeLoading(){
+	 $("#loading").remove();
+	}
 	</script>
 </body>
 </html>

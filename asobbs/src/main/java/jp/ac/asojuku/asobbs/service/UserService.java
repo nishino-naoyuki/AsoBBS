@@ -32,6 +32,25 @@ public class UserService {
 	}
 	
 	/**
+	 * 指定したメールアドレスが既に存在するかどうかを検査する
+	 * 
+	 * @param mail
+	 * @return
+	 */
+	public boolean isExistMailadress(String mail) {
+		return ( userRepository.getUserByMail(mail) != null ? true:false);
+	}
+	
+	/**
+	 * 学籍番号が存在するかどうかを返す
+	 * @param studentNo
+	 * @return
+	 */
+	public boolean isExistStudentNo(String studentNo) {
+		return ( userRepository.getUserByStudentNo(studentNo) != null ? true:false);
+	}
+	
+	/**
 	 * UserTblEntityを作成する
 	 * 
 	 * @param userdto
