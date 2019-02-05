@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
@@ -36,6 +37,15 @@ public class UserCSVService {
 	@Autowired 
 	UserRepository userRepository;
 	
+	/**
+	 * CSVファイルの中身をチェックする
+	 * 
+	 * @param csvPath
+	 * @param errors
+	 * @param type
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
 	public List<UserCSV> checkForCSV(String csvPath, ActionErrors errors,String type) throws AsoBbsSystemErrException {
 		List<UserCSV> list = null;
 		FileReader fileReader = null;
@@ -46,18 +56,15 @@ public class UserCSVService {
 		try {
 			///////////////////////////////
 			//CSVを読み込みマッピング
-			
 			fileReader = new FileReader(csvPath); 
 			list = new CsvToBeanBuilder<UserCSV>(
                     fileReader).withType(UserCSV.class).build().parse(); 
 
             // エラーチェック
             for(UserCSV userCsv : list){
-            	//TODOエラーチェック
         		UserValidator.useName(userCsv.getName(), errors);
         		UserValidator.useNickName(userCsv.getNickName(), errors);
         		UserValidator.roleId(String.valueOf(userCsv.getRoleId()), errors);
-        		//UserValidator.courseId(String.valueOf(userCsv.getRoleId()), list, errors);
         		if( RoleId.STUDENT.equals(userCsv.getRoleId())){
         			UserValidator.admissionYear(userCsv.getAdmissionYear(), errors);
         		}
@@ -87,6 +94,13 @@ public class UserCSVService {
 		return list;
 	}
 	
+	/**
+	 * CSV用の追加・更新処理
+	 * 
+	 * @param userList
+	 * @throws AsoBbsSystemErrException
+	 */
+	@Transactional
 	public void insertByCSV(List<UserCSV> userList) throws AsoBbsSystemErrException {
 		
 		for(UserCSV csv : userList) {
@@ -108,12 +122,22 @@ public class UserCSVService {
 		UserTblEntity iuEntity = createEntityFromUserCSV(userCSV);
 		if( entity == null ) {
 			//追加
-			userRepository.saveAndFlush(iuEntity);
+			userRepository.save(iuEntity);
 		}else {
 			//更新
+			iuEntity.setUserId(entity.getUserId());
+			iuEntity.setEntryDate(entity.getEntryDate());
+			userRepository.save(iuEntity);
 		}
 	}
 	
+	/**
+	 * UserCSVからUserEntityを作成する
+	 * 
+	 * @param userCSV
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
 	private UserTblEntity createEntityFromUserCSV(UserCSV userCSV) throws AsoBbsSystemErrException {
 		UserTblEntity entity = new UserTblEntity();
 

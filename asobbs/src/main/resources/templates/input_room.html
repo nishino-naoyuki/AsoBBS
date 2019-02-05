@@ -9,9 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ルーム作成</title>
+    <title>ルーム作成ダイアログ</title>
 
-	<meta id="parent" th:replace="/header/include1"></meta>
+	<meta id="parent" th:replace="/header/include1">
 	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,7 +48,6 @@
 			<div id="parent" th:replace="/header/sidebar"></div>
 			<!-- サイドバー -->
         </nav>
-
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -73,7 +72,7 @@
 	                                		<th>ルーム名[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="roomname" class="typeahead" placeholder="ルーム名を記入してください" value="">
+							                    <input type="text" name="roomname" class="typeahead" placeholder="ルーム名を記入してください" >
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -81,7 +80,8 @@
 	                                		<th>ルーム管理者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="groupname" class="typeahead" placeholder="課題グループを選択するか新しく入力してください" value="<%= (tasGrpDto!=null ? tasGrpDto.getName():"") %>">
+							                    <input type="text" name="roomadmin" class="typeahead" placeholder="管理者のメールアドレスを記入してください" >
+	                                			<input type="button" name="search_admin" value="検索">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -89,7 +89,8 @@
 	                                		<th>ルームサブ管理者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="groupname" class="typeahead" placeholder="課題グループを選択するか新しく入力してください" value="<%= (tasGrpDto!=null ? tasGrpDto.getName():"") %>">
+							                    <input type="text" name="roomsubadmin" class="typeahead" placeholder="サブ管理者のメールアドレスを記入してください" >
+	                                		 	<input type="button" name="search_subadmin" value="検索">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -97,7 +98,10 @@
 	                                		<th>ルーム所属者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="groupname" class="typeahead" placeholder="課題グループを選択するか新しく入力してください" value="<%= (tasGrpDto!=null ? tasGrpDto.getName():"") %>">
+							                    <input type="text" name="roombelong" class="typeahead" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください" >
+	                                			<input type="button" name="search_belong" value="検索">
+	                                			<a class="form-control-sm bg-default" id="empchange"
+                    data-toggle="modal" data-target="#modal-emp-select">選択</a>
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -109,13 +113,15 @@
                 </div>
             </div>
         </div>
+	<div id="parent" th:replace="/header/include2"></div>
+	<meta id="parent" th:replace="/header/datatable">
+		               		<div th:replace="input_room_select_dlg::modalempselect"></div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
 
 	
-	<div id="parent" th:replace="/header/include2"></div>
 </body>
 
 </html>

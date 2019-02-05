@@ -15,12 +15,6 @@ public class RoomController {
 		
         mv.setViewName("input_room");
         
-        //エラーメッセージがあればメッセージを仕込んでおく
-        if( msg != null && msg.length() > 0) {
-        	mv.addObject("msg", msg);
-        }else {
-        	mv.addObject("msg", "");
-        }
         return mv;
     }
 }

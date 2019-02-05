@@ -1,9 +1,13 @@
 package jp.ac.asojuku.asobbs.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jp.ac.asojuku.asobbs.dto.CreateUserDto;
+import jp.ac.asojuku.asobbs.dto.UserListDto;
 import jp.ac.asojuku.asobbs.entity.CourseMasterEntity;
 import jp.ac.asojuku.asobbs.entity.RoleMasterEntity;
 import jp.ac.asojuku.asobbs.entity.UserTblEntity;
@@ -29,6 +33,31 @@ public class UserService {
 		
 		userRepository.saveAndFlush(entity);
 		
+	}
+	
+	/**
+	 * ユーザー情報リストの取得
+	 * @return
+	 */
+	public List<UserListDto> getList(){
+		List<UserListDto> list = new ArrayList<UserListDto>();
+		
+		List<UserTblEntity> entityList = userRepository.findAll();
+		
+		for( UserTblEntity entity : entityList ) {
+			UserListDto userDto = new UserListDto();
+			
+			userDto.setCourseName(entity.getCourseMaster().getCourseName());
+			userDto.setGrade(entity.getGrade());
+			userDto.setMailadress(entity.getMailadress());
+			userDto.setNickname(entity.getNickName());
+			userDto.setRoleName(entity.getRoleMaster().getRoleName());
+			userDto.setStudentNo(entity.getStudentNo());
+			
+			list.add(userDto);
+		}
+		
+		return list;
 	}
 	
 	/**
