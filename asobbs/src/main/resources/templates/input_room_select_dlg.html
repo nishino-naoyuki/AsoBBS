@@ -26,28 +26,6 @@
 
     <div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div id="parent" th:replace="/header/title"></div>
-            </div>
-            <!-- /.navbar-header -->
-			<!-- ヘッダー -->
-			<div id="parent" th:replace="/header/header"></div>
-			<!-- ヘッダー -->
-            
-            <!-- /.navbar-top-links -->
-			<!-- サイドバー -->
-			<div id="parent" th:replace="/header/sidebar"></div>
-			<!-- サイドバー -->
-        </nav>
 <div th:fragment="modalempselect">
 <div class="modal" id="modal-emp-select" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
@@ -74,22 +52,25 @@
 		               			 <thead class="thead-light">
 			                            <tr>
 			                            	<th>学科</th>
-			                            	<td></td>
+			                            	<td><input type="text"></td>
 			                            	<th>学年</th>
 			                            	<td><input type="text"></td>
 			                            </tr>
 			                            <tr>
 			                            	<th>メール</th>
-			                            	<td></td>
+			                            	<td><input type="text"></td>
 			                            	<th>名前</th>
 			                            	<td><input type="text"></td>
+			                            </tr>
+			                            <tr>
+			                            	<td colspan="4"><input type="button" value="検索"></td>
 			                            </tr>
 			                      </thead>
 		               		</table>
 		               		<table id="modal-emplist-table" class="table table-bordered table-hover table-lg"> 
 			               		<thead class="thead-light">
 			                            <tr>
-			                                <th><input type="checkbox" class="editor-active"></th>
+			                                <th><input type="checkbox" class="editor-active" id="chkAllUser" ></th>
 			                                <th>学科</th>
 			                                <th>学年</th>
 			                                <th>学籍番号</th>
@@ -99,6 +80,9 @@
 			                       <tbody>
 			                       </tbody>
 			               	</table>
+			               	<button type="button" class="btn btn-primary" id="btn-modalemp-select">選択</button>
+			               	<button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+
 		               	</div>
                     </div>
                 </div>
@@ -117,35 +101,42 @@
 				"bPaginate": true,
 				"bLengthChange": true,
 				"paging": true,
-				"bFilter": true,
+				"bFilter": false,
 				"bSort": true,
-				"bInfo": false,
-				"scrollY": 200,
+				"bInfo": true,
+				"scrollY": "200px",
 				"language": {
                     "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
                 },
                 "ajax": { url: /*[[@{/getaccountlist}]]*/ 'getaccountlist', dataSrc: '' },
                 "columns": [
                 	{
-                		data:null,
+                		data:"userId" ,
 	                	render: function ( data, type, row ) {
-	                		return '<input type="checkbox" class="editor-active">';
+	                		return '<input type="checkbox" class="check_user" name="chk-'+data+'">';
 	                	}
                 	},
                     { data: "courseName" },
                     { data: "grade" },
                     { data: "studentNo" },
                     { data: "nickname" },
-                ],
-                buttons: [
-                    { extend: "選択する"}
                 ]
 			});
 		})
 		
+		//全てのチェックON/OFF
+		$(document).on("change", "#chkAllUser",function() {
+			var checked = $("#chkAllUser").prop("checked");
+			$(".check_user").each(function(){
+				$(this).prop( 'checked', checked );
+			});
+		})
+		
+	
+		
 	</script>
 </div>
-	
+</div>	
 	<div id="parent" th:replace="/header/include2"></div>
 </body>
 

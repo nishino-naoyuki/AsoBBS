@@ -22,4 +22,6 @@ public class UserListDto {
 	
 	private Integer grade;
 	
+	private Integer userId;
+	
 }

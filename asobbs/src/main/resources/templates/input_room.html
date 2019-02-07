@@ -115,9 +115,18 @@
         </div>
 	<div id="parent" th:replace="/header/include2"></div>
 	<meta id="parent" th:replace="/header/datatable">
-		               		<div th:replace="input_room_select_dlg::modalempselect"></div>
+	<div th:replace="input_room_select_dlg::modalempselect"></div>
         <!-- /#page-wrapper -->
-
+ <script>
+ 
+ $(document).on("click","#btn-modalemp-select", function() {
+	 alert("btn-modalemp-select");
+     //$('#username').val(modalempdata.username);
+     //$('#email').val(modalempdata.email);
+     $('#modal-emp-select').modal('hide');
+ });
+ 
+ </script>
     </div>
     <!-- /#wrapper -->
 

@@ -53,6 +53,7 @@ public class UserService {
 			userDto.setNickname(entity.getNickName());
 			userDto.setRoleName(entity.getRoleMaster().getRoleName());
 			userDto.setStudentNo(entity.getStudentNo());
+			userDto.setUserId(entity.getUserId());
 			
 			list.add(userDto);
 		}
