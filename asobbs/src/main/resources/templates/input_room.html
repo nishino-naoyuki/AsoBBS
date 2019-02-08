@@ -11,7 +11,7 @@
 
     <title>ルーム作成ダイアログ</title>
 
-	<meta id="parent" th:replace="/header/include1">
+	<meta  th:replace="/header/include1">
 	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -66,6 +66,7 @@
                         </div>
 		               	<div class="panel-body">
 		               		<div class="table-responsive">
+		               			<form action="" method="POST" >
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>
@@ -80,17 +81,9 @@
 	                                		<th>ルーム管理者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="roomadmin" class="typeahead" placeholder="管理者のメールアドレスを記入してください" >
-	                                			<input type="button" name="search_admin" value="検索">
-	                                		</div>
-	                                		</td>
-	                                	</tr>
-	                                	<tr>
-	                                		<th>ルームサブ管理者[必須]</th>
-	                                		<td>
-	                                		<div class="form-group">
-							                    <input type="text" name="roomsubadmin" class="typeahead" placeholder="サブ管理者のメールアドレスを記入してください" >
-	                                		 	<input type="button" name="search_subadmin" value="検索">
+	                                			<textarea name="roomadmin" rows="4" cols="40"  id="roomadmin" placeholder="管理者のメールアドレスをカンマ区切りで記入してください"></textarea>
+	                                			<button class="form-control-sm bg-default btn btn-primary" id="empchange1"
+                    															data-toggle="modal" data-target="#modal-emp-select" data-param="admin" >選択</button>
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -98,32 +91,53 @@
 	                                		<th>ルーム所属者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="roombelong" class="typeahead" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください" >
-	                                			<input type="button" name="search_belong" value="検索">
-	                                			<a class="form-control-sm bg-default" id="empchange"
-                    data-toggle="modal" data-target="#modal-emp-select">選択</a>
+	                 							<textarea name="roombelong" rows="4" cols="40"  id="roombelong" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください"></textarea>
+	                                			<button class="form-control-sm bg-default btn btn-primary" id="empchange3"
+                    															data-toggle="modal" data-target="#modal-emp-select" data-param="user" >選択</button>
+	                                			<input type="checkbox" name="all_student" value="all">全ての学生
 	                                		</div>
 	                                		</td>
 	                                	</tr>
 		               				</tbody>
 		               			</table>
+		               			<input type="submit" value="確認">
+		               			</form>
 		               		</div>
 		               	</div>
                     </div>
                 </div>
             </div>
         </div>
-	<div id="parent" th:replace="/header/include2"></div>
-	<meta id="parent" th:replace="/header/datatable">
+	<div th:replace="/header/include2"></div>
+	<div  th:replace="/header/datatable"></div>
 	<div th:replace="input_room_select_dlg::modalempselect"></div>
         <!-- /#page-wrapper -->
  <script>
  
  $(document).on("click","#btn-modalemp-select", function() {
-	 alert("btn-modalemp-select");
-     //$('#username').val(modalempdata.username);
-     //$('#email').val(modalempdata.email);
-     $('#modal-emp-select').modal('hide');
+
+	 	var type = $(this).data("kind");
+	 	var targetDisp;
+	 	//alert(type);
+	 	//管理者、サブ管理者、所属の３つのうちどれをクリックされたか
+	 	if(  type =="select-btn-admin" ){
+	 		targetDisp = $("#roomadmin");
+	 	}else{
+	 		targetDisp = $("#roombelong");
+	 	}
+     	//現在の値を取得
+     	var member = targetDisp.val();
+     	
+		$(".check_user").each(function(){
+			if( $(this).prop( 'checked' ) ){
+				//alert($(this).parent().parent().find(".nickname").text());
+				member = member + $(this).parent().parent().find(".mail").text()+",";
+			}
+		});
+		//表示を更新
+		targetDisp.val(member);
+		//モーダルを閉じる
+     	$('#modal-emp-select').modal('hide');
  });
  
  </script>

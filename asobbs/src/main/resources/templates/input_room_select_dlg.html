@@ -75,12 +75,13 @@
 			                                <th>学年</th>
 			                                <th>学籍番号</th>
 			                                <th>名前</th>
+			                                <th>メール</th>
 			                            </tr>
 			                       </thead>
 			                       <tbody>
 			                       </tbody>
 			               	</table>
-			               	<button type="button" class="btn btn-primary" id="btn-modalemp-select">選択</button>
+			               	<button type="button" class="btn btn-primary" id="btn-modalemp-select" data-kind="select-btn" >選択</button>
 			               	<button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
 
 		               	</div>
@@ -120,6 +121,7 @@
                     { data: "grade" },
                     { data: "studentNo" },
                     { data: "nickname" },
+                    { data: "mailadress",className:"mail" },
                 ]
 			});
 		})
@@ -132,12 +134,27 @@
 			});
 		})
 		
+		//モーダルの表示時
+		$("#modal-emp-select").on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) //モーダルを呼び出すときに使われたボタンを取得
+			 var param = button.data('param') //data-param の値を取得
+			 //alert(param);
+			
+			var selectButton = $("#btn-modalemp-select");
+			var kind = selectButton.data("kind");
+			selectButton.data("kind","select-btn-"+param);
+			$(".check_user").each(function(){
+				$(this).prop( 'checked', false );
+			});
+			 //選択ボタンのIDを変更する
+			 //$(".modal_user_select").prop("id","btn-modalemp-select-"+param);
+			 //alert($(".modal_user_select").prop("id"));
+		})
 	
 		
 	</script>
 </div>
 </div>	
-	<div id="parent" th:replace="/header/include2"></div>
 </body>
 
 </html>
