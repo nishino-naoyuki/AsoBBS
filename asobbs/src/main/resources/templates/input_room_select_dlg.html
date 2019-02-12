@@ -47,23 +47,35 @@
                             </div>
                         </div>
 		               	<div class="panel-body">
-		               		
-		               		<table border="1">
+		               		<table class="table table-bordered table-hover table-lg">
 		               			 <thead class="thead-light">
 			                            <tr>
 			                            	<th>学科</th>
-			                            	<td><input type="text"></td>
+			                            	<td>
+			                            		<select id="course" class="form-control" name="course_id">
+			                            			<option value="">指定なし</option>
+	                                				<option th:each="dto:${courseList}" th:value="${dto.courseId}" th:text="${dto.courseName}" ></option>
+	                                			</select>
+			                            	</td>
 			                            	<th>学年</th>
-			                            	<td><input type="text"></td>
+			                            	<td>
+			                            	<select id="grade" name="grade">
+			                            		<option value="">指定なし</option>
+			                            		<option value="1">1年</option>
+			                            		<option value="2">2年</option>
+			                            		<option value="3">3年</option>
+			                            		<option value="4">4年</option>
+			                            	</select>
+			                            	</td>
 			                            </tr>
 			                            <tr>
-			                            	<th>メール</th>
-			                            	<td><input type="text"></td>
-			                            	<th>名前</th>
-			                            	<td><input type="text"></td>
+			                            	<th>メール（部分一致）</th>
+			                            	<td><input name="mail" type="text" id="mail"></td>
+			                            	<th>名前（部分一致）</th>
+			                            	<td><input name="nickname" type="text" id="nickname"></td>
 			                            </tr>
 			                            <tr>
-			                            	<td colspan="4"><input type="button" value="検索"></td>
+			                            	<td colspan="4"><input id="student_search_button" type="button" value="検索"></td>
 			                            </tr>
 			                      </thead>
 		               		</table>
@@ -105,7 +117,7 @@
 				"bFilter": false,
 				"bSort": true,
 				"bInfo": true,
-				"scrollY": "200px",
+				"scrollY": "150px",
 				"language": {
                     "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
                 },
@@ -151,6 +163,51 @@
 			 //alert($(".modal_user_select").prop("id"));
 		})
 	
+		$("#student_search_button").on("click",function(){
+			//alert("student_search_button");
+			var params = "";
+			
+			params += "course_id="
+			if( $("select[name='course_id']").val() != ""){
+				params += $("select[name='course_id']").val();
+			}
+			
+			params += "&grade="
+			if( $("select[name='grade']").val() != ""){
+				params += $("select[name='grade']").val();
+			}
+			
+			params += "&mail="
+			if( $("input[name='mail']").val() != ""){
+				if(params.length>0){ params += "&";}
+				params += $("input[name='mail']").val();
+			}
+			
+			params += "&nickname="
+			if( $("input[name='nickname']").val() != ""){
+				if(params.length>0){ params += "&";}
+				params += $("input[name='nickname']").val();
+			}
+			
+			alert(params);
+			
+			$.ajax({
+		    	cache: false,
+		        type : 'GET',
+		        url : "searchUserSelect",
+		        data :params,
+		        dataType : 'json',
+		        processData : false,
+		        contentType: "text/html; charset=UTF-8",
+		        timeout : 360000, // milliseconds
+
+		    }).done(function(json) {
+		    	alert(json);
+		    }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+		    	alert("err:"+textStatus);
+		        console.log( textStatus  + errorThrown.toString());
+		    });
+		})
 		
 	</script>
 </div>

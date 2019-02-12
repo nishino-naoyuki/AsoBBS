@@ -3,7 +3,9 @@ package jp.ac.asojuku.asobbs.service;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jp.ac.asojuku.asobbs.dto.CreateUserDto;
@@ -14,6 +16,7 @@ import jp.ac.asojuku.asobbs.entity.UserTblEntity;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.repository.UserRepository;
 import jp.ac.asojuku.asobbs.util.Digest;
+import static jp.ac.asojuku.asobbs.repository.UserSpecifications.*;
 
 @Service
 public class UserService {
@@ -78,6 +81,44 @@ public class UserService {
 	 */
 	public boolean isExistStudentNo(String studentNo) {
 		return ( userRepository.getUserByStudentNo(studentNo) != null ? true:false);
+	}
+	
+	/**
+	 * 条件を指定してのユーザー検索
+	 * 
+	 * @param mail
+	 * @param courseId
+	 * @param nickName
+	 * @param grade
+	 * @return
+	 */
+	public List<UserListDto> getList(String mail,Integer courseId,String nickName,Integer grade){
+		List<UserListDto> list = new ArrayList<UserListDto>();
+
+		List<UserTblEntity> entityList = userRepository.findAll(
+				Specification.
+						where(mailContains(mail)).
+						and(courseEquals(0).
+						and(nicknameContains(nickName)).
+						and(gradeEquals(grade))
+						)
+				);
+
+		for( UserTblEntity entity : entityList ) {
+			UserListDto userDto = new UserListDto();
+			
+			userDto.setCourseName(entity.getCourseMaster().getCourseName());
+			userDto.setGrade(entity.getGrade());
+			userDto.setMailadress(entity.getMailadress());
+			userDto.setNickname(entity.getNickName());
+			userDto.setRoleName(entity.getRoleMaster().getRoleName());
+			userDto.setStudentNo(entity.getStudentNo());
+			userDto.setUserId(entity.getUserId());
+			
+			list.add(userDto);
+		}
+		
+		return list;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package jp.ac.asojuku.asobbs.repository;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,11 @@ public interface UserRepository extends JpaRepository<UserTblEntity,String>,JpaS
 
 	@Query("select u from UserTblEntity u where studentNo = :studentno")
 	public UserTblEntity getUserByStudentNo(@Param("studentno")String studentno);
+	
+	/* private */ static Specification<UserTblEntity> mailContain(String mail) {
+		if (mail == null || mail.isEmpty()) {
+			return null;
+		}
+		return (root, query, cb) -> root.get("mailadress").in(mail);
+	}
 }

@@ -66,7 +66,7 @@
                         </div>
 		               	<div class="panel-body">
 		               		<div class="table-responsive">
-		               			<form action="" method="POST" >
+		               			<form action="/room/confirm" method="POST" >
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>
@@ -82,7 +82,7 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<textarea name="roomadmin" rows="4" cols="40"  id="roomadmin" placeholder="管理者のメールアドレスをカンマ区切りで記入してください"></textarea>
-	                                			<button class="form-control-sm bg-default btn btn-primary" id="empchange1"
+	                                			<button type="button"  class="form-control-sm bg-default btn btn-primary" id="empchange1"
                     															data-toggle="modal" data-target="#modal-emp-select" data-param="admin" >選択</button>
 	                                		</div>
 	                                		</td>
@@ -92,15 +92,16 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                 							<textarea name="roombelong" rows="4" cols="40"  id="roombelong" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください"></textarea>
-	                                			<button class="form-control-sm bg-default btn btn-primary" id="empchange3"
+	                                			<button type="button" class="form-control-sm bg-default btn btn-primary" id="empchange3"
                     															data-toggle="modal" data-target="#modal-emp-select" data-param="user" >選択</button>
-	                                			<input type="checkbox" name="all_student" value="all">全ての学生
+	                                			<br><input type="checkbox" name="all_student" value="all">全ての学生
 	                                		</div>
 	                                		</td>
 	                                	</tr>
 		               				</tbody>
 		               			</table>
-		               			<input type="submit" value="確認">
+		               			
+		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >確認</button>
 		               			</form>
 		               		</div>
 		               	</div>
