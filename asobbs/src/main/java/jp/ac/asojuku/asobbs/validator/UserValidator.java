@@ -16,7 +16,7 @@ import jp.ac.asojuku.asobbs.param.RoleId;
  * @author nishino
  *
  */
-public class UserValidator {
+public class UserValidator extends Validator{
 
 	/**
 	 * ユーザー名のチェック
@@ -64,13 +64,12 @@ public class UserValidator {
 	 * @throws AsoBbsSystemErrException
 	 */
 	public static void mailAddress(String mailAddress,ActionErrors errors) throws AsoBbsSystemErrException{
-		String mailFormat = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*+(.*)@[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)+$";
 
 		//必須
 		if( StringUtils.isEmpty(mailAddress) ){
 			errors.add(ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS_ISNEED);
 		}
-		if (!mailAddress.matches(mailFormat)) {
+		if (!chkMailFormat(mailAddress)) {
 			errors.add(ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
 		}
 		//最大文字数

@@ -1,10 +1,5 @@
 package jp.ac.asojuku.asobbs.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -83,7 +78,7 @@ public class UserController {
 	 * @return
 	 * @throws AsoBbsSystemErrException
 	 */
-	@RequestMapping(value= {"/cofirm"}, method=RequestMethod.POST)
+	@RequestMapping(value= {"/confirm"}, method=RequestMethod.POST)
     public ModelAndView cofirm(
     		@RequestParam("role")String role, 
     		@RequestParam("studentNo")String studentNo, 
@@ -105,7 +100,6 @@ public class UserController {
 		errs = 
 				validateRequestParams(role,studentNo,mailadress,nickname,course_id,list,password1,password2,admission_year);
 
-		
 		//DTOに入れなおす
 		CreateUserDto dto = getCreateUserDto(role,studentNo,mailadress,nickname,course_id,password1,admission_year);
 		

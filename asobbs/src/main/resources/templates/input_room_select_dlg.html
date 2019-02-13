@@ -59,7 +59,7 @@
 			                            	</td>
 			                            	<th>学年</th>
 			                            	<td>
-			                            	<select id="grade" name="grade">
+			                            	<select id="grade"  class="form-control"  name="grade">
 			                            		<option value="">指定なし</option>
 			                            		<option value="1">1年</option>
 			                            		<option value="2">2年</option>
@@ -70,9 +70,9 @@
 			                            </tr>
 			                            <tr>
 			                            	<th>メール（部分一致）</th>
-			                            	<td><input name="mail" type="text" id="mail"></td>
+			                            	<td><input name="mail" type="text" id="mail" class="form-control"  ></td>
 			                            	<th>名前（部分一致）</th>
-			                            	<td><input name="nickname" type="text" id="nickname"></td>
+			                            	<td><input name="nickname" type="text" id="nickname" class="form-control" ></td>
 			                            </tr>
 			                            <tr>
 			                            	<td colspan="4"><input id="student_search_button" type="button" value="検索"></td>
@@ -136,6 +136,7 @@
                     { data: "mailadress",className:"mail" },
                 ]
 			});
+	    	modalemptable.ajax().reload();
 		})
 		
 		//全てのチェックON/OFF
@@ -179,17 +180,15 @@
 			
 			params += "&mail="
 			if( $("input[name='mail']").val() != ""){
-				if(params.length>0){ params += "&";}
 				params += $("input[name='mail']").val();
 			}
 			
 			params += "&nickname="
 			if( $("input[name='nickname']").val() != ""){
-				if(params.length>0){ params += "&";}
 				params += $("input[name='nickname']").val();
 			}
 			
-			alert(params);
+			//alert(params);
 			
 			$.ajax({
 		    	cache: false,
@@ -201,8 +200,39 @@
 		        contentType: "text/html; charset=UTF-8",
 		        timeout : 360000, // milliseconds
 
-		    }).done(function(json) {
-		    	alert(json);
+		    }).done(function(data) {
+		    	//alert(data);
+		    	//いったんクリア
+		    	modalemptable.clear();
+		    	modalemptable.destroy();
+				modalemptable = $("#modal-emplist-table").DataTable({
+					"bPaginate": true,
+					"bLengthChange": true,
+					"paging": true,
+					"bFilter": false,
+					"bSort": true,
+					"bInfo": true,
+					"data":data,
+					"scrollY": "150px",
+					"language": {
+	                    "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
+	                },
+	                "columns": [
+	                	{
+	                		data:"userId" ,
+		                	render: function ( data, type, row ) {
+		                		return '<input type="checkbox" class="check_user" name="chk-'+data+'">';
+		                	}
+	                	},
+	                    { data: "courseName" },
+	                    { data: "grade" },
+	                    { data: "studentNo" },
+	                    { data: "nickname" },
+	                    { data: "mailadress",className:"mail" },
+	                ]
+				});
+		    	modalemptable.draw();
+		    	
 		    }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
 		    	alert("err:"+textStatus);
 		        console.log( textStatus  + errorThrown.toString());

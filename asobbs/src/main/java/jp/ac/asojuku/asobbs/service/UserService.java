@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jp.ac.asojuku.asobbs.dto.CreateUserDto;
+import jp.ac.asojuku.asobbs.dto.RoomConfirmDto;
 import jp.ac.asojuku.asobbs.dto.UserListDto;
 import jp.ac.asojuku.asobbs.entity.CourseMasterEntity;
 import jp.ac.asojuku.asobbs.entity.RoleMasterEntity;
@@ -98,10 +99,9 @@ public class UserService {
 		List<UserTblEntity> entityList = userRepository.findAll(
 				Specification.
 						where(mailContains(mail)).
-						and(courseEquals(0).
+						and(courseEquals(courseId)).
 						and(nicknameContains(nickName)).
 						and(gradeEquals(grade))
-						)
 				);
 
 		for( UserTblEntity entity : entityList ) {
@@ -120,6 +120,8 @@ public class UserService {
 		
 		return list;
 	}
+	
+	
 	
 	/**
 	 * UserTblEntityを作成する
