@@ -3,9 +3,11 @@ package jp.ac.asojuku.asobbs.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +21,7 @@ import jp.ac.asojuku.asobbs.dto.CreateUserDto;
 import jp.ac.asojuku.asobbs.err.ActionErrors;
 import jp.ac.asojuku.asobbs.err.ErrorCode;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
+import jp.ac.asojuku.asobbs.form.UserInputForm;
 import jp.ac.asojuku.asobbs.service.CourseService;
 import jp.ac.asojuku.asobbs.service.UserService;
 import jp.ac.asojuku.asobbs.util.FileUtils;
@@ -56,9 +59,11 @@ public class UserController {
         //空のデータを作る
         CreateUserDto dto = new CreateUserDto();
 
+        UserInputForm userInputForm = new UserInputForm();
 		mv.addObject("createUserDto",dto);
         mv.addObject("courseList",list);
         mv.addObject("errs",errs);
+        mv.addObject("userInputForm",userInputForm);
         
         return mv;
     }
@@ -80,14 +85,8 @@ public class UserController {
 	 */
 	@RequestMapping(value= {"/confirm"}, method=RequestMethod.POST)
     public ModelAndView cofirm(
-    		@RequestParam("role")String role, 
-    		@RequestParam("studentNo")String studentNo, 
-    		@RequestParam("mailadress")String mailadress, 
-    		@RequestParam("nickname")String nickname, 
-    		@RequestParam("course_id")String course_id, 
-    		@RequestParam("password1")String password1, 
-    		@RequestParam("password2")String password2, 
-    		@RequestParam("admission_year")String admission_year, 
+    		@Valid UserInputForm userInputForm,
+			BindingResult bindingResult,
     		ModelAndView mv) throws AsoBbsSystemErrException {
 
         //学科の一覧を取得する
@@ -98,10 +97,10 @@ public class UserController {
         
 		//入力チェックを行う
 		errs = 
-				validateRequestParams(role,studentNo,mailadress,nickname,course_id,list,password1,password2,admission_year);
+				validateRequestParams(userInputForm,list);
 
 		//DTOに入れなおす
-		CreateUserDto dto = getCreateUserDto(role,studentNo,mailadress,nickname,course_id,password1,admission_year);
+		CreateUserDto dto = getCreateUserDto(userInputForm);
 		
 		if( !errs.isHasErr() ) {
 			//エラーが無ければ、セッションに保存して確認画面へ
@@ -154,42 +153,40 @@ public class UserController {
 	 * @throws AsoBbsSystemErrException
 	 */
 	private ActionErrors validateRequestParams(
-			String role,String studentNo,
-			String mailadress,String nickname,
-			String course_id,List<CourseDto> list,String password1,
-			String password2,String admission_year) throws AsoBbsSystemErrException {
+			UserInputForm userInputForm,
+			List<CourseDto> list) throws AsoBbsSystemErrException {
 		
 		ActionErrors errs = new ActionErrors();
 		
 		//学籍番号
-		if( userService.isExistStudentNo(studentNo) ) {
+		if( userService.isExistStudentNo(userInputForm.getStudentNo()) ) {
 			errs.add(ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_STUDENTNO);
 		}
 		
 		//ニックネーム
-		UserValidator.useNickName(nickname,errs);
+		UserValidator.useNickName(userInputForm.getNickname(),errs);
 		
 		//メールアドレス
-		UserValidator.mailAddress(mailadress,errs);
-		if( userService.isExistMailadress(mailadress) ) {
+		UserValidator.mailAddress(userInputForm.getMailadress(),errs);
+		if( userService.isExistMailadress(userInputForm.getMailadress()) ) {
 			errs.add(ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_MEIL);
 		}
 
 		//学科ID
-		UserValidator.courseId(course_id,list,errs);
+		UserValidator.courseId(userInputForm.getCourse_id(),list,errs);
 		
 		//パスワード
-		if( password1.equals(password2) != true) {
+		if( userInputForm.getPassword1().equals(userInputForm.getPassword2()) != true) {
 			//パスワード不一致
 			errs.add(ErrorCode.ERR_MEMBER_ENTRY_PASSWORD_NOTMATCH);
 		}
-		UserValidator.password(password1,errs);
+		UserValidator.password(userInputForm.getPassword1(),errs);
 		
 		//ロールID
-		UserValidator.roleId(role,errs);
+		UserValidator.roleId(userInputForm.getRole(),errs);
 		
 		//入学年度
-		UserValidator.admissionYear(admission_year,errs);
+		UserValidator.admissionYear(userInputForm.getAdmission_year(),errs);
 		
 		return errs;
 	}
@@ -207,20 +204,17 @@ public class UserController {
 	 * @return
 	 */
 	private CreateUserDto getCreateUserDto(
-			String role,String studentNo,
-			String mailadress,String nickname,
-			String course_id,String password,
-			String admission_year) {
+			UserInputForm userInputForm) {
 		
 		CreateUserDto dto = new CreateUserDto();
 		
-		dto.setRoleId(Integer.parseInt(role));
-		dto.setStudentNo(studentNo);
-		dto.setMailadress(mailadress);
-		dto.setNickname(nickname);
-		dto.setCourseId(Integer.parseInt(course_id));
-		dto.setPassword(password);
-		dto.setAdmissionYear(admission_year);
+		dto.setRoleId(Integer.parseInt(userInputForm.getRole()));
+		dto.setStudentNo(userInputForm.getStudentNo());
+		dto.setMailadress(userInputForm.getMailadress());
+		dto.setNickname(userInputForm.getNickname());
+		dto.setCourseId(Integer.parseInt(userInputForm.getCourse_id()));
+		dto.setPassword(userInputForm.getPassword1());
+		dto.setAdmissionYear(userInputForm.getAdmission_year());
 		
 		return dto;
 		

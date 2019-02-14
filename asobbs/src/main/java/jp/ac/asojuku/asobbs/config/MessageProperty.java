@@ -20,7 +20,7 @@ public class MessageProperty extends ConfigBase{
 
 	//シングルトン
 	private static MessageProperty prop = null;
-	private static final String CONFIG_NAME = "message.properties";
+	private static final String CONFIG_NAME = "messages.properties";
 
 	/** 設定パラメータ */
 	public static final String JUDGE_RET_NOTMATCH = "judge.result.not.match";

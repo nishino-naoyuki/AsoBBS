@@ -2,11 +2,17 @@ package jp.ac.asojuku.asobbs.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.ac.asojuku.asobbs.dto.CreateRoomDto;
-import jp.ac.asojuku.asobbs.dto.RoomConfirmDto;
+import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
+import jp.ac.asojuku.asobbs.dto.RoomInsertDto;
 import jp.ac.asojuku.asobbs.dto.UserListDto;
+import jp.ac.asojuku.asobbs.entity.RoomTblEntity;
+import jp.ac.asojuku.asobbs.entity.RoomUserTblEntity;
+import jp.ac.asojuku.asobbs.entity.RoomUserTblId;
 import jp.ac.asojuku.asobbs.entity.UserTblEntity;
+import jp.ac.asojuku.asobbs.repository.RoomRepository;
 import jp.ac.asojuku.asobbs.repository.UserRepository;
 
 @Service
@@ -14,11 +20,39 @@ public class RoomService {
 
 	@Autowired 
 	UserRepository userRepository;
+	@Autowired
+	RoomRepository roomRepository;
 	
-	public void insert(CreateRoomDto roomDto) {
+	@Transactional
+	public void insert(RoomInsertDto roomInsetDto,LoginInfoDto loginInfo) {
+		//DtoからEntityを作成する
+		RoomTblEntity roomEntity = getRoomTblEntityFrom(roomInsetDto,loginInfo.getUserId());
 		
+		roomRepository.save(roomEntity);
 	}
 	
+	public RoomTblEntity getRoomTblEntityFrom(RoomInsertDto roomInsetDto,Integer userId) {
+		RoomTblEntity roomEntity = new RoomTblEntity();
+		
+		//ルーム情報
+		roomEntity.setName(roomInsetDto.getRoomName());
+		//所属ユーザー（管理者と一般ユーザー）
+		
+		//管理者をセット
+//		for( UserListDto admin : roomInsetDto.getAdminList()) {
+//			RoomUserTblEntity roomUserTbl = new RoomUserTblEntity();
+//			RoomUserTblId roomUserId = new RoomUserTblId();
+//			
+//			roomUserId.setUserId(admin.getUserId());
+//			roomUserTbl.setRoomUserTblId(roomUserId);
+//		}
+		
+		//作成情報
+		UserTblEntity createUserTbl = userRepository.getOne(userId);
+		roomEntity.setCreateUserTbl(createUserTbl);
+		
+		return roomEntity;
+	}
 
 	/**
 	 * RoomConfirmDtoを生成する
@@ -28,9 +62,9 @@ public class RoomService {
 	 * @param roombelong
 	 * @return
 	 */
-	public RoomConfirmDto getRoomConfirmDto(
+	public RoomInsertDto getRoomConfirmDto(
 			String roomname,String roomadmin,String roombelong) {
-		RoomConfirmDto roomConfirmDto = new RoomConfirmDto();
+		RoomInsertDto roomConfirmDto = new RoomInsertDto();
 
 		//ユーザー名
 		roomConfirmDto.setRoomName(roomname);

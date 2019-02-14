@@ -1,11 +1,16 @@
 package jp.ac.asojuku.asobbs.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,9 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.ac.asojuku.asobbs.dto.CourseDto;
-import jp.ac.asojuku.asobbs.dto.RoomConfirmDto;
+import jp.ac.asojuku.asobbs.dto.CreateUserDto;
+import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
+import jp.ac.asojuku.asobbs.dto.RoomInsertDto;
 import jp.ac.asojuku.asobbs.err.ActionErrors;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
+import jp.ac.asojuku.asobbs.form.RoomInputForm;
+import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.service.CourseService;
 import jp.ac.asojuku.asobbs.service.RoomService;
 import jp.ac.asojuku.asobbs.validator.RoomValidator;
@@ -36,6 +45,9 @@ public class RoomController {
 	@Autowired
 	HttpSession session;
 	
+	@Autowired
+	private MessageSource messageSource;
+	
 	/**
 	 * 入力画面
 	 * @param msg
@@ -43,14 +55,16 @@ public class RoomController {
 	 * @return
 	 */
 	@RequestMapping(value= {"/input"}, method=RequestMethod.GET)
-    public ModelAndView input(@ModelAttribute("msg")String msg,ModelAndView mv) {
+    public ModelAndView input(@ModelAttribute("msg")String msg,ModelAndView mv,BindingResult bindingResult) {
 
         //学科の一覧を取得する
         List<CourseDto> list = courseService.getAllList();
         
+        RoomInputForm roomInputForm = new RoomInputForm();
         mv.setViewName("input_room");
         mv.addObject("courseList",list);
         mv.addObject("errs",errs);
+        mv.addObject("roomInputForm",roomInputForm);
         
         return mv;
     }
@@ -68,29 +82,44 @@ public class RoomController {
 	@RequestMapping(value= {"/confirm"}, method=RequestMethod.POST)
 	public ModelAndView cofirm(
 			ModelAndView mv,
-    		@RequestParam("roomname")String roomname, 
-    		@RequestParam("roomadmin")String roomadmin, 
-    		@RequestParam("roombelong")String roombelong
+			@Valid RoomInputForm roomInputForm,
+			BindingResult bindingResult
     		) throws AsoBbsSystemErrException {
 
 		//入力チェックを行う
-		validateParams(roomname,roomadmin,roombelong);
-		
+		validateParams(roomInputForm,bindingResult);
+	    
 		//エラーがある場合は入力画面へ戻る
-		if( errs.isHasErr() ) {
+		if( bindingResult.hasErrors() ) {
 			//エラー情報をセットする
-			mv.addObject("errs",errs);
 	        mv.setViewName("input_room");
 		}else {
 			//セッションに保存する
-			RoomConfirmDto roomConfirmDto = 
-					roomService.getRoomConfirmDto(roomname,roomadmin,roombelong);
+			RoomInsertDto roomConfirmDto = 
+					roomService.getRoomConfirmDto(
+							roomInputForm.getRoomName(),
+							roomInputForm.getRoomAdmins(),
+							roomInputForm.getRoomUsers()
+							);
 			session.setAttribute("roomConfirmDto",roomConfirmDto);
 	        mv.setViewName("confirm_room");
 		}
 
         return mv;
 	}
+
+	@RequestMapping(value= {"/insert"}, method=RequestMethod.POST)
+    public String insert(ModelAndView mv) throws AsoBbsSystemErrException {
+		        
+        //セッションから登録データを取得する
+		RoomInsertDto dto = (RoomInsertDto)session.getAttribute("roomConfirmDto");
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+        
+        //DBに保存
+		roomService.insert(dto,loginInfo);
+        
+        return "redirect:/user/complete_user";
+    }
 	
 	/**
 	 * ルーム情報チェック
@@ -100,16 +129,16 @@ public class RoomController {
 	 * @param roombelong
 	 * @throws AsoBbsSystemErrException
 	 */
-	private void validateParams(String roomname,String roomadmin,String roombelong ) throws AsoBbsSystemErrException {
+	private void validateParams(RoomInputForm roomInputForm,BindingResult bindingResult ) throws AsoBbsSystemErrException {
 		//いったんクリア
 		errs.clear();
 		
-		//ルーム名
-		RoomValidator.roomName(roomname,errs);
+		//ルーム名 は、Fromのバリデーションでチェック
+		//RoomValidator.roomName(roomInputForm.getRoomName(),errs);
 		//ルーム管理者
-		RoomValidator.roomAdmin(roomadmin,errs);
+		RoomValidator.roomAdmin(roomInputForm.getRoomAdmins(),bindingResult);
 		//ルーム所属者
-		RoomValidator.roomUser(roombelong,errs);
+		RoomValidator.roomUser(roomInputForm.getRoomUsers(),bindingResult);
 	}
 	
 }

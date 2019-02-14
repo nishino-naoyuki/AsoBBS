@@ -3,6 +3,12 @@ package jp.ac.asojuku.asobbs.dto;
 import jp.ac.asojuku.asobbs.param.RoleId;
 import lombok.Data;
 
+/**
+ * ログイン情報
+ * 
+ * @author nishino
+ *
+ */
 @Data
 public class LoginInfoDto {
 

@@ -63,7 +63,7 @@
                         <div class="panel-heading">
                         		項目登録
                         </div>
-                        <form action="/user/cofirm"  method="post" >
+                        <form action="/user/confirm"  method="post" th:object="${userInputForm}">
 		               	<div class="panel-body">
 		               	<div th:if="${errs.isHasErr()}">
 		               		<p id="error" th:each="err:${errs.getList()}" th:text="${err.message}"></p>
@@ -75,7 +75,7 @@
 	                                		<th>ロール[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<select id="role" class="form-control" name="role">
+	                                			<select id="role" class="form-control" name="role" th:field="*{role}" >
 	                                				<option value="0">学生</option>
 	                                				<option value="1">教員</option>
 	                                			</select>
@@ -86,7 +86,7 @@
 	                                		<th>学籍番号[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="studentNo" class="typeahead" placeholder="学籍番号" th:value="${createUserDto.studentNo}">
+							                    <input type="text" name="studentNo" class="typeahead" placeholder="学籍番号" th:value="${createUserDto.studentNo}" th:field="*{studentNo}">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -94,7 +94,7 @@
 	                                		<th>メールアドレス[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="mailadress" class="typeahead" placeholder="メールアドレス" th:value="${createUserDto.mailadress}">
+							                    <input type="text" name="mailadress" class="typeahead" placeholder="メールアドレス" th:value="${createUserDto.mailadress}" th:field="*{mailadress}">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -102,7 +102,7 @@
 	                                		<th>ニックネーム[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="nickname" class="typeahead" placeholder="ニックネーム" th:value="${createUserDto.nickname}">
+							                    <input type="text" name="nickname" class="typeahead" placeholder="ニックネーム" th:value="${createUserDto.nickname}"  th:field="*{nickname}">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -110,7 +110,7 @@
 	                                		<th>学科[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<select id="course" class="form-control" name="course_id">
+	                                			<select id="course" class="form-control" name="course_id"   th:field="*{course_id}">
 	                                				<option th:each="dto:${courseList}" th:value="${dto.courseId}" th:text="${dto.courseName}" th:selected="${dto.courseId == createUserDto.courseId}"></option>
 	                                			</select>
 	                                		</div>
@@ -120,7 +120,7 @@
 	                                		<th>パスワード[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="password" name="password1" class="typeahead" placeholder="パスワードを入力してください" value="">
+							                    <input type="password" name="password1" class="typeahead" placeholder="パスワードを入力してください" value=""   th:field="*{password1}">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -128,7 +128,7 @@
 	                                		<th>パスワード（確認）[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="password" name="password2" class="typeahead" placeholder="パスワードを入力してください" value="">
+							                    <input type="password" name="password2" class="typeahead" placeholder="パスワードを入力してください" value=""  th:field="*{password2}">
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -136,7 +136,7 @@
 	                                		<th>入学年度[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-							                    <input type="text" name="admission_year" class="typeahead" placeholder="入学年度を入力してください" th:value="${createUserDto.admissionYear}">
+							                    <input type="text" name="admission_year" class="typeahead" placeholder="入学年度を入力してください" th:value="${createUserDto.admissionYear}"  th:field="*{admission_year}">
 	                                		</div>
 	                                		</td>
 	                                	</tr>

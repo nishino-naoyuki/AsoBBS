@@ -1,7 +1,10 @@
 package jp.ac.asojuku.asobbs.validator;
 
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 
+import jp.ac.asojuku.asobbs.config.MessageProperty;
+import jp.ac.asojuku.asobbs.config.ValidationConfig;
 import jp.ac.asojuku.asobbs.err.ActionErrors;
 import jp.ac.asojuku.asobbs.err.ErrorCode;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
@@ -37,18 +40,22 @@ public class RoomValidator extends Validator {
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void roomAdmin(String adminCSVList,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void roomAdmin(String adminCSVList,BindingResult error) throws AsoBbsSystemErrException{
 		//必須
-		if( StringUtils.isEmpty(adminCSVList) ){
-			errors.add(ErrorCode.ERR_ROOM_ADMIN_ISNEED);
-		}
+//		if( StringUtils.isEmpty(adminCSVList) ){
+//			error.rejectValue("roomAdmins",
+//					ValidationConfig.ERR_PROP_PREFIX+ErrorCode.ERR_ROOM_ADMIN_ISNEED.getCode(),
+//					ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_ADMIN_ISNEED));
+//		}
 		
 		//形式チェック
 		String[] admins = adminCSVList.split(",",0);
 		for( String mailAddress : admins) {
 			//メアド形式チェック
 			if (!chkMailFormat(mailAddress)) {
-				errors.add(ErrorCode.ERR_ROOM_ADMIN_FMT_ERROR);
+				error.rejectValue("roomAdmins",
+						ValidationConfig.ERR_PROP_PREFIX+ErrorCode.ERR_ROOM_ADMIN_FMT_ERROR.getCode(),
+						ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_ADMIN_FMT_ERROR));
 				break;
 			}
 		}
@@ -61,18 +68,23 @@ public class RoomValidator extends Validator {
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void roomUser(String userCSVList,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void roomUser(String userCSVList,BindingResult error) throws AsoBbsSystemErrException{
 				//必須
-				if( StringUtils.isEmpty(userCSVList) ){
-					errors.add(ErrorCode.ERR_ROOM_BELONG_ISNEED);
-				}
+//				if( StringUtils.isEmpty(userCSVList) ){
+//					error.reject(ErrorCode.ERR_ROOM_BELONG_ISNEED.getCode());
+//					error.rejectValue("roomUsers",
+//							ValidationConfig.ERR_PROP_PREFIX+ErrorCode.ERR_ROOM_BELONG_ISNEED.getCode(),
+//							ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_BELONG_ISNEED));
+//				}
 				
 				//形式チェック
 				String[] users = userCSVList.split(",",0);
 				for( String mailAddress : users) {
 					//メアド形式チェック
 					if (!chkMailFormat(mailAddress)) {
-						errors.add(ErrorCode.ERR_ROOM_BELONG_FMT_ERROR);
+						error.rejectValue("roomUsers",
+								ValidationConfig.ERR_PROP_PREFIX+ErrorCode.ERR_ROOM_BELONG_FMT_ERROR.getCode(),
+								ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_BELONG_FMT_ERROR));
 						break;
 					}
 				}

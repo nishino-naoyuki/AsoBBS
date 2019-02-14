@@ -65,7 +65,6 @@
                         </div>
 		               	<div class="panel-body">
 		               		<div class="table-responsive">
-		               			<form action="/room/confirm" method="POST" >
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>
@@ -88,7 +87,7 @@
 	                                				<th>学科</th>
 	                                				<th>ニックネーム</th>
 	                                			</tr>
-	                                			<tr th:each="adminDto:${roomConfirmDto.adminList}" th:object="${adminDto}">
+	                                			<tr th:each="adminDto:${session['roomConfirmDto'].adminList}" th:object="${adminDto}">
 	                                				<td th:text="*{mailadress}"></td>
 	                                				<td th:text="*{courseName}"></td>
 	                                				<td th:text="*{nickname}"></td>
@@ -101,20 +100,28 @@
 	                                		<th>ルーム所属者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<div class="col-xs-8">
-	                 							<textarea name="roombelong" rows="4" cols="40"  id="roombelong" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください" class="form-control"></textarea>
-	                                			</div>
-	                                			<button type="button" class="form-control-sm bg-default btn btn-primary" id="empchange3"
-                    															data-toggle="modal" data-target="#modal-emp-select" data-param="user" >選択</button>
-	                                			<br><input type="checkbox" name="all_student" value="all">全ての学生
+	                                			<table class="table table-bordered table-hover" id="userMailList">
+	                                				<thead class="thead-light">
+			                                			<tr>
+			                                				<th>メールアドレス</th>
+			                                			</tr>
+		                                			</thead>
+		                                			<tbody>
+			                                			<tr th:each="mail:${session['roomConfirmDto'].userMailList}">
+			                                				<td  th:text="${mail}"></td>
+			                                			</tr>
+		                                			</tbody>
+	                                			</table>
 	                                		</div>
 	                                		</td>
 	                                	</tr>
 		               				</tbody>
 		               			</table>
 		               			
-		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >確認</button>
+			                     <form action="/room/insert" method="POST">
+		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >登録</button>
 		               			</form>
+		               			<button type="button" class="form-control-sm bg-default btn btn-primary" >もどる</button>
 		               		</div>
 		               	</div>
                     </div>
@@ -123,12 +130,25 @@
         </div>
 	<div th:replace="/header/include2"></div>
 	<div  th:replace="/header/datatable"></div>
-	<div th:replace="input_room_select_dlg::modalempselect"></div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
-
+	<script>
+	var userMailTable;
+	$(function(){
+		// datatableの設定を変更
+		userMailTable = $("#userMailList").DataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"paging": true,
+			"bFilter": true,
+			"bSort": false,
+			"bInfo": true,
+			"scrollY": "150px"
+		});
+	})
+	</script>
 	
 </body>
 

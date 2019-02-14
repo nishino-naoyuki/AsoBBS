@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import lombok.Data;
 
 @Data
-public class RoomConfirmDto {
+public class RoomInsertDto {
 
 	String roomName;
 	List<UserListDto> adminList = new ArrayList<UserListDto>();

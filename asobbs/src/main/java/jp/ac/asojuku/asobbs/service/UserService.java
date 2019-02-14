@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jp.ac.asojuku.asobbs.dto.CreateUserDto;
-import jp.ac.asojuku.asobbs.dto.RoomConfirmDto;
+import jp.ac.asojuku.asobbs.dto.RoomInsertDto;
 import jp.ac.asojuku.asobbs.dto.UserListDto;
 import jp.ac.asojuku.asobbs.entity.CourseMasterEntity;
 import jp.ac.asojuku.asobbs.entity.RoleMasterEntity;

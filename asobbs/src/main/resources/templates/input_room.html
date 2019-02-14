@@ -63,12 +63,12 @@
                             <div class="row">
                             </div>
                         </div>
-		               	<div class="panel-body">
-		               	<div th:if="${errs.isHasErr()}">
-		               		<p id="error" th:each="err:${errs.getList()}" th:text="${err.message}"></p>
-		               	</div>
+		               	<div class="panel-body" th:object="${roomInputForm}" >
+		               	
+		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
+		               		
 		               		<div class="table-responsive">
-		               			<form action="/room/confirm" method="POST" >
+		               			<form action="/room/confirm" method="POST" th:object="${roomInputForm}">
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>
@@ -76,7 +76,7 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<div class="col-xs-10">
-							                    	<input type="text" name="roomname" class="typeahead form-control" placeholder="ルーム名を記入してください"  >
+							                    	<input type="text" name="roomname" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{roomName}" >
 	                                			</div>
 	                                		</div>
 	                                		</td>
@@ -86,7 +86,7 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<div class="col-xs-8">
-	                                				<textarea name="roomadmin" rows="4" cols="40"  id="roomadmin" placeholder="管理者のメールアドレスをカンマ区切りで記入してください" class="form-control" ></textarea>
+	                                				<textarea name="roomadmin" rows="4" cols="40"  id="roomadmin" placeholder="管理者のメールアドレスをカンマ区切りで記入してください" class="form-control"  th:field="*{roomAdmins}" ></textarea>
 	                                			</div>
 	                                			<button type="button"  class="form-control-sm bg-default btn btn-primary" id="empchange1"
                     															data-toggle="modal" data-target="#modal-emp-select" data-param="admin" >選択</button>
@@ -98,11 +98,11 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<div class="col-xs-8">
-	                 							<textarea name="roombelong" rows="4" cols="40"  id="roombelong" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください" class="form-control"></textarea>
+	                 							<textarea name="roombelong" rows="4" cols="40"  id="roombelong" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください" class="form-control" th:field="*{roomUsers}"></textarea>
 	                                			</div>
 	                                			<button type="button" class="form-control-sm bg-default btn btn-primary" id="empchange3"
                     															data-toggle="modal" data-target="#modal-emp-select" data-param="user" >選択</button>
-	                                			<br><input type="checkbox" name="all_student" value="all">全ての学生
+	                                			<br><input type="checkbox" name="all_student" value="all" th:field="*{allUserFlg}">全ての学生
 	                                		</div>
 	                                		</td>
 	                                	</tr>
