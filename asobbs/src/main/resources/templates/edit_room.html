@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ルーム作成ダイアログ</title>
+    <title>ルーム編集ダイアログ</title>
 
 	<meta  th:replace="/header/include1">
 	
@@ -51,7 +51,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">ルーム作成</h1>
+                    <h1 class="page-header">ルーム編集</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -63,16 +63,20 @@
                             <div class="row">
                             </div>
                         </div>
-		               	<div class="panel-body">
+		               	<div class="panel-body" th:object="${roomInputForm}" >
+		               	
+		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
+		               		
 		               		<div class="table-responsive">
+		               			<form action="/room/confirm_edit" method="POST" th:object="${roomInputForm}">
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>
-	                                		<th>ルーム名</th>
+	                                		<th>ルーム名[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<div class="col-xs-10">
-	                                				<div class="form-group" th:text="${session['roomConfirmDto'].roomName}"></div>
+							                    	<input type="text" name="roomname" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{roomName}" >
 	                                			</div>
 	                                		</div>
 	                                		</td>
@@ -81,18 +85,11 @@
 	                                		<th>ルーム管理者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<table class="table table-bordered table-hover" id="form">
-	                                			<tr>
-	                                				<th>メールアドレス</th>
-	                                				<th>学科</th>
-	                                				<th>ニックネーム</th>
-	                                			</tr>
-	                                			<tr th:each="adminDto:${session['roomConfirmDto'].adminList}" th:object="${adminDto}">
-	                                				<td th:text="*{mailadress}"></td>
-	                                				<td th:text="*{courseName}"></td>
-	                                				<td th:text="*{nickname}"></td>
-	                                			</tr>
-	                                			</table>
+	                                			<div class="col-xs-8">
+	                                				<textarea name="roomadmin" rows="4" cols="40"  id="roomadmin" placeholder="管理者のメールアドレスをカンマ区切りで記入してください" class="form-control"  th:field="*{roomAdmins}" ></textarea>
+	                                			</div>
+	                                			<button type="button"  class="form-control-sm bg-default btn btn-primary" id="empchange1"
+                    															data-toggle="modal" data-target="#modal-emp-select" data-param="admin" >選択</button>
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -100,33 +97,20 @@
 	                                		<th>ルーム所属者[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<div th:if="${session['roomConfirmDto'].allUserFlag}">
-	                                				全ユーザー
+	                                			<div class="col-xs-8">
+	                 							<textarea name="roombelong" rows="4" cols="40"  id="roombelong" placeholder="ルーム所属者のメールアドレスをカンマ区切りで記入してください" class="form-control" th:field="*{roomUsers}"></textarea>
 	                                			</div>
-	                                			<div th:unless="${session['roomConfirmDto'].allUserFlag}">
-	                                			<table class="table table-bordered table-hover" id="userMailList">
-	                                				<thead class="thead-light">
-			                                			<tr>
-			                                				<th>メールアドレス</th>
-			                                			</tr>
-		                                			</thead>
-		                                			<tbody>
-			                                			<tr th:each="mail:${session['roomConfirmDto'].userMailList}">
-			                                				<td  th:text="${mail}"></td>
-			                                			</tr>
-		                                			</tbody>
-	                                			</table>
-	                                			</div>
+	                                			<button type="button" class="form-control-sm bg-default btn btn-primary" id="empchange3"
+                    															data-toggle="modal" data-target="#modal-emp-select" data-param="user" >選択</button>
+	                                			<br><input type="checkbox" name="all_student" value="all" th:field="*{allUserFlg}">全ての学生
 	                                		</div>
 	                                		</td>
 	                                	</tr>
 		               				</tbody>
 		               			</table>
 		               			
-			                     <form action="/room/insert" method="POST">
-		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >登録</button>
+		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >確認</button>
 		               			</form>
-		               			<button type="button" class="form-control-sm bg-default btn btn-primary" >もどる</button>
 		               		</div>
 		               	</div>
                     </div>
@@ -135,25 +119,40 @@
         </div>
 	<div th:replace="/header/include2"></div>
 	<div  th:replace="/header/datatable"></div>
+	<div th:replace="input_room_select_dlg::modalempselect"></div>
         <!-- /#page-wrapper -->
+ <script>
+ 
+ $(document).on("click","#btn-modalemp-select", function() {
 
+	 	var type = $(this).data("kind");
+	 	var targetDisp;
+	 	//alert(type);
+	 	//管理者、サブ管理者、所属の３つのうちどれをクリックされたか
+	 	if(  type =="select-btn-admin" ){
+	 		targetDisp = $("#roomadmin");
+	 	}else{
+	 		targetDisp = $("#roombelong");
+	 	}
+     	//現在の値を取得
+     	var member = targetDisp.val();
+     	
+		$(".check_user").each(function(){
+			if( $(this).prop( 'checked' ) ){
+				//alert($(this).parent().parent().find(".nickname").text());
+				member = member + $(this).parent().parent().find(".mail").text()+",";
+			}
+		});
+		//表示を更新
+		targetDisp.val(member);
+		//モーダルを閉じる
+     	$('#modal-emp-select').modal('hide');
+ });
+ 
+ </script>
     </div>
     <!-- /#wrapper -->
-	<script>
-	var userMailTable;
-	$(function(){
-		// datatableの設定を変更
-		userMailTable = $("#userMailList").DataTable({
-			"bPaginate": true,
-			"bLengthChange": true,
-			"paging": true,
-			"bFilter": true,
-			"bSort": false,
-			"bInfo": true,
-			"scrollY": "150px"
-		});
-	})
-	</script>
+
 	
 </body>
 

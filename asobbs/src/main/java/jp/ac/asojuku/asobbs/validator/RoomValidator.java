@@ -53,9 +53,7 @@ public class RoomValidator extends Validator {
 		for( String mailAddress : admins) {
 			//メアド形式チェック
 			if (!chkMailFormat(mailAddress)) {
-				error.rejectValue("roomAdmins",
-						ValidationConfig.ERR_PROP_PREFIX+ErrorCode.ERR_ROOM_ADMIN_FMT_ERROR.getCode(),
-						ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_ADMIN_FMT_ERROR));
+				setErrorcode("roomAdmins",error,ErrorCode.ERR_ROOM_ADMIN_FMT_ERROR);
 				break;
 			}
 		}
@@ -70,21 +68,16 @@ public class RoomValidator extends Validator {
 	 */
 	public static void roomUser(String userCSVList,BindingResult error) throws AsoBbsSystemErrException{
 				//必須
-//				if( StringUtils.isEmpty(userCSVList) ){
-//					error.reject(ErrorCode.ERR_ROOM_BELONG_ISNEED.getCode());
-//					error.rejectValue("roomUsers",
-//							ValidationConfig.ERR_PROP_PREFIX+ErrorCode.ERR_ROOM_BELONG_ISNEED.getCode(),
-//							ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_BELONG_ISNEED));
-//				}
+				if( StringUtils.isEmpty(userCSVList) ){
+					setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_BELONG_ISNEED);
+				}
 				
 				//形式チェック
 				String[] users = userCSVList.split(",",0);
 				for( String mailAddress : users) {
 					//メアド形式チェック
 					if (!chkMailFormat(mailAddress)) {
-						error.rejectValue("roomUsers",
-								ValidationConfig.ERR_PROP_PREFIX+ErrorCode.ERR_ROOM_BELONG_FMT_ERROR.getCode(),
-								ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_BELONG_FMT_ERROR));
+						setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_BELONG_FMT_ERROR);
 						break;
 					}
 				}

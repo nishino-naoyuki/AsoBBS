@@ -71,7 +71,6 @@ public class LoginController {
 			url = "redirect:dashboad";
 		}else {
 			url = fowardLoginError(redirectAttributes);
-			throw new AsoBbsSystemErrException(password);
 		}
 		
         return url;

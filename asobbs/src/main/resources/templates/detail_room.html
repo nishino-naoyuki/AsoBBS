@@ -72,13 +72,13 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<div class="col-xs-10">
-	                                				<div class="form-group" th:text="${session['roomConfirmDto'].roomName}"></div>
+	                                				<div class="form-group" th:text="${roomDetailDto.roomName}"></div>
 	                                			</div>
 	                                		</div>
 	                                		</td>
 	                                	</tr>
 	                                	<tr>
-	                                		<th>ルーム管理者[必須]</th>
+	                                		<th>ルーム管理者</th>
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<table class="table table-bordered table-hover" id="form">
@@ -87,7 +87,7 @@
 	                                				<th>学科</th>
 	                                				<th>ニックネーム</th>
 	                                			</tr>
-	                                			<tr th:each="adminDto:${session['roomConfirmDto'].adminList}" th:object="${adminDto}">
+	                                			<tr th:each="adminDto:${roomDetailDto.adminList}" th:object="${adminDto}">
 	                                				<td th:text="*{mailadress}"></td>
 	                                				<td th:text="*{courseName}"></td>
 	                                				<td th:text="*{nickname}"></td>
@@ -97,34 +97,36 @@
 	                                		</td>
 	                                	</tr>
 	                                	<tr>
-	                                		<th>ルーム所属者[必須]</th>
+	                                		<th>ルーム所属者</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<div th:if="${session['roomConfirmDto'].allUserFlag}">
-	                                				全ユーザー
-	                                			</div>
-	                                			<div th:unless="${session['roomConfirmDto'].allUserFlag}">
 	                                			<table class="table table-bordered table-hover" id="userMailList">
 	                                				<thead class="thead-light">
 			                                			<tr>
+			                                				<th>学科</th>
+			                                				<th>学年</th>
 			                                				<th>メールアドレス</th>
+			                                				<th>ニックネーム</th>
 			                                			</tr>
 		                                			</thead>
 		                                			<tbody>
-			                                			<tr th:each="mail:${session['roomConfirmDto'].userMailList}">
-			                                				<td  th:text="${mail}"></td>
+			                                			<tr th:each="userDto:${roomDetailDto.userList}" th:object="${userDto}">
+			                                				<td th:text="*{courseName}"></td>
+			                                				<td th:text="*{grade}"></td>
+			                                				<td th:text="*{mailadress}"></td>
+			                                				<td th:text="*{nickname}"></td>
 			                                			</tr>
 		                                			</tbody>
 	                                			</table>
 	                                			</div>
-	                                		</div>
 	                                		</td>
 	                                	</tr>
 		               				</tbody>
 		               			</table>
 		               			
-			                     <form action="/room/insert" method="POST">
-		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >登録</button>
+			                     <form action="/room/edit" method="POST">
+			                     <input type="hidden" name="roomId" th:value="${roomDetailDto.roomId}">
+		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >編集</button>
 		               			</form>
 		               			<button type="button" class="form-control-sm bg-default btn btn-primary" >もどる</button>
 		               		</div>

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -21,24 +22,31 @@ import lombok.Data;
 @Data
 @Entity 
 @Table(name="ROOM_USER_TBL")
+@IdClass(RoomUserTblId.class)
 public class RoomUserTblEntity implements Serializable {
 
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** ルームユーザーテーブル composite-id . */
-	@EmbeddedId
-	private RoomUserTblId roomUserTblId;
-
 	/** ルームテーブル. */
-	@ManyToOne
-    @JoinColumn(referencedColumnName="roomId",insertable=false ,updatable=false)
-	private RoomTblEntity roomTbl;
+	@Id
+	private Integer roomId;
 
 	/** ユーザーテーブル. */
-	@OneToOne
-    @JoinColumn(name="userId",insertable=false ,updatable=false)
-	private UserTblEntity userTbl;
+	@Id
+	private Integer userId;
+	
+
+
+	/** ルームテーブル. */
+//	@ManyToOne
+ //   @JoinColumn(referencedColumnName="roomId",insertable=false ,updatable=false)
+//	private RoomTblEntity roomTbl;
+
+	/** ユーザーテーブル. */
+//	@OneToOne
+//    @JoinColumn(name="userId",insertable=false ,updatable=false)
+//	private UserTblEntity userTbl;
 
 	/** ロール. */
 	private Integer roomRole;
@@ -49,41 +57,5 @@ public class RoomUserTblEntity implements Serializable {
 	public RoomUserTblEntity() {
 	}
 
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((roomUserTblId == null) ? 0 : roomUserTblId.hashCode());
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		RoomUserTblEntity other = (RoomUserTblEntity) obj;
-		if (roomUserTblId == null) {
-			if (other.roomUserTblId != null) {
-				return false;
-			}
-		} else if (!roomUserTblId.equals(other.roomUserTblId)) {
-			return false;
-		}
-		return true;
-	}
 
 }

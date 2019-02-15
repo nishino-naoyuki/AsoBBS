@@ -18,9 +18,9 @@ public class RoomInputForm implements Serializable {
 	@NotEmpty(message = "{errmsg0203}")
 	private String roomAdmins;
 	
-	@NotEmpty(message = "{errmsg0204}")
 	private String roomUsers;
 	
 	private Boolean allUserFlg;
+	
 	
 }

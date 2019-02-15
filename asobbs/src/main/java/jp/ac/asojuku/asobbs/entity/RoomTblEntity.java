@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -51,28 +52,32 @@ public class RoomTblEntity implements Serializable {
 
 	/** ユーザーテーブル. */
 	@OneToOne
-    @JoinColumn(name="userId",insertable=false ,updatable=false)
-	private UserTblEntity createUserTbl;
+    @JoinColumn(name="CREATE_USER_ID",insertable=true ,updatable=true)
+    //@Column(name="CREATE_USER_ID")
+	private UserTblEntity createUserId;
+	//Integer createUserId;
 
 	/** 更新日時. */
 	private Date updateDate;
 
 	/** ユーザーテーブル. */
 	@OneToOne
-    @JoinColumn(name="userId",insertable=false ,updatable=false)
-	private UserTblEntity updateUserTbl;
+    @JoinColumn(name="UPDATE_USER_ID",insertable=true ,updatable=true)
+    //@Column(name="UPDATE_USER_ID")
+	private UserTblEntity updateUserId;
+	//Integer updateUserId;
 
 	/** カテゴリテーブル 一覧. */
 	@OneToMany(mappedBy = "categoryId")
 	private Set<CategoryTblEntity> categoryTblSet;
 
 //	/** ルームユーザーテーブル 一覧. */
-	@OneToMany
-	@JoinColumns({
-		@JoinColumn(name = "roomId", referencedColumnName = "roomId"),
-		@JoinColumn(name = "userId", referencedColumnName = "userId")
-	})
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(mappedBy = "roomId")
+	//@JoinColumns({
+	//	@JoinColumn(name = "roomId", referencedColumnName = "roomId"),
+	//	@JoinColumn(name = "userId", referencedColumnName = "userId")
+	//})
+	//@Fetch(FetchMode.SUBSELECT)
 	private Set<RoomUserTblEntity> roomUserTblSet;
 
 	/**
