@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>掲示板 新規作成</title>
+
+	<meta  th:replace="/header/include1">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/wysiwyg/bbs.css" rel="stylesheet" type="text/css">
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="parent" th:replace="/header/title"></div>
+            </div>
+            <!-- /.navbar-header -->
+			<!-- ヘッダー -->
+			<div id="parent" th:replace="/header/header"></div>
+			<!-- ヘッダー -->
+            
+            <!-- /.navbar-top-links -->
+			<!-- サイドバー -->
+			<div id="parent" th:replace="/header/sidebar"></div>
+			<!-- サイドバー -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">掲示板 新規作成</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        	掲示板 新規作成
+                        </div>
+		               	<div class="panel-body" th:object="${bbsInputForm}" >
+		               	
+		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
+		               		
+		               		<div class="table-responsive">
+		               			<form action="/bbs/confirm" method="POST" th:object="${bbsInputForm}">
+		               			<table class="table table-bordered table-hover" id="form">
+		               				<tbody>
+	                                	<tr>
+	                                		<th>カテゴリ名[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div class="col-xs-10">
+							                    	<input type="text" name="roomname" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{categoryName}" list="category_list">
+	                                				<datalist id="category_list">
+	                                					<option>カテゴリ１</option>
+	                                					<option>カテゴリ２</option>
+	                                					<option>カテゴリ３</option>
+	                                					<option>カテゴリ４</option>
+	                                				</datalist>
+	                                			</div>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>タイトル[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div class="col-xs-8">
+	                                				<input type="text" name="roomname" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{title}" >
+	                                			</div>
+	                                			<button type="button"  class="form-control-sm bg-default btn btn-primary" id="empchange1"
+                    															data-toggle="modal" data-target="#modal-emp-select" data-param="admin" >選択</button>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>内容[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div id="alerts"></div>
+	                                				<!-- bootstrap-wysiwyg  -->
+												    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+												      <div class="btn-group">
+												        <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
+												          <ul class="dropdown-menu">
+												          <li><a data-edit="fontSize 5"><font size="5">5</font></a></li>
+												          <li><a data-edit="fontSize 3"><font size="3">3</font></a></li>
+												          <li><a data-edit="fontSize 1"><font size="1">1</font></a></li>
+												          </ul>
+												      </div>
+												      <div class="btn-group">
+												        <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+												        <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+												        <a class="btn btn-default" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
+												        <a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+												      </div>
+												      <div class="btn-group">
+												        <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i class="icon-list-ul"></i></a>
+												        <a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i class="icon-list-ol"></i></a>
+												        <a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
+												        <a class="btn btn-default" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
+												      </div>
+												      <div class="btn-group">
+												        <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
+												        <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
+												        <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
+												        <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
+												      </div>
+												      <div class="btn-group">
+														  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
+														    <div class="dropdown-menu input-append">
+															    <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
+															    <button class="btn" type="button">Add</button>
+												        </div>
+												        <a class="btn  btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
+												
+												      </div>
+												      
+												      <div class="btn-group">
+												        <a class="btn  btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
+												        <input type="file" id="file_select" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage"  style="display:none;" />
+												      </div>
+												      <div class="btn-group">
+												        <a class="btn  btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
+												        <a class="btn  btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
+												      </div>
+												      <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
+												    </div>
+												
+												    <div id="editor">
+												      Go ahead&hellip;
+												    </div>
+	                                				<!-- bootstrap-wysiwyg  -->
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+		               				</tbody>
+		               			</table>
+		               			
+		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >確認</button>
+		               			</form>
+		               		</div>
+		               	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<div th:replace="/header/include2"></div>
+	<script src="/js/wysiwyg/jquery.hotkeys.js" th:src="@{/js/wysiwyg/jquery.hotkeys.js}"></script>
+	<script src="/js/wysiwyg/bootstrap-wysiwyg.js" th:src="@{/js/wysiwyg/bootstrap-wysiwyg.js}"></script>
+        <!-- /#page-wrapper -->
+ <script>
+ $('#editor').wysiwyg();
+
+
+	//アイコンをクリックした場合は、ファイル選択をクリックした挙動とする.
+	$('#pictureBtn').on('click', function() {
+	  $('#file_select').click();
+	});
+
+
+ </script>
+    </div>
+    <!-- /#wrapper -->
+
+	
+</body>
+
+</html>

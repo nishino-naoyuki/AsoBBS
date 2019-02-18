@@ -12,14 +12,14 @@ $(".room_list_drop").on('click', function() {
 		var tagStr = "";
     	for( var i =0; i < data.length; i++ ){
     		//ルーム名一覧
-    		tagStr += "<li class="">\n";
-    		tagStr += "   <a href='flot.html'>"+data[i].name+"</a>\n";
+    		tagStr += "<li class=''>\n";
+    		tagStr += "   <a href='/room/disp?id="+data[i].roomId+"'>"+data[i].name+"</a>\n";
     		//カテゴリの一覧
-    		tagStr += "       <ul class='nav nav-third-level'>\n";
-    		tagStr += "           <li><a href='flot.html'>カテゴリ１</a></li>\n";
-    		tagStr += "           <li><a href='flot.html'>カテゴリ2</a></li>\n";
-    		tagStr += "           <li><a href='flot.html'>カテゴリ3</a></li>\n";
-    		tagStr += "       </ul>\n";
+    		//tagStr += "       <ul class='nav nav-third-level'>\n";
+    		//tagStr += "           <li><a href='flot.html'>カテゴリ１</a></li>\n";
+    		//tagStr += "           <li><a href='flot.html'>カテゴリ2</a></li>\n";
+    		//tagStr += "           <li><a href='flot.html'>カテゴリ3</a></li>\n";
+    		//tagStr += "       </ul>\n";
     		tagStr += "</li>\n";
     	}
     	$("#room_list_top").html(tagStr);

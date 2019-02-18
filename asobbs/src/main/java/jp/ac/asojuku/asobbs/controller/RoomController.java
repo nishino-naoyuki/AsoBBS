@@ -264,6 +264,26 @@ public class RoomController {
         
         return "redirect:/room/complete?edit=true";
     }
+	
+
+	/**
+	 * ルームの内容を表示する
+	 * @param roomId
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
+	@RequestMapping(value= {"/disp"}, method=RequestMethod.GET)
+    public ModelAndView disp(@ModelAttribute("id")Integer roomId,ModelAndView mv) throws AsoBbsSystemErrException {
+		
+		RoomDetailDto roomDetailDto = roomService.getRoomDetailDtoBy(roomId);
+		     
+		mv.addObject("roomDetailDto",roomDetailDto);
+		mv.setViewName("display_room");
+        
+        return mv;
+    }
+	
 	/**
 	 * ルーム情報チェック
 	 * 

@@ -20,6 +20,7 @@ import jp.ac.asojuku.asobbs.entity.RoomUserTblEntity;
 import jp.ac.asojuku.asobbs.entity.UserTblEntity;
 import jp.ac.asojuku.asobbs.form.RoomInputForm;
 import jp.ac.asojuku.asobbs.form.RoomSearchForm;
+import jp.ac.asojuku.asobbs.param.RoleId;
 import jp.ac.asojuku.asobbs.param.RoomRoleId;
 import jp.ac.asojuku.asobbs.repository.RoomRepository;
 import jp.ac.asojuku.asobbs.repository.RoomUserRepository;
@@ -95,12 +96,15 @@ public class RoomService {
 	 * @param searchCondition
 	 * @return
 	 */
-	public List<RoomListDto> getListBy(RoomSearchForm searchCondition){
+	public List<RoomListDto> getListBy(RoomSearchForm searchCondition,LoginInfoDto loginInfo){
 		List<RoomListDto> list = new ArrayList<RoomListDto>();
 		
+		//学生の場合は自分が所属持しているルームのみを取得する
+		Integer filterUserId = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? loginInfo.getUserId() : null );
 		//検索条件を指定して実行
 		List<RoomTblEntity> entityList = roomRepository.findAll(
-				Specification.where(roomNameContains(searchCondition.getName()))
+				Specification.where(roomNameContains(searchCondition.getName())).
+				and(roomUserContains(filterUserId))
 				);
 		
 		//entity->dto
