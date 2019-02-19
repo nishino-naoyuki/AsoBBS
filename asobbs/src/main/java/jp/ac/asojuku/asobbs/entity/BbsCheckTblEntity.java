@@ -6,9 +6,12 @@ import java.util.Date;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import lombok.Data;
 
 /**
  * 掲示板確認テーブル モデルクラス.
@@ -18,15 +21,21 @@ import javax.persistence.Table;
  */
 @Entity 
 @Table(name="BBS_CHECK_TBL")
+@IdClass(BbsCheckTblId.class)
+@Data
 public class BbsCheckTblEntity implements Serializable {
 	
 
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** 掲示板確認テーブル composite-id . */
-	@EmbeddedId
-	private BbsCheckTblId bbsCheckTblId;
+	/** 掲示板テーブル. */
+	@Id
+	private Integer bbsId;
+
+	/** ユーザーID. */
+	@Id
+	private Integer userId;
 
 	/** 掲示板テーブル. */
 	@OneToOne
@@ -46,105 +55,5 @@ public class BbsCheckTblEntity implements Serializable {
 	public BbsCheckTblEntity() {
 	}
 
-	/**
-	 * 掲示板確認テーブル composite-id  を設定します.
-	 * 
-	 * @param bbsCheckTblId
-	 *            掲示板確認テーブル composite-id 
-	 */
-	public void setBbsCheckTblId(BbsCheckTblId bbsCheckTblId) {
-		this.bbsCheckTblId = bbsCheckTblId;
-	}
-
-	/**
-	 * 掲示板確認テーブル composite-id  を取得します.
-	 * 
-	 * @return 掲示板確認テーブル composite-id 
-	 */
-	public BbsCheckTblId getBbsCheckTblId() {
-		return this.bbsCheckTblId;
-	}
-
-	/**
-	 * 掲示板テーブル を設定します.
-	 * 
-	 * @param bbsTbl
-	 *            掲示板テーブル
-	 */
-	public void setBbsTbl(BbsTblEntity bbsTbl) {
-		this.bbsTbl = bbsTbl;
-	}
-
-	/**
-	 * 掲示板テーブル を取得します.
-	 * 
-	 * @return 掲示板テーブル
-	 */
-	public BbsTblEntity getBbsTbl() {
-		return this.bbsTbl;
-	}
-
-	public UserTblEntity getUserTbl() {
-		return userTbl;
-	}
-
-	public void setUserTbl(UserTblEntity userTbl) {
-		this.userTbl = userTbl;
-	}
-
-	/**
-	 * 確認日時 を設定します.
-	 * 
-	 * @param checkDate
-	 *            確認日時
-	 */
-	public void setCheckDate(Date checkDate) {
-		this.checkDate = checkDate;
-	}
-
-	/**
-	 * 確認日時 を取得します.
-	 * 
-	 * @return 確認日時
-	 */
-	public Date getCheckDate() {
-		return this.checkDate;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((bbsCheckTblId == null) ? 0 : bbsCheckTblId.hashCode());
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		BbsCheckTblEntity other = (BbsCheckTblEntity) obj;
-		if (bbsCheckTblId == null) {
-			if (other.bbsCheckTblId != null) {
-				return false;
-			}
-		} else if (!bbsCheckTblId.equals(other.bbsCheckTblId)) {
-			return false;
-		}
-		return true;
-	}
 
 }

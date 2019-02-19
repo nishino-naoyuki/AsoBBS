@@ -9,9 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ルーム表示</title>
+    <title>掲示板登録完了</title>
 
-	<meta  th:replace="/header/include1">
+	<meta id="parent" th:replace="/header/include1"></meta>
 	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,63 +48,36 @@
 			<div id="parent" th:replace="/header/sidebar"></div>
 			<!-- サイドバー -->
         </nav>
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">掲示板</h1>
+                    <h1 class="page-header">掲示板完了</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
+            <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-                	<p>
-                	<a  th:href="@{'/bbs/input?id='+${roomDetailDto.roomId}}" class="btn btn-primary">新規作成</a>
-                	</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="panel panel-green">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
-                            カテゴリ一覧
+                        		登録完了
                         </div>
 		               	<div class="panel-body">
+		               		<h1>登録完了しました</h1>
 		               	</div>
                     </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            タイトル一覧
-                        </div>
-		               	<div class="panel-body">
-		               	</div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
-	<div th:replace="/header/include2"></div>
-	<div  th:replace="/header/datatable"></div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
-	<script>
-	var userMailTable;
-	$(function(){
-		// datatableの設定を変更
-		userMailTable = $("#userMailList").DataTable({
-			"bPaginate": true,
-			"bLengthChange": true,
-			"paging": true,
-			"bFilter": true,
-			"bSort": false,
-			"bInfo": true,
-			"scrollY": "150px"
-		});
-	})
-	</script>
+
+	
+	<div id="parent" th:replace="/header/include2"></div>
 	
 </body>
-
 </html>

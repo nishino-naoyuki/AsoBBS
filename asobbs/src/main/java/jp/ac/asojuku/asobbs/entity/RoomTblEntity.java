@@ -68,16 +68,18 @@ public class RoomTblEntity implements Serializable {
 	//Integer updateUserId;
 
 	/** カテゴリテーブル 一覧. */
-	@OneToMany(mappedBy = "categoryId")
+	@OneToMany
+	@JoinColumn(name="roomId",insertable=true ,updatable=true)
 	private Set<CategoryTblEntity> categoryTblSet;
 
 //	/** ルームユーザーテーブル 一覧. */
-	@OneToMany(mappedBy = "roomId")
+	@OneToMany
 	//@JoinColumns({
 	//	@JoinColumn(name = "roomId", referencedColumnName = "roomId"),
 	//	@JoinColumn(name = "userId", referencedColumnName = "userId")
 	//})
 	//@Fetch(FetchMode.SUBSELECT)
+	@JoinColumn(name="roomId",insertable=true ,updatable=true)
 	private Set<RoomUserTblEntity> roomUserTblSet;
 
 	/**

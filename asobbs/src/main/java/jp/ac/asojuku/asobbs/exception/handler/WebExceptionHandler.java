@@ -1,5 +1,6 @@
 package jp.ac.asojuku.asobbs.exception.handler;
 
+import org.apache.tomcat.util.http.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +16,14 @@ public class WebExceptionHandler {
 	@ExceptionHandler(AsoBbsSystemErrException.class)
 	public String handleException(Exception exception) {
 		logger.error("WebExceptionHandler", exception);
+
+		return "redirect:/error/systemerror";	// error1.htmlへ遷移
+	}
+	
+
+	@ExceptionHandler(FileSizeLimitExceededException.class)
+	public String fileSizeException(Exception exception) {
+		logger.error("fileSizeException", exception);
 
 		return "redirect:/error/systemerror";	// error1.htmlへ遷移
 	}

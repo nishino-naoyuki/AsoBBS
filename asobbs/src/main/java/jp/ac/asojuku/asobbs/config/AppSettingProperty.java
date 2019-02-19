@@ -16,7 +16,8 @@ public class AppSettingProperty extends ConfigBase {
 	private static AppSettingProperty prop = null;
 	private static final String CONFIG_NAME = "app.properties";
 	private static final String JUDGE_CLASS = "judge.class";
-	private static final String UPLOAD_DIR = "upload.directory";
+	private static final String CSV_UPLOAD_DIR = "csv.upload.directory";
+	private static final String BBS_UPLOAD_DIR = "bbs.upload.directory";
 	private static final String SHELL_PATH = "shell.path";
 	private static final String RESULT_DIR = "result.directory";
 	private static final String ANSWER_DIR = "answer.directory";
@@ -91,7 +92,10 @@ public class AppSettingProperty extends ConfigBase {
 	 * @return
 	 */
 	public String getUploadDirectory(){
-		return getProperty(UPLOAD_DIR);
+		return getProperty(CSV_UPLOAD_DIR);
+	}
+	public String getBbsUploadDirectory(){
+		return getProperty(BBS_UPLOAD_DIR);
 	}
 	/**
 	 * シェルの実行パス
