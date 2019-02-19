@@ -39,12 +39,12 @@ public class ChatTableEntity implements Serializable {
 
 	/** ユーザーテーブル. */
 	@OneToOne
-    @JoinColumn(name="userId",insertable=false ,updatable=false)
+    @JoinColumn(name="from_user_id",insertable=false ,updatable=false)
 	private UserTblEntity fromUserTbl;
 
 	/** ユーザーテーブル. */
 	@OneToOne
-    @JoinColumn(name="userId",insertable=false ,updatable=false)
+    @JoinColumn(name="to_user_id",insertable=false ,updatable=false)
 	private UserTblEntity toUserTbl;
 
 	/** USER_ID. */

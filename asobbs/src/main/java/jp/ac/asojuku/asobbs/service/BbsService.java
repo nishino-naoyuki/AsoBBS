@@ -41,6 +41,12 @@ public class BbsService {
 		return bbsRepository.getRecentlyBbs();
 	}
 
+	/**
+	 * 掲示情報登録処理
+	 * 
+	 * @param bbsInputForm
+	 * @param loginInfo
+	 */
 	@Transactional
 	public void insert(BbsInputForm bbsInputForm,LoginInfoDto loginInfo) {
 		

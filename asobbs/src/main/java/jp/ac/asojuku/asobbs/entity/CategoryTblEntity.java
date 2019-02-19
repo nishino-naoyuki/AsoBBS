@@ -49,7 +49,8 @@ public class CategoryTblEntity implements Serializable {
 	private Integer count;
 
 	/** 掲示板テーブル 一覧. */
-	@OneToMany(mappedBy = "bbsId")
+	@OneToMany
+	@JoinColumn(name="categoryId",insertable=false ,updatable=false)
 	private Set<BbsTblEntity> bbsTblSet;
 
 	/**
