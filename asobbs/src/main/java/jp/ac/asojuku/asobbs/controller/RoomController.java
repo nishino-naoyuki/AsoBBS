@@ -63,7 +63,7 @@ public class RoomController {
 
         //学科の一覧を取得する
         List<CourseDto> list = courseService.getAllList();
-        
+                
         RoomInputForm roomInputForm = new RoomInputForm();
         mv.setViewName("input_room");
         mv.addObject("courseList",list);

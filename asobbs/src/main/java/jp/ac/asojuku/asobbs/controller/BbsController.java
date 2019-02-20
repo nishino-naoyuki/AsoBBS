@@ -1,11 +1,10 @@
 package jp.ac.asojuku.asobbs.controller;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -20,12 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.ac.asojuku.asobbs.config.AppSettingProperty;
+import jp.ac.asojuku.asobbs.dto.BbsDetailDto;
+import jp.ac.asojuku.asobbs.dto.CategoryListDto;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
+import jp.ac.asojuku.asobbs.exception.AsoBbsIllegalException;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.form.BbsInputForm;
-import jp.ac.asojuku.asobbs.form.RoomInputForm;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.service.BbsService;
+import jp.ac.asojuku.asobbs.service.RoomService;
 import jp.ac.asojuku.asobbs.util.FileUtils;
 
 @Controller
@@ -36,6 +38,8 @@ public class BbsController {
 	HttpSession session;
 	@Autowired
 	BbsService bbsService;
+	@Autowired
+	RoomService roomService;
 	
 	/**
 	 * 入力画面
@@ -51,6 +55,11 @@ public class BbsController {
 		form.setRoomId(roomId);
         mv.setViewName("/input_bbs");
         mv.addObject("bbsInputForm",form);
+        
+        //カテゴリの一覧を取得する
+        List<CategoryListDto> categoryListDtoList = roomService.getCategoryListDto(roomId);
+        mv.addObject("categoryListDtoList",categoryListDtoList);
+        
         return mv;
     }
 
@@ -85,6 +94,11 @@ public class BbsController {
         return mv;
     }
 
+	/**
+	 * 掲示板挿入
+	 * @param mv
+	 * @return
+	 */
 	@RequestMapping(value= {"/insert"}, method=RequestMethod.POST)
     public String insert(ModelAndView mv) {
 		
@@ -99,6 +113,13 @@ public class BbsController {
         return "redirect:/bbs/complete";
     }
 
+	/**
+	 * 登録完了処理
+	 * @param editFlg
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
 	@RequestMapping(value= {"/complete"}, method=RequestMethod.GET)
     public ModelAndView complete(@ModelAttribute("edit")String editFlg,ModelAndView mv) throws AsoBbsSystemErrException {
 		        
@@ -113,7 +134,31 @@ public class BbsController {
         
         return mv;
     }
-	
+
+
+	/**
+	 * 掲示板情報を表示す
+	 * 
+	 * @param id
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 * @throws AsoBbsIllegalException 
+	 */
+	@RequestMapping(value= {"/detail"}, method=RequestMethod.GET)
+    public ModelAndView detail(@ModelAttribute("id")Integer id,ModelAndView mv) throws AsoBbsSystemErrException, AsoBbsIllegalException {
+		        
+		//セッションよりログイン情報取得（不正防止チェック用)
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+		
+		mv.setViewName("detail_bbs");
+		
+		BbsDetailDto bbsDetailDto = bbsService.getBy(id,loginInfo);
+
+		mv.addObject("bbsDetailDto",bbsDetailDto);
+		
+        return mv;
+    }
 	/**
 	 * ファイルのコピー
 	 * @param bbsInputForm
@@ -140,7 +185,7 @@ public class BbsController {
 			    //ファイルコピー
 			    uploadFile.transferTo(uploadFilePath);
 			    //アップロードしたファイル名を覚えておく
-			    bbsInputForm.addUploadFilePath(uploadFilePath.toString());
+			    bbsInputForm.addUploadFilePath(uploadFilePath.toString(),uploadFile.getSize());
 			}
 		}
 	}

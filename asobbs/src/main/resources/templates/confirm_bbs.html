@@ -102,6 +102,14 @@
 	                                		</div>
 	                                		</td>
 	                                	</tr>
+	                                	<tr>
+	                                		<th>添付ファイル</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div class="form-group" th:each="fileDto:${session['bbsConfirmDto'].uploadFilePathList}" th:text="${fileDto.fileName}"></div>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
 		               				</tbody>
 		               			</table>
 		               			
@@ -128,7 +136,6 @@
 	});
 
 	$('#bbs_confirm').on('click', function() {
-	  alert("bbs_confirm");
 	  $('#bbs_content').val($('#editor').html());
 	});
 

@@ -40,6 +40,9 @@ public class AttachedFileTblEntity implements Serializable {
 	/** ファイルパス. */
 	private String filePath;
 
+	/** ファイルサイズ. */
+	private Long fileSize;
+	
 	/**
 	 * コンストラクタ.
 	 */

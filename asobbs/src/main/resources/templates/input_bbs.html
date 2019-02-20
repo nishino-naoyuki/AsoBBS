@@ -79,10 +79,8 @@
 	                                			<div class="col-xs-10">
 							                    	<input type="text" name="categoryName" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{categoryName}" list="category_list">
 	                                				<datalist id="category_list">
-	                                					<option>カテゴリ１</option>
-	                                					<option>カテゴリ２</option>
-	                                					<option>カテゴリ３</option>
-	                                					<option>カテゴリ４</option>
+	                                					<option>無分類</option>
+	                                					<option th:each="category:${categoryListDtoList}" th:text="${category.name}"></option>
 	                                				</datalist>
 	                                			</div>
 	                                		</div>
@@ -194,7 +192,6 @@
 	});
 
 	$('#bbs_confirm').on('click', function() {
-	  alert("bbs_confirm");
 	  $('#bbs_content').val($('#editor').html());
 	});
 

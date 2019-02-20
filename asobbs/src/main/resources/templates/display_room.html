@@ -51,7 +51,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">掲示板</h1>
+                    <h1 class="page-header" th:text="${roomDetailDto.roomName}+'の掲示板'">掲示板</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -63,21 +63,39 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="panel panel-green">
                         <div class="panel-heading">
                             カテゴリ一覧
                         </div>
 		               	<div class="panel-body">
+		               		<ul>
+		               			<li>
+		               				<a  href="#"  th:text="'全て ('+${roomDetailDto.roomBbsNum}+')'" class="categorylink-all"  th:data-id="-1"  th:data-rid="${roomDetailDto.roomId}"></a>
+		               			</li>
+		               			<li th:each="category:${roomDetailDto.categoryList}" >
+		               				<a  href="#"  th:text="${category.name}+'('+${category.bbsNum}+')'" class="categorylink"  th:data-id="${category.id}"　th:data-name="${category.name}" th:data-rid="${roomDetailDto.roomId}"></a>
+		               			</li>
+		               		</ul>
 		               	</div>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-9">
                     <div class="panel panel-green">
                         <div class="panel-heading">
-                            タイトル一覧
+                            <div id="title">タイトル一覧</div>
                         </div>
 		               	<div class="panel-body">
+		               		<table id="bbs_title_list" class="table table-bordered table-hover table-lg"> 
+			               		<thead class="thead-light">
+			                            <tr>
+			                                <th>タイトル</th>
+			                                <th>更新日</th>
+			                            </tr>
+			                       </thead>
+			                       <tbody>
+			                       </tbody>
+			               	</table>
 		               	</div>
                     </div>
                 </div>
@@ -90,18 +108,79 @@
     </div>
     <!-- /#wrapper -->
 	<script>
-	var userMailTable;
+	var bbsListTable;
 	$(function(){
 		// datatableの設定を変更
-		userMailTable = $("#userMailList").DataTable({
+		//alert($(".categorylink-all").data("rid"));
+		var ajaxurl = "/bbslist/list?id="+$(".categorylink-all").data("id")+"&roomId="+$(".categorylink-all").data("rid");
+		//alert(ajaxurl);
+		bbsListTable = $("#bbs_title_list").DataTable({
 			"bPaginate": true,
 			"bLengthChange": true,
 			"paging": true,
 			"bFilter": true,
 			"bSort": false,
 			"bInfo": true,
-			"scrollY": "150px"
+			"bAutoWidth": false,
+			"ajax": { url: ajaxurl, dataSrc: '' },
+            "columns": [
+            	{
+            		data:"title" ,
+            		type:"id",
+                	render: function ( data, type, row ) {
+                		return '<a href="/bbs/detail?id='+row.id+'">'+data+'</a>';
+                	}
+            	},
+                { data: "updateDate" },
+            ]
 		});
+		bbsListTable.draw();
+		$("#title").text("全てのタイトル一覧");
+		return false;
+	})
+	
+	$(".categorylink").on("click",function(){
+		//alert($(this).data("id"));
+		var param = "id="+$(this).data("id")+"&roomId="+$(this).data("rid");
+		var name = $(this).data("name");
+
+		$.ajax({
+	        type : "GET",                  // HTTP通信の種類
+	        url  : "/bbslist/list",                 // リクエストを送信する先のURL
+	        dataType : "json",              // サーバーから返されるデータの型
+	        data : param,
+	        processData : false,
+	        contentType: false
+	    }).done(function(data) {        // Ajax通信が成功した時の処理
+
+	    	//いったんクリア
+	    	bbsListTable.clear();
+	    	bbsListTable.destroy();
+	    	bbsListTable = $("#bbs_title_list").DataTable({
+				"bPaginate": true,
+				"bLengthChange": true,
+				"paging": true,
+				"bFilter": false,
+				"bSort": false,
+				"bInfo": true,
+				"data":data,
+				"language": {
+                    "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
+                },
+                "columns": [
+                	{
+                		data:"title" ,
+                		type:"id",
+	                	render: function ( data, type, row ) {
+	                		return '<a href="/bbs/detail?id='+row.id+'">'+data+'</a>';
+	                	}
+                	},
+                    { data: "updateDate" },
+                ]
+			});
+	    	bbsListTable.draw();
+	    	$("#title").text(name+"のタイトル一覧");
+	    })
 	})
 	</script>
 	

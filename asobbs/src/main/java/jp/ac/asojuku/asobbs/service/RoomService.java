@@ -10,11 +10,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.ac.asojuku.asobbs.dto.CategoryDto;
+import jp.ac.asojuku.asobbs.dto.CategoryListDto;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.dto.RoomDetailDto;
 import jp.ac.asojuku.asobbs.dto.RoomInsertDto;
 import jp.ac.asojuku.asobbs.dto.RoomListDto;
 import jp.ac.asojuku.asobbs.dto.UserListDto;
+import jp.ac.asojuku.asobbs.entity.BbsTblEntity;
+import jp.ac.asojuku.asobbs.entity.CategoryTblEntity;
 import jp.ac.asojuku.asobbs.entity.RoomTblEntity;
 import jp.ac.asojuku.asobbs.entity.RoomUserTblEntity;
 import jp.ac.asojuku.asobbs.entity.UserTblEntity;
@@ -22,6 +26,8 @@ import jp.ac.asojuku.asobbs.form.RoomInputForm;
 import jp.ac.asojuku.asobbs.form.RoomSearchForm;
 import jp.ac.asojuku.asobbs.param.RoleId;
 import jp.ac.asojuku.asobbs.param.RoomRoleId;
+import jp.ac.asojuku.asobbs.repository.BbsRepository;
+import jp.ac.asojuku.asobbs.repository.CategoryRepository;
 import jp.ac.asojuku.asobbs.repository.RoomRepository;
 import jp.ac.asojuku.asobbs.repository.RoomUserRepository;
 import jp.ac.asojuku.asobbs.repository.UserRepository;
@@ -35,6 +41,8 @@ public class RoomService {
 	RoomRepository roomRepository;
 	@Autowired
 	RoomUserRepository roomUserRepository;
+	@Autowired
+	BbsRepository bbsRepository;
 	
 	/**
 	 * ルーム情報の追加
@@ -109,8 +117,7 @@ public class RoomService {
 		
 		//entity->dto
 		for(RoomTblEntity entity : entityList) {
-			RoomListDto dto = getDtoFrom(entity);
-			
+			RoomListDto dto = getListDtoFrom(entity);
 			list.add(dto);
 		}
 		
@@ -162,15 +169,44 @@ public class RoomService {
 			}
 		}
 		
+		//このルーム内の掲示情報数
+		int allBbsNum = 0;
+		
+		//カテゴリリストを登録する
+		for(CategoryTblEntity categoryEntity : entity.getCategoryTblSet()) {
+			CategoryListDto categoryListDto = getCategoryDtoFrom(categoryEntity);
+			roomDetailDto.addCategoryList( categoryListDto );
+			allBbsNum += categoryListDto.getBbsNum();	//カテゴリごとの掲示情報を集計する
+		}
+		
+		roomDetailDto.setRoomBbsNum(allBbsNum);
+		
 		return roomDetailDto;
 	}
+	
+	/**
+	 * CategoryListDtoを作成する
+	 * 
+	 * @param categoryEntity
+	 * @return
+	 */
+	private CategoryListDto getCategoryDtoFrom(CategoryTblEntity categoryEntity) {
+		CategoryListDto categoryListDto = new CategoryListDto();
+		
+		categoryListDto.setId( categoryEntity.getCategoryId() );
+		categoryListDto.setName( categoryEntity.getName() );
+		categoryListDto.setBbsNum( bbsRepository.getCount(categoryEntity) );
+		
+		return categoryListDto;
+	}
+	
 	/**
 	 * RoomTblEntityからRoomListDtoを作成する
 	 * 
 	 * @param entity
 	 * @return
 	 */
-	private RoomListDto getDtoFrom(RoomTblEntity entity) {
+	private RoomListDto getListDtoFrom(RoomTblEntity entity) {
 		RoomListDto dto = new RoomListDto();
 		
 		dto.setRoomId(entity.getRoomId());
@@ -354,5 +390,25 @@ public class RoomService {
 		roomInputForm.setRoomUsers(sbUsers.toString());
 		
 		return roomInputForm;
+	}
+	
+	/**
+	 * ルームに所属するカテゴリの一覧を取得する
+	 * 
+	 * @param roomId
+	 * @return
+	 */
+	public List<CategoryListDto> getCategoryListDto(Integer roomId){
+		
+		RoomTblEntity roomEntity = roomRepository.getOne(roomId);
+		List<CategoryListDto> list = new ArrayList<CategoryListDto>();
+
+		//カテゴリリストを登録する
+		for(CategoryTblEntity categoryEntity : roomEntity.getCategoryTblSet()) {
+			CategoryListDto categoryListDto = getCategoryDtoFrom(categoryEntity);
+			list.add(categoryListDto);
+		}
+		
+		return list;
 	}
 }

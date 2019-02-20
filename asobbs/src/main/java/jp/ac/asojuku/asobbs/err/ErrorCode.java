@@ -53,7 +53,7 @@ public enum ErrorCode {
 	ERR_INFO_MSG_LEN("0402"),
 
 	//その他のエラー
-	ERR_SESSION_INVLIDATE("9901"),
+	ERR_INVLIDATE("9901"),
 	ERR_SYSTEM_ERROR("9999"),
 	;
 
