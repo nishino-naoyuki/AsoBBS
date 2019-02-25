@@ -16,40 +16,22 @@
                         <li>
                             <a href="/dashboad"><i class="fa fa-dashboard fa-fw"></i> ダッシュボード</a>
                         </li>
-                        <li>
+                        <li id="sidebar_bbs_list">
                             <a href="#" class="room_list_drop" ><i class="fa fa-bar-chart-o fa-fw"></i> ルーム一覧<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level" id="room_list_top">
-                                <li>
-                                    <a href="flot.html">ルーム１</a>
-                                    <ul class="nav nav-third-level">
-                                    	<li><a href="flot.html">カテゴリ１</a></li>
-                                    	<li><a href="flot.html">カテゴリ２</a></li>
-                                    	<li><a href="flot.html">カテゴリ３</a></li>
-                                    	<li><a href="flot.html">カテゴリ４</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="morris.html">ルーム２</a>
-                                    <ul class="nav nav-third-level">
-                                    	<li><a href="flot.html">カテゴリ１</a></li>
-                                    	<li><a href="flot.html">カテゴリ２</a></li>
-                                    	<li><a href="flot.html">カテゴリ３</a></li>
-                                    	<li><a href="flot.html">カテゴリ４</a></li>
-                                    </ul>
-                                </li>
+                            <ul class="nav nav-second-level" id="room_list_top" >
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
+                        <li th:unless="${session['LoginInfo'].isStudent()}">
                             <a href="/user/input"><i class="fa fa-user-plus fa-fw"></i> ユーザー登録</a>
                         </li>
-                        <li>
+                        <li th:if="${session['LoginInfo'].isManager()}">
                             <a href="/room/input"><i class="fa fa-home fa-fw"></i> ルーム作成</a>
                         </li>
-                        <li>
+                        <li th:unless="${session['LoginInfo'].isStudent()}">
                             <a href="/room/list"><i class="fa fa-home fa-fw"></i> ルーム編集</a>
                         </li>
-                        <li>
+                        <li th:if="${session['LoginInfo'].isManager()}">
                             <a href="forms.html"><i class="fa fa-edit fa-fw"></i> マスタメンテ</a>
                         </li>
                     </ul>

@@ -52,7 +52,7 @@ CREATE TABLE ATTACHED_FILE_TBL
 	-- ファイルのフルパス
 	FILE_PATH varchar(600) NOT NULL COMMENT 'ファイルのフルパス',
 	-- 不正防止用に、ファイルをDLさせるときは必ずファイルIDとファイルサイズとをマッチングさせる
-	FILE_SIZE int NOT NULL COMMENT '不正防止用に、ファイルをDLさせるときは必ずファイルIDとファイルサイズとをマッチングさせる',
+	FILE_SIZE bigint NOT NULL COMMENT '不正防止用に、ファイルをDLさせるときは必ずファイルIDとファイルサイズとをマッチングさせる',
 	PRIMARY KEY (ATTACHED_FILE_ID)
 );
 
@@ -351,7 +351,7 @@ ALTER TABLE BBS_CHECK_TBL
 
 
 ALTER TABLE CHAT_TABLE
-	ADD FOREIGN KEY (to_user_id)
+	ADD FOREIGN KEY (from_user_id)
 	REFERENCES USER_TBL (USER_ID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -359,7 +359,7 @@ ALTER TABLE CHAT_TABLE
 
 
 ALTER TABLE CHAT_TABLE
-	ADD FOREIGN KEY (from_user_id)
+	ADD FOREIGN KEY (to_user_id)
 	REFERENCES USER_TBL (USER_ID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

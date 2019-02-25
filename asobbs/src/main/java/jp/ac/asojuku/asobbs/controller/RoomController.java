@@ -274,11 +274,12 @@ public class RoomController {
 	 * @throws AsoBbsSystemErrException
 	 */
 	@RequestMapping(value= {"/disp"}, method=RequestMethod.GET)
-    public ModelAndView disp(@ModelAttribute("id")Integer roomId,ModelAndView mv) throws AsoBbsSystemErrException {
+    public ModelAndView disp(@ModelAttribute("id")Integer roomId,@ModelAttribute("cid")String categoryId,ModelAndView mv) throws AsoBbsSystemErrException {
 		
 		RoomDetailDto roomDetailDto = roomService.getRoomDetailDtoBy(roomId);
 		     
 		mv.addObject("roomDetailDto",roomDetailDto);
+		mv.addObject("categoryId",categoryId);
 		mv.setViewName("display_room");
         
         return mv;

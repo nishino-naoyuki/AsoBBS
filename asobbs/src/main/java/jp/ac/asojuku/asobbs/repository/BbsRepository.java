@@ -18,16 +18,16 @@ extends JpaRepository<BbsTblEntity,Integer>,
 	@Query("select b from BbsTblEntity b where b.updateDate <= now() ")
 	public List<BbsTblEntity> getRecentlyBbs();
 	
-	@Query("select count(*) from BbsTblEntity b where categoryTbl = :categoryTblEntity")
+	@Query("select count(*) from BbsTblEntity b where categoryTbl = :categoryTblEntity and b.parentBbsId is null")
 	public int getCount(@Param("categoryTblEntity")CategoryTblEntity categoryTblEntity);
 
-	@Query("select b from BbsTblEntity b where categoryTbl = :categoryTblEntity order by b.updateDate desc")
+	@Query("select b from BbsTblEntity b where categoryTbl = :categoryTblEntity and b.parentBbsId is null order by b.updateDate desc")
 	public List<BbsTblEntity> getList(@Param("categoryTblEntity")CategoryTblEntity categoryTblEntity);
 
 	@Query("select b from BbsTblEntity b "
 			+ "left join b.categoryTbl c "
 			+ "left join c.roomTbl r "
-			+ "where r.roomId = :roomId order by b.updateDate desc")
+			+ "where r.roomId = :roomId and b.parentBbsId is null order by b.updateDate desc")
 	public List<BbsTblEntity> getRoomList(@Param("roomId")Integer roomId);
 	
 	@Query("select b from BbsTblEntity b "

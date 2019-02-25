@@ -10,16 +10,15 @@ $(".room_list_drop").on('click', function() {
     }).done(function(data) {        // Ajax通信が成功した時の処理
 
 		var tagStr = "";
+//		if( data.length == 1 ){
+//			tagStr += "   <a href='/room/disp?id="+data[0].roomId+"'><i class='fa fa-dashboard fa-fw'></i>掲示板："+data[0].name+"</a>\n";
+//			$("#sidebar_bbs_list").html(tagStr);
+//			return;
+//		}
     	for( var i =0; i < data.length; i++ ){
     		//ルーム名一覧
     		tagStr += "<li class=''>\n";
     		tagStr += "   <a href='/room/disp?id="+data[i].roomId+"'>"+data[i].name+"</a>\n";
-    		//カテゴリの一覧
-    		//tagStr += "       <ul class='nav nav-third-level'>\n";
-    		//tagStr += "           <li><a href='flot.html'>カテゴリ１</a></li>\n";
-    		//tagStr += "           <li><a href='flot.html'>カテゴリ2</a></li>\n";
-    		//tagStr += "           <li><a href='flot.html'>カテゴリ3</a></li>\n";
-    		//tagStr += "       </ul>\n";
     		tagStr += "</li>\n";
     	}
     	$("#room_list_top").html(tagStr);

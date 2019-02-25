@@ -31,8 +31,31 @@ public class BbsInputForm {
 	
 	private List<AttachedFileDto> uploadFilePathList = new ArrayList<AttachedFileDto>();
 	
+	//更新用フラグ
+	private Boolean multipartFile1DelFlg;
+	private Boolean multipartFile2DelFlg;
+	private Boolean multipartFile3DelFlg;
+	
+	
 	public void addUploadFilePath(AttachedFileDto filePath) {
 		uploadFilePathList.add(filePath);
+	}
+	public AttachedFileDto getUploadFilePath(Integer index) {
+		AttachedFileDto attachedFileDto = null;
+		try{
+			attachedFileDto = uploadFilePathList.get(index);
+		}catch(IndexOutOfBoundsException e) {
+			attachedFileDto = new AttachedFileDto();
+		}
+		
+		return attachedFileDto;
+	}
+	public void deleteUploadFilePath(Integer index) {
+		try{
+			uploadFilePathList.remove((int)index);
+		}catch(IndexOutOfBoundsException e) {
+			;//無処理
+		}
 	}
 	public void addUploadFilePath(String filePath,Long size) {
 		AttachedFileDto dto = new AttachedFileDto();

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>掲示板 新規作成</title>
+
+	<meta  th:replace="/header/include1">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/wysiwyg/bbs.css" rel="stylesheet" type="text/css">
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="parent" th:replace="/header/title"></div>
+            </div>
+            <!-- /.navbar-header -->
+			<!-- ヘッダー -->
+			<div id="parent" th:replace="/header/header"></div>
+			<!-- ヘッダー -->
+            
+            <!-- /.navbar-top-links -->
+			<!-- サイドバー -->
+			<div id="parent" th:replace="/header/sidebar"></div>
+			<!-- サイドバー -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">掲示板 新規作成</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        	この内容で登録します。よろしいですか？
+                        </div>
+		               	<div class="panel-body"  >
+		               	
+		               		
+		               		<div class="table-responsive">
+		               			<table class="table table-bordered table-hover" id="form">
+		               				<tbody>
+	                                	<tr>
+	                                		<th>カテゴリ名[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div class="col-xs-10">
+	                                				<div class="form-group" th:text="${session['bbsConfirmDto'].categoryName}"></div>
+	                                			</div>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>タイトル[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div class="col-xs-8">
+	                                				<div class="form-group" th:text="${session['bbsConfirmDto'].title}"></div>
+	                                				<div class="form-group" th:if="${session['bbsConfirmDto'].emergencyFlg}">
+	                                				<p>※緊急</p>
+	                                				</div>
+	                                			</div>
+	                                			
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>内容[必須]</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div class="form-group" th:utext="${session['bbsConfirmDto'].content}"></div>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr>
+	                                		<th>添付ファイル</th>
+	                                		<td>
+	                                		<div class="form-group">
+	                                			<div class="form-group" th:each="fileDto:${session['bbsConfirmDto'].uploadFilePathList}" th:text="${fileDto.fileName}"></div>
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+		               				</tbody>
+		               			</table>
+		               			
+			                     <form action="/bbs/edit_insert" method="POST">
+		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >登録</button>
+		               			</form>
+		               		</div>
+		               	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<div th:replace="/header/include2"></div>
+	<script src="/js/wysiwyg/jquery.hotkeys.js" th:src="@{/js/wysiwyg/jquery.hotkeys.js}"></script>
+	<script src="/js/wysiwyg/bootstrap-wysiwyg.js" th:src="@{/js/wysiwyg/bootstrap-wysiwyg.js}"></script>
+        <!-- /#page-wrapper -->
+ <script>
+ $('#editor').wysiwyg();
+
+
+	//アイコンをクリックした場合は、ファイル選択をクリックした挙動とする.
+	$('#pictureBtn').on('click', function() {
+	  $('#file_select').click();
+	});
+
+	$('#bbs_confirm').on('click', function() {
+	  $('#bbs_content').val($('#editor').html());
+	});
+
+ </script>
+    </div>
+    <!-- /#wrapper -->
+
+	
+</body>
+
+</html>

@@ -9,6 +9,9 @@ import lombok.Data;
 public class BbsDetailDto {
 
 	private Integer bbsId;
+	private Integer roomId;
+	private String roomName;
+	private Integer categoryId;
 	private String categoryName;
 	private String title;
 	private Boolean emergencyFlg;
@@ -16,6 +19,7 @@ public class BbsDetailDto {
 	private String content;
 	private List<ReplyDto> replyDtoList = new ArrayList<ReplyDto>();
 	private List<AttachedFileDto> attachedFileList  = new ArrayList<AttachedFileDto>();
+	private Boolean emergencyReplyFlg;	//すでに緊急掲示板に返信済みかどうか
 	
 	public void addAttachedFileDto(AttachedFileDto attachedFileDto) {
 		attachedFileList.add(attachedFileDto);

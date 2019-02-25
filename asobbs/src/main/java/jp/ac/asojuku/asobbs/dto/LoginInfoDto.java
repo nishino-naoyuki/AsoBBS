@@ -20,7 +20,16 @@ public class LoginInfoDto {
 	private String courseName;
 	private int grade;
 	
-	
-	
-	
+
+	public boolean isStudent() {
+		return role == RoleId.STUDENT;
+	}
+
+	public boolean isTeacher() {
+		return role == RoleId.TEACHER;
+	}
+
+	public boolean isManager() {
+		return role == RoleId.MANAGER;
+	}
 }

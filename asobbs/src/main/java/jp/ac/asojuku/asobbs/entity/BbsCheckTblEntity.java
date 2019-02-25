@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -55,5 +57,14 @@ public class BbsCheckTblEntity implements Serializable {
 	public BbsCheckTblEntity() {
 	}
 
+	@PrePersist
+    public void onPrePersist() {
+		setCheckDate(new Date());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+		setCheckDate(new Date());
+    }
 
 }

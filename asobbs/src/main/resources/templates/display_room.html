@@ -71,10 +71,10 @@
 		               	<div class="panel-body">
 		               		<ul>
 		               			<li>
-		               				<a  href="#"  th:text="'全て ('+${roomDetailDto.roomBbsNum}+')'" class="categorylink-all"  th:data-id="-1"  th:data-rid="${roomDetailDto.roomId}"></a>
+		               				<a   th:text="'全て ('+${roomDetailDto.roomBbsNum}+')'" class="categorylink categorylink-all"  th:data-id="-1"  th:data-cname="全て" th:data-rid="${roomDetailDto.roomId}"></a>
 		               			</li>
 		               			<li th:each="category:${roomDetailDto.categoryList}" >
-		               				<a  href="#"  th:text="${category.name}+'('+${category.bbsNum}+')'" class="categorylink"  th:data-id="${category.id}"　th:data-name="${category.name}" th:data-rid="${roomDetailDto.roomId}"></a>
+		               				<a    th:text="${category.name}+'('+${category.bbsNum}+')'" class="categorylink"  th:data-id="${category.id}" th:data-cname="${category.name}" th:data-rid="${roomDetailDto.roomId}"></a>
 		               			</li>
 		               		</ul>
 		               	</div>
@@ -103,6 +103,7 @@
         </div>
 	<div th:replace="/header/include2"></div>
 	<div  th:replace="/header/datatable"></div>
+	<input type="hidden" id="cId" th:value="${categoryId}" >
         <!-- /#page-wrapper -->
 
     </div>
@@ -112,8 +113,16 @@
 	$(function(){
 		// datatableの設定を変更
 		//alert($(".categorylink-all").data("rid"));
-		var ajaxurl = "/bbslist/list?id="+$(".categorylink-all").data("id")+"&roomId="+$(".categorylink-all").data("rid");
+		var ajaxurl ;
+		if( $("#cId").val() != ""){
+			ajaxurl = "/bbslist/list?id="+$("#cId").val()+"&roomId="+$(".categorylink-all").data("rid");
+		}else{
+			ajaxurl = "/bbslist/list?id="+$(".categorylink-all").data("id")+"&roomId="+$(".categorylink-all").data("rid");
+		}
+		//var ajaxurl = "/bbslist/list?id="+$(".categorylink-all").data("id")+"&roomId="+$(".categorylink-all").data("rid");
 		//alert(ajaxurl);
+		
+		
 		bbsListTable = $("#bbs_title_list").DataTable({
 			"bPaginate": true,
 			"bLengthChange": true,
@@ -142,8 +151,8 @@
 	$(".categorylink").on("click",function(){
 		//alert($(this).data("id"));
 		var param = "id="+$(this).data("id")+"&roomId="+$(this).data("rid");
-		var name = $(this).data("name");
-
+		var name = $(this).data("cname");
+		//alert(name);
 		$.ajax({
 	        type : "GET",                  // HTTP通信の種類
 	        url  : "/bbslist/list",                 // リクエストを送信する先のURL

@@ -11,7 +11,7 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>0.8</zoom>
-	<x>0</x>
+	<x>459</x>
 	<y>0</y>
 	<default_color>
 		<r>128</r>
@@ -138,7 +138,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2017-02-01 13:35:51</creation_date>
-			<updated_date>2019-02-20 18:19:19</updated_date>
+			<updated_date>2019-02-25 12:19:30</updated_date>
 			<model_property>
 				<name>プロジェクト名</name>
 				<value></value>
@@ -509,7 +509,7 @@
 			<description>不正防止用に、ファイルをDLさせるときは必ずファイルIDとファイルサイズとをマッチングさせる</description>
 			<logical_name>ファイルサイズ</logical_name>
 			<physical_name>FILE_SIZE</physical_name>
-			<type>integer</type>
+			<type>bigint</type>
 		</word>
 		<word>
 			<id>21</id>
@@ -2374,7 +2374,7 @@
 				<normal_column>
 					<id>24</id>
 					<referenced_column>33</referenced_column>
-					<relation>8</relation>
+					<relation>7</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name>送信元ＩＤ</logical_name>
@@ -2408,7 +2408,7 @@
 				<normal_column>
 					<id>25</id>
 					<referenced_column>33</referenced_column>
-					<relation>7</relation>
+					<relation>8</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name>送信先ＩＤ</logical_name>
@@ -4221,7 +4221,7 @@
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
 					<physical_name></physical_name>
-					<type>integer</type>
+					<type>bigint</type>
 					<constraint></constraint>
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>

@@ -19,12 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.ac.asojuku.asobbs.config.AppSettingProperty;
+import jp.ac.asojuku.asobbs.dto.AttachedFileDto;
+import jp.ac.asojuku.asobbs.dto.BbsCheckTblDto;
 import jp.ac.asojuku.asobbs.dto.BbsDetailDto;
 import jp.ac.asojuku.asobbs.dto.CategoryListDto;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.exception.AsoBbsIllegalException;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.form.BbsInputForm;
+import jp.ac.asojuku.asobbs.form.BbsReplyInputForm;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.service.BbsService;
 import jp.ac.asojuku.asobbs.service.RoomService;
@@ -63,6 +66,46 @@ public class BbsController {
         return mv;
     }
 
+
+	/**
+	 * 掲示板の編集画面
+	 * 
+	 * @param bbsId
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsIllegalException
+	 * @throws AsoBbsSystemErrException
+	 */
+	@RequestMapping(value= {"/edit_input"}, method=RequestMethod.GET)
+    public ModelAndView edit_input(@ModelAttribute("bbsId")Integer bbsId,ModelAndView mv) throws AsoBbsIllegalException, AsoBbsSystemErrException {
+		
+		//ログイン情報を取得する
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+		
+		//掲示板情報を取得
+		BbsDetailDto bbsDetailDto = bbsService.getBy(bbsId,loginInfo);
+		
+		//DTO->form
+		BbsInputForm form = new BbsInputForm();
+		form.setCategoryName( bbsDetailDto.getCategoryName());
+		form.setTitle( bbsDetailDto.getTitle() );
+		form.setEmergencyFlg( bbsDetailDto.getEmergencyFlg() );
+		form.setContent( bbsDetailDto.getContent() );
+		form.setRoomId( bbsDetailDto.getRoomId()  );
+		for(  AttachedFileDto attachedFileDto : bbsDetailDto.getAttachedFileList() ) {
+			form.addUploadFilePath(attachedFileDto);
+		}
+		
+        mv.setViewName("/edit_bbs");
+        mv.addObject("bbsInputForm",form);
+        
+        //カテゴリの一覧を取得する
+        List<CategoryListDto> categoryListDtoList = roomService.getCategoryListDto(form.getRoomId());
+        mv.addObject("categoryListDtoList",categoryListDtoList);
+        
+        return mv;
+    }
+	
 	/**
 	 * 確認画面
 	 * 
@@ -94,6 +137,25 @@ public class BbsController {
         return mv;
     }
 
+	@RequestMapping(value= {"/edit_confirm"}, method=RequestMethod.POST)
+    public ModelAndView editConfirm(ModelAndView mv,
+    		@Valid BbsInputForm bbsInputForm,
+			BindingResult bindingResult) throws IllegalStateException, AsoBbsSystemErrException, IOException {
+		
+		//添付ファイルがある場合はフォルダを作成して
+		//ファイルをコピーする
+		uploadFiles(bbsInputForm);
+
+		//エラーがある場合は入力画面へ戻る
+		if( bindingResult.hasErrors() ) {
+			//エラー情報をセットする
+	        mv.setViewName("/edit_bbs");
+		}else {
+	        mv.setViewName("/confirm_edit_bbs");
+	        session.setAttribute(SessionConst.BBS_CONFIG_DTO,bbsInputForm);
+		}
+        return mv;
+    }
 	/**
 	 * 掲示板挿入
 	 * @param mv
@@ -113,6 +175,19 @@ public class BbsController {
         return "redirect:/bbs/complete";
     }
 
+	@RequestMapping(value= {"/edit_insert"}, method=RequestMethod.POST)
+    public String editInsert(ModelAndView mv) {
+		
+		BbsInputForm bbsInputForm = (BbsInputForm)session.getAttribute(SessionConst.BBS_CONFIG_DTO);
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+		
+        mv.setViewName("/complete_edit_bbs");
+        
+        //登録処理
+        bbsService.update(bbsInputForm,loginInfo);
+
+        return "redirect:/bbs/complete";
+    }
 	/**
 	 * 登録完了処理
 	 * @param editFlg
@@ -156,9 +231,67 @@ public class BbsController {
 		BbsDetailDto bbsDetailDto = bbsService.getBy(id,loginInfo);
 
 		mv.addObject("bbsDetailDto",bbsDetailDto);
+		mv.addObject("bbsReplyInputForm",new BbsReplyInputForm());
 		
         return mv;
     }
+
+	/**
+	 * 掲示板挿入
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping(value= {"/reply"}, method=RequestMethod.POST)
+    public String reply(ModelAndView mv,
+    		@Valid BbsReplyInputForm bbsReplyInputForm,
+    		BindingResult bindingResult) {
+
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+		
+		bbsService.insertChild(bbsReplyInputForm,loginInfo);
+
+        return "redirect:/bbs/detail?id="+bbsReplyInputForm.getBbsId();
+    }
+	
+
+	/**
+	 * 緊急掲示板の確認しましたを登録する
+	 * 
+	 * @param id
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 * @throws AsoBbsIllegalException 
+	 */
+	@RequestMapping(value= {"/emergency_reply"}, method=RequestMethod.POST)
+    public String emergencyReply(@ModelAttribute("bbsId")Integer bbsId,ModelAndView mv) throws AsoBbsSystemErrException, AsoBbsIllegalException {
+		        
+		//セッションよりログイン情報取得（不正防止チェック用)
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+				
+		bbsService.insertBbsCheck(bbsId,loginInfo);
+
+        return "redirect:/bbs/detail?id="+bbsId;
+    }
+	
+	/**
+	 * 緊急記事の確認済みリストを表示する
+	 * 
+	 * @param bbsId
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping(value= {"/emergency_reply_list"}, method=RequestMethod.GET)
+    public ModelAndView emergencyReplyList(@ModelAttribute("bbsId")Integer bbsId,ModelAndView mv)  {
+
+		mv.setViewName("list_emergency_reply");
+		
+		List<BbsCheckTblDto> list = bbsService.getBbsCheckTblDtoList(bbsId);
+		
+		mv.addObject("bbsCheckTblDtoList",list);
+		
+		return mv;
+	}
 	/**
 	 * ファイルのコピー
 	 * @param bbsInputForm
@@ -173,6 +306,11 @@ public class BbsController {
 				bbsInputForm.getMultipartFile2(),
 				bbsInputForm.getMultipartFile3()
 		};
+		//Boolean[] uploadfileDeltes = {
+		//		bbsInputForm.getMultipartFile1DelFlg(),
+		//		bbsInputForm.getMultipartFile2DelFlg(),
+		//		bbsInputForm.getMultipartFile3DelFlg(),
+		//};
 		
 		File uploadDir = null;
 		//ファイルがあれば保存して、パスを覚えておく
@@ -188,6 +326,12 @@ public class BbsController {
 			    bbsInputForm.addUploadFilePath(uploadFilePath.toString(),uploadFile.getSize());
 			}
 		}
+		//削除チェック
+		//for( int index = 0; index < uploadfileDeltes.length; index++) {
+		//	if( uploadfileDeltes[index] != null && uploadfileDeltes[index] ) {
+		//		bbsInputForm.deleteUploadFilePath(index);
+		//	}
+		//}
 	}
 
     /**
