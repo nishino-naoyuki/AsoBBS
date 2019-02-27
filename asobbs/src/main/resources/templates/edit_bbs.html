@@ -65,11 +65,11 @@
                         	掲示板 新規作成
                         </div>
 		               	<div class="panel-body" th:object="${bbsInputForm}" >
-		               	
 		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
 		               		
 		               		<div class="table-responsive">
 		               			<form action="/bbs/edit_confirm" method="POST" th:object="${bbsInputForm}" enctype="multipart/form-data">
+		               			<input type="hidden" th:field="*{bbsId}">
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>
@@ -173,18 +173,18 @@
 	                                				<tbody>
 	                                				<tr>
 	                                					<td>
-				                                			<div th:if="*{getUploadFilePath(0).fileName }">
-				                                				<div th:text="*{getUploadFilePath(0).fileName}"></div>
+				                                			<div th:if="*{getNowFilePath(0).fileName }">
+				                                				<div th:text="*{getNowFilePath(0).fileName}"></div>
 				                                			</div>
-				                                			<div th:unless="*{getUploadFilePath(0).fileName }">
+				                                			<div th:unless="*{getNowFilePath(0).fileName }">
 				                                				添付ファイルなし
 				                                			</div>
 	                                					</td>
 	                                					<td>
-				                                			<div th:if="*{getUploadFilePath(0).fileName }">
+				                                			<div th:if="*{getNowFilePath(0).fileName }">
 				                                				<input type="checkbox" value="true" th:field="*{multipartFile1DelFlg}">削除
 				                                			</div>
-				                                			<div th:unless="*{getUploadFilePath(0).fileName }">
+				                                			<div th:unless="*{getNowFilePath(0).fileName }">
 				                                				-
 				                                			</div>
 	                                					</td>
@@ -194,18 +194,18 @@
 	                                				</tr>
 	                                				<tr>
 	                                					<td>
-				                                			<div th:if="*{getUploadFilePath(1).fileName }">
-				                                				<div th:text="*{getUploadFilePath(1).fileName}"></div>
+				                                			<div th:if="*{getNowFilePath(1).fileName }">
+				                                				<div th:text="*{getNowFilePath(1).fileName}"></div>
 				                                			</div>
-				                                			<div th:unless="*{getUploadFilePath(1).fileName }">
+				                                			<div th:unless="*{getNowFilePath(1).fileName }">
 				                                				添付ファイルなし
 				                                			</div>
 	                                					</td>
 	                                					<td>
-				                                			<div th:if="*{getUploadFilePath(1).fileName }">
+				                                			<div th:if="*{getNowFilePath(1).fileName }">
 				                                				<input type="checkbox" value="true" th:field="*{multipartFile2DelFlg}">削除
 				                                			</div>
-				                                			<div th:unless="*{getUploadFilePath(1).fileName }">
+				                                			<div th:unless="*{getNowFilePath(1).fileName }">
 				                                				-
 				                                			</div>
 	                                					</td>
@@ -215,18 +215,18 @@
 	                                				</tr>
 	                                				<tr>
 	                                					<td>
-				                                			<div th:if="*{getUploadFilePath(2).fileName }">
-				                                				<div th:text="*{getUploadFilePath(2).fileName}"></div>
+				                                			<div th:if="*{getNowFilePath(2).fileName }">
+				                                				<div th:text="*{getNowFilePath(2).fileName}"></div>
 				                                			</div>
-				                                			<div th:unless="*{getUploadFilePath(2).fileName }">
+				                                			<div th:unless="*{getNowFilePath(2).fileName }">
 				                                				添付ファイルなし
 				                                			</div>
 	                                					</td>
 	                                					<td>
-				                                			<div th:if="*{getUploadFilePath(2).fileName }">
+				                                			<div th:if="*{getNowFilePath(2).fileName }">
 				                                				<input type="checkbox" value="true" th:field="*{multipartFile3DelFlg}">削除
 				                                			</div>
-				                                			<div th:unless="*{getUploadFilePath(2).fileName }">
+				                                			<div th:unless="*{getNowFilePath(2).fileName }">
 				                                				-
 				                                			</div>
 	                                					</td>

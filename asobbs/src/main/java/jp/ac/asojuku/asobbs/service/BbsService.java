@@ -1,12 +1,18 @@
 package jp.ac.asojuku.asobbs.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import jp.ac.asojuku.asobbs.config.AppSettingProperty;
 import jp.ac.asojuku.asobbs.config.ValidationConfig;
 import jp.ac.asojuku.asobbs.dto.AttachedFileDto;
 import jp.ac.asojuku.asobbs.dto.BbsCheckTblDto;
@@ -79,9 +85,12 @@ public class BbsService {
 	 * 
 	 * @param bbsInputForm
 	 * @param loginInfo
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 * @throws AsoBbsSystemErrException 
 	 */
 	@Transactional
-	public void insert(BbsInputForm bbsInputForm,LoginInfoDto loginInfo) {
+	public void insert(BbsInputForm bbsInputForm,LoginInfoDto loginInfo) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		
 		//カテゴリを更新する
 		CategoryTblEntity categoryTblEntity = saveCategoryTblEntity(bbsInputForm);
@@ -99,9 +108,12 @@ public class BbsService {
 	 * 
 	 * @param bbsInputForm
 	 * @param loginInfo
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 * @throws AsoBbsSystemErrException 
 	 */
 	@Transactional
-	public void update(BbsInputForm bbsInputForm,LoginInfoDto loginInfo) {
+	public void update(BbsInputForm bbsInputForm,LoginInfoDto loginInfo) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		
 		//カテゴリを更新する
 		CategoryTblEntity categoryTblEntity = saveCategoryTblEntity(bbsInputForm);
@@ -130,55 +142,101 @@ public class BbsService {
 	
 	/**
 	 * 添付ファイルの情報を保存する
+	 * 現状登録すべきリストを、削除フラグなどを見ながら作成して
+	 * DBはいったん削除して作り直す
+	 * 
 	 * @param bbsInputForm
 	 * @param bbsEntity
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 * @throws AsoBbsSystemErrException 
 	 */
-	private void saveAttachedFiles(BbsInputForm bbsInputForm,BbsTblEntity bbsEntity) {
+	private void saveAttachedFiles(BbsInputForm bbsInputForm,BbsTblEntity bbsEntity) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		if( bbsInputForm.getUploadFilePathList() == null ) {
 			return;
 		}
-		List<AttachedFileTblEntity> list = null;
-		
-		if( bbsInputForm.getUploadFilePathList().size() > 0 ) {
-			list = attachedFileRepository.getBy(bbsEntity.getBbsId());
-		}else {
-			list = new ArrayList<AttachedFileTblEntity>();
-		}
-		
-		//同じIDがあれば、更新
-		for( AttachedFileTblEntity attachedFileTblEntity :  list ) {
-			AttachedFileTblEntity attachedFileTblEntityNew = null;
-			//同じIDを探す
-			for( AttachedFileDto fileDto :  bbsInputForm.getUploadFilePathList() ) {
-				if( fileDto.getId() == attachedFileTblEntity.getAttachedFileId() ) {
-					attachedFileTblEntityNew = new AttachedFileTblEntity();
-					
-					attachedFileTblEntityNew.setBbsId(bbsEntity.getBbsId());
-					attachedFileTblEntityNew.setFilePath(fileDto.getFilePath());
-					attachedFileTblEntityNew.setFileSize(fileDto.getSize());
-					break;
-				}
-			}
-			//あれば更新、なければ削除
-			if(attachedFileTblEntityNew != null) {
-				attachedFileRepository.save(attachedFileTblEntityNew);
-			}else {
-				attachedFileRepository.delete(attachedFileTblEntity);
-			}
-		}
 
-		//IDが振られていないのは、新規作成なので登録する
-		for( AttachedFileDto fileDto :  bbsInputForm.getUploadFilePathList() ) {
-			if( fileDto.getId() == null) {
+		Boolean[] uploadfileDeltes = {
+				bbsInputForm.getMultipartFile1DelFlg(),
+				bbsInputForm.getMultipartFile2DelFlg(),
+				bbsInputForm.getMultipartFile3DelFlg(),
+		};
+		AttachedFileDto[] nowFiles = {
+				bbsInputForm.getNowFilePath(0),
+				bbsInputForm.getNowFilePath(1),
+				bbsInputForm.getNowFilePath(2),
+		};
+		AttachedFileDto[] newFiles = {
+				bbsInputForm.getUploadFilePath(0),
+				bbsInputForm.getUploadFilePath(1),
+				bbsInputForm.getUploadFilePath(2),
+		};
+		AttachedFileTblEntity[] entities = new AttachedFileTblEntity[newFiles.length];
+		
+		//現状のEntityを取得する（新規の場合はnowFilePathListが0件なので空振りする）
+		for( int idx = 0; idx <  newFiles.length; idx++ ) {
+			if( nowFiles[idx].getId() != null ) {
+				AttachedFileTblEntity entity = 
+						attachedFileRepository.getBy(nowFiles[idx].getId(), nowFiles[idx].getSize());
+				entities[idx] = entity;
+			}
+		}
+		
+		//削除フラグなどをみて、最新の情報に変更する（新規の場合は削除フラグが全てfalse）
+		for( int idx = 0; idx <  newFiles.length ; idx++ ) {
+			if( uploadfileDeltes[idx] != null && uploadfileDeltes[idx] ) {
+				//物理ファイルを削除して、Entityの配列をnullにしておく
+				FileUtils.delete(nowFiles[idx].getFilePath());
+				entities[idx] = null;
+			}else if( StringUtils.isNoneEmpty( newFiles[idx].getFileName() ) ) {
+				//新しいファイルの設定があるならファイルをコピーしてEntityを作成//ファイルコピー
+				StringBuffer dir = new StringBuffer(AppSettingProperty.getInstance().getBbsUploadDirectory());
+				dir.append("/").append(UUID.randomUUID().toString());
+				dir.append("/").append(newFiles[idx].getFileName());
+				FileUtils.copy(newFiles[idx].getFilePath(), dir.toString());
+			    
 				AttachedFileTblEntity attachedFileTblEntity = new AttachedFileTblEntity();
 				
 				attachedFileTblEntity.setBbsId(bbsEntity.getBbsId());
-				attachedFileTblEntity.setFilePath(fileDto.getFilePath());
-				attachedFileTblEntity.setFileSize(fileDto.getSize());
+				attachedFileTblEntity.setFilePath(dir.toString());
+				attachedFileTblEntity.setFileSize(newFiles[idx].getSize());
 				
-				attachedFileRepository.save(attachedFileTblEntity);
+				FileUtils.delete(newFiles[idx].getFilePath());	//テンポラリファイル削除				
+				
+				entities[idx] = attachedFileTblEntity;
 			}
 		}
+		///////////////////////////////////////////
+		//ここまでの処理で　entities　には、現状登録すべき情報が入っている
+		///////////////////////////////////////////
+		
+		//いったん削除
+		List<AttachedFileTblEntity> delList =  attachedFileRepository.getBy(bbsEntity.getBbsId());
+		if( delList.size() > 0 ) {
+			for( AttachedFileTblEntity delEntity : delList) {
+				boolean findFlg = false;
+				//新しいリストに載っているか？
+				for( int idx = 0; idx < entities.length; idx++ ) {
+					if( entities[idx] != null && 
+							entities[idx].getAttachedFileId() == delEntity.getAttachedFileId() ) {
+						findFlg = true;
+						break;
+					}
+				}
+				//リストに無い場合は削除する
+				if( !findFlg ) {
+					attachedFileRepository.delete(delEntity);
+				}
+			}
+		}
+		
+		//新規で登録しなおす
+		for(int idx = 0; idx < entities.length; idx++ ) {
+			if( entities[idx] != null ) {
+				attachedFileRepository.save(entities[idx]);
+			}
+		}
+		
 	}
 	
 	/**
@@ -223,6 +281,10 @@ public class BbsService {
 			CategoryTblEntity categoryTblEntity ,
 			Integer userId,boolean update) {
 		BbsTblEntity entity = new BbsTblEntity();
+		
+		if( update ) {
+			entity = bbsRepository.getOne(bbsInputForm.getBbsId());
+		}
 		
 		//掲示板の情報を作成する
 		entity.setCategoryTbl(categoryTblEntity);

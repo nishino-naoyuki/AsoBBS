@@ -98,7 +98,10 @@ public class RoomService {
 		
 		return roomEntity;
 	}
-	
+
+	public List<RoomListDto> getListBy(LoginInfoDto loginInfo){
+		return getListBy(new RoomSearchForm(),loginInfo);
+	}
 	/**
 	 * ルーム一覧を取得する
 	 * @param searchCondition

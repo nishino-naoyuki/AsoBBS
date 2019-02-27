@@ -87,13 +87,14 @@ public class BbsController {
 		
 		//DTO->form
 		BbsInputForm form = new BbsInputForm();
+		form.setBbsId( bbsDetailDto.getBbsId() );
 		form.setCategoryName( bbsDetailDto.getCategoryName());
 		form.setTitle( bbsDetailDto.getTitle() );
 		form.setEmergencyFlg( bbsDetailDto.getEmergencyFlg() );
 		form.setContent( bbsDetailDto.getContent() );
 		form.setRoomId( bbsDetailDto.getRoomId()  );
 		for(  AttachedFileDto attachedFileDto : bbsDetailDto.getAttachedFileList() ) {
-			form.addUploadFilePath(attachedFileDto);
+			form.addNowFilePath(attachedFileDto);
 		}
 		
         mv.setViewName("/edit_bbs");
@@ -140,11 +141,20 @@ public class BbsController {
 	@RequestMapping(value= {"/edit_confirm"}, method=RequestMethod.POST)
     public ModelAndView editConfirm(ModelAndView mv,
     		@Valid BbsInputForm bbsInputForm,
-			BindingResult bindingResult) throws IllegalStateException, AsoBbsSystemErrException, IOException {
+			BindingResult bindingResult) throws IllegalStateException, AsoBbsSystemErrException, IOException, AsoBbsIllegalException {
 		
 		//添付ファイルがある場合はフォルダを作成して
 		//ファイルをコピーする
 		uploadFiles(bbsInputForm);
+
+		//ログイン情報を取得する
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+		//掲示板情報を取得
+		BbsDetailDto bbsDetailDto = bbsService.getBy(bbsInputForm.getBbsId(),loginInfo);
+		//現状のファイル状況を保存する
+		for(  AttachedFileDto attachedFileDto : bbsDetailDto.getAttachedFileList() ) {
+			bbsInputForm.addNowFilePath(attachedFileDto);
+		}
 
 		//エラーがある場合は入力画面へ戻る
 		if( bindingResult.hasErrors() ) {
@@ -160,9 +170,12 @@ public class BbsController {
 	 * 掲示板挿入
 	 * @param mv
 	 * @return
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 * @throws AsoBbsSystemErrException 
 	 */
 	@RequestMapping(value= {"/insert"}, method=RequestMethod.POST)
-    public String insert(ModelAndView mv) {
+    public String insert(ModelAndView mv) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		
 		BbsInputForm bbsInputForm = (BbsInputForm)session.getAttribute(SessionConst.BBS_CONFIG_DTO);
 		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
@@ -176,7 +189,7 @@ public class BbsController {
     }
 
 	@RequestMapping(value= {"/edit_insert"}, method=RequestMethod.POST)
-    public String editInsert(ModelAndView mv) {
+    public String editInsert(ModelAndView mv) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		
 		BbsInputForm bbsInputForm = (BbsInputForm)session.getAttribute(SessionConst.BBS_CONFIG_DTO);
 		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
@@ -344,7 +357,7 @@ public class BbsController {
     private File mkdirs() throws AsoBbsSystemErrException{
     	
     	//アップロードディレクトリを取得する
-    	StringBuffer filePath = new StringBuffer(AppSettingProperty.getInstance().getBbsUploadDirectory());
+    	StringBuffer filePath = new StringBuffer(AppSettingProperty.getInstance().getBbsUploadWorkDirectory());
     	
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");

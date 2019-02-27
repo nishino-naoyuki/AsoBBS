@@ -108,14 +108,15 @@
     
 	<script th:inline="javascript">
 		var modalempdata = null;
+		var modalemptable = null;
 		$(function(){
 			// datatableの設定を変更
 			modalemptable = $("#modal-emplist-table").DataTable({
 				"bPaginate": true,
-				"bLengthChange": true,
+				"bLengthChange": false,
 				"paging": true,
 				"bFilter": false,
-				"bSort": true,
+				"bSort": false,
 				"bInfo": true,
 				"scrollY": "150px",
 				"language": {
@@ -135,9 +136,10 @@
                     { data: "nickname" },
                     { data: "mailadress",className:"mail" },
                 ]
-			});
-	    	modalemptable.ajax().draw();
+			})
 		})
+		
+
 		
 		//全てのチェックON/OFF
 		$(document).on("change", "#chkAllUser",function() {
@@ -162,6 +164,7 @@
 			 //選択ボタンのIDを変更する
 			 //$(".modal_user_select").prop("id","btn-modalemp-select-"+param);
 			 //alert($(".modal_user_select").prop("id"));
+			//modalemptable.columns.adjust().draw();
 		})
 	
 		$("#student_search_button").on("click",function(){
@@ -207,10 +210,10 @@
 		    	modalemptable.destroy();
 				modalemptable = $("#modal-emplist-table").DataTable({
 					"bPaginate": true,
-					"bLengthChange": true,
+					"bLengthChange": false,
 					"paging": true,
 					"bFilter": false,
-					"bSort": true,
+					"bSort": false,
 					"bInfo": true,
 					"data":data,
 					"scrollY": "150px",

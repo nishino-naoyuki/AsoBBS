@@ -22,6 +22,9 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <li>
+                            <a href="/chat/view"><i class="fa fa-wechat "></i> チャット</a>
+                        </li>
                         <li th:unless="${session['LoginInfo'].isStudent()}">
                             <a href="/user/input"><i class="fa fa-user-plus fa-fw"></i> ユーザー登録</a>
                         </li>
