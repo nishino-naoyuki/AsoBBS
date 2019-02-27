@@ -13,10 +13,10 @@ import lombok.Data;
 
 @Data
 public class BbsInputForm {
-	@NotEmpty(message = "{errmsg0301}")
+	@NotEmpty(message = "{errmsg0302}")
 	private String categoryName;
 	
-	@NotEmpty(message = "{errmsg0302}")
+	@NotEmpty(message = "{errmsg0303}")
 	private String title;
 	private Boolean emergencyFlg;
 	

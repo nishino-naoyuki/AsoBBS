@@ -84,7 +84,7 @@
 							  </div>
 							  <!--　▲LINE風ここまで -->
 							  <input type="text" class="typeahead form-control" name="comment" id="chat_comment">
-							  <input type="hidden" id="targetUserId">
+							  <input type="hidden" id="targetUserId" th:value="${targetUserId}">
 							  <button class="btn btn-default" id="chat_send">送信</button>
 		               	</div>
                     </div>
@@ -105,7 +105,7 @@
 		var userId = $("#targetUserId").val();
 		if( userId != "" ){
 			//alert(userId);
-			loadMessaes(userId);
+			loadMessaes(userId,true);
 	    	//監視開始
 	    	chatTimer=setInterval("chatMonitor()",5000);
 		}
@@ -134,15 +134,16 @@
 	    });
 	})
 	
-	function outputAllMessage(data){
+	function outputAllMessage(data,bAutoScroll){
     	var htmlText = "";
     	for( var i = 0; i < data.messageList.length; i++  ){
     		htmlText += outputMessage(data.targetUserId,data.targetUserName,data.myUserId,data.messageList[i]);
     	}
     	$(".line__contents").html(htmlText);
-    	var obj = $(".line__contents");
-    	//alert(obj.get(0).scrollHeight);
-    	obj.scrollTop(obj.get(0).scrollHeight);
+    	if( bAutoScroll ){
+    		var obj = $(".line__contents");
+    		obj.scrollTop(obj.get(0).scrollHeight);
+    	}
 	}
 	
 	function chatMonitor(){
@@ -151,7 +152,7 @@
 			clearInterval(chatTimer);
 			return;
 		}
-		loadMessaes(userId);
+		loadMessaes(userId,false);
 	}
 	
 	function outputMessage(targetUserId,targetUserName,myUserId,chatDto){
@@ -173,7 +174,7 @@
 		return outputHtml;
 	}
 	
-	function loadMessaes(userId){
+	function loadMessaes(userId,bAutoScroll){
 		var ajaxurl = "/chat/getmsglist?userId="+userId;
 
 		$.ajax({
@@ -186,7 +187,7 @@
 	    	//alert(data.myUserName);
 	    	//alert(data.targetUserName);
 	    	$("#chat_title").html(data.targetUserName+"さんとのチャット");
-	    	outputAllMessage(data);
+	    	outputAllMessage(data,bAutoScroll);
 	    	
 	    }).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
 	        alert("チャット情報の取得に失敗しました");
@@ -215,7 +216,7 @@
 			//Ajaxでチャット内容を取得
 			var userId = checkUser.substr(4);
 			
-			loadMessaes(userId);
+			loadMessaes(userId,true);
 	    	//監視開始
 	    	chatTimer=setInterval("chatMonitor()",5000);
 			

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ダッシュボード</title>
+    <title>パスワード変更完了</title>
 
 	<meta id="parent" th:replace="/header/include1"></meta>
 	
@@ -52,7 +52,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">ダッシュボード</h1>
+                    <h1 class="page-header">パスワード変更完了</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -61,39 +61,13 @@
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
-                                </div>
-                            </div>
+                        		パスワード変更完了
                         </div>
 		               	<div class="panel-body">
-		               		<div class="table-responsive">
-                            		<table class="table table-bordered table-hover" id="room-list" th:object="${dashBoadDto}" >
-				                       <tbody>
-				                       <tr th:each="bbsDto:*{bbsList}">
-				                       		<td>
-				                       			<div th:if="${bbsDto.update}" >
-				                       				掲示板情報「<a th:href="'/bbs/detail?id='+${bbsDto.bbsId}" th:text="${bbsDto.bbsName}"></a>」が更新されています
-				                       			</div>
-				                       			<div th:unless="${bbsDto.update}" >
-				                       				掲示板情報「<a th:href="'/bbs/detail?id='+${bbsDto.bbsId}" th:text="${bbsDto.bbsName}"></a>」が追加されています
-				                       			</div>
-				                       		</td>
-				                       </tr>
-				                       <tr th:each="chatDto:*{chatList}">
-				                       		<td>
-				                       			<a th:href="'/chat/view?userId='+${chatDto.fromUserId}" th:text="${chatDto.fromUserName}"></a>さんからメッセージが来ています
-				                       		</td>
-				                       </tr>
-				                       </tbody>
-                            		</table>
-                            </div>
-		               	</div>
-		               	<div class="panel-footer">
-		               	1週間以内に追加・更新があった掲示板と3日以内に来た個人メッセージの情報を表示しています
+		               		<h1>パスワード変更完了しました</h1>
 		               	</div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -104,7 +78,6 @@
 
 	
 	<div id="parent" th:replace="/header/include2"></div>
-	<div  th:replace="/header/datatable"></div>
+	
 </body>
-
 </html>

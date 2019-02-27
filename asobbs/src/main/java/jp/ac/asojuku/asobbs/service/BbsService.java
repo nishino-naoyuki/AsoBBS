@@ -18,12 +18,16 @@ import jp.ac.asojuku.asobbs.dto.AttachedFileDto;
 import jp.ac.asojuku.asobbs.dto.BbsCheckTblDto;
 import jp.ac.asojuku.asobbs.dto.BbsDetailDto;
 import jp.ac.asojuku.asobbs.dto.BbsListDto;
+import jp.ac.asojuku.asobbs.dto.DashBoadBbsDto;
+import jp.ac.asojuku.asobbs.dto.DashBoadChatDto;
+import jp.ac.asojuku.asobbs.dto.DashBoadDto;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.dto.ReplyDto;
 import jp.ac.asojuku.asobbs.entity.AttachedFileTblEntity;
 import jp.ac.asojuku.asobbs.entity.BbsCheckTblEntity;
 import jp.ac.asojuku.asobbs.entity.BbsTblEntity;
 import jp.ac.asojuku.asobbs.entity.CategoryTblEntity;
+import jp.ac.asojuku.asobbs.entity.ChatTableEntity;
 import jp.ac.asojuku.asobbs.entity.RoomTblEntity;
 import jp.ac.asojuku.asobbs.entity.UserTblEntity;
 import jp.ac.asojuku.asobbs.err.ErrorCode;
@@ -37,6 +41,7 @@ import jp.ac.asojuku.asobbs.repository.AttachedFileRepository;
 import jp.ac.asojuku.asobbs.repository.BbsCheckRepository;
 import jp.ac.asojuku.asobbs.repository.BbsRepository;
 import jp.ac.asojuku.asobbs.repository.CategoryRepository;
+import jp.ac.asojuku.asobbs.repository.ChatRepository;
 import jp.ac.asojuku.asobbs.repository.RoomRepository;
 import jp.ac.asojuku.asobbs.repository.UserRepository;
 import jp.ac.asojuku.asobbs.util.DateUtil;
@@ -57,13 +62,42 @@ public class BbsService {
 	AttachedFileRepository attachedFileRepository;
 	@Autowired
 	BbsCheckRepository bbsCheckRepository;
+	@Autowired
+	ChatRepository chatRepository;
 	
 	/**
-	 * 最近1週間の掲示板情報を取得する
+	 * 最近1週間の掲示板情報とチャット情報を取得する
 	 * @return
 	 */
-	public List<BbsTblEntity> getRecentlyBbs() {
-		return bbsRepository.getRecentlyBbs();
+	public DashBoadDto getRecentlyBbs(LoginInfoDto loginInfo) {
+		DashBoadDto dashBoadDto = new DashBoadDto();
+		
+		//1週間以内の掲示板情報を取得する
+		List<BbsTblEntity> bbsList = bbsRepository.getRecentlyBbs(loginInfo.getUserId());
+		
+		for(BbsTblEntity bbsTblEntity : bbsList ) {
+			DashBoadBbsDto bbsDto = new DashBoadBbsDto();
+			
+			bbsDto.setBbsId(bbsTblEntity.getBbsId());
+			bbsDto.setBbsName(bbsTblEntity.getTitle());
+			bbsDto.setUpdate(!bbsTblEntity.getCreateDate().equals( bbsTblEntity.getUpdateDate() ));
+			
+			dashBoadDto.addDashBoadBbsDto(bbsDto);
+		}
+
+		//1週間以内の自分宛てのチャット情報を取得する
+		List<ChatTableEntity> chatList = chatRepository.getListRecently(loginInfo.getUserId());
+		for(ChatTableEntity chatTableEntity : chatList ) {
+			DashBoadChatDto dashBoadChatDto = new DashBoadChatDto();
+			
+			dashBoadChatDto.setFromUserId(chatTableEntity.getFromUserId());
+			dashBoadChatDto.setFromUserName(chatTableEntity.getFromUserTbl().getNickName());
+			
+			dashBoadDto.addDashBoadChatDto(dashBoadChatDto);
+		}
+		
+		
+		return dashBoadDto;
 	}
 
 	/**

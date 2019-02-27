@@ -27,6 +27,16 @@ public class DownloadController {
 	@Autowired
 	BbsService bbsService;
 
+	/**
+	 * 添付ファイルのダウンロードを実行する
+	 * ファイルのIDとサイズで検索しパスを取得してファイルをDLする
+	 * ファイルIDは不正に変更される恐れがあるので、ファイルサイズも一緒に検索する
+	 * 
+	 * @param fid
+	 * @param fsize
+	 * @param response
+	 * @throws IOException
+	 */
 	@RequestMapping("/bbs")
     public void bbsDownload(@ModelAttribute("fid")Integer fid,@ModelAttribute("fsize")Long fsize,HttpServletResponse response) throws IOException {
 		

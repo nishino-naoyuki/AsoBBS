@@ -163,4 +163,26 @@ public class UserService {
 		
 		return entity;
 	}
+	
+	/**
+	 * パスワードの変更
+	 * 
+	 * @param userId
+	 * @param mail
+	 * @param newPassword
+	 * @throws AsoBbsSystemErrException
+	 */
+	public void changePassword(Integer userId,String mail,String newPassword) throws AsoBbsSystemErrException {
+
+		//ハッシュ計算する
+		String hashedPwd  = Digest.createPassword(mail, newPassword);
+		
+		//ユーザー情報を取得
+		UserTblEntity userEntity = userRepository.getOne(userId);
+		
+		//パスワード部分を変更
+		userEntity.setPassword(hashedPwd);
+		
+		userRepository.save(userEntity);
+	}
 }

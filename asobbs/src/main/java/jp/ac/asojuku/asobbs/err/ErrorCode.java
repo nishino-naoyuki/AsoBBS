@@ -51,6 +51,12 @@ public enum ErrorCode {
 	//お知らせ関連(04xx)
 	ERR_INFO_TITLE_LEN("0401"),
 	ERR_INFO_MSG_LEN("0402"),
+	
+	//パスワード関連
+	ERR_PWD_CHG_NOT_MATCH("0501"),
+	ERR_PWD_CHG_OLD_PWD_EMPTY("0502"),
+	ERR_PWD_CHG_NEW_PWD_EMPTY("0503"),
+	ERR_PWD_CHG_OLD_PWD_WRONG("0504"),
 
 	//その他のエラー
 	ERR_INVLIDATE("9901"),

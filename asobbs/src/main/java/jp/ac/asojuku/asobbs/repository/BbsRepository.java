@@ -15,8 +15,14 @@ public interface BbsRepository
 extends JpaRepository<BbsTblEntity,Integer>,
 			JpaSpecificationExecutor<BbsTblEntity>{
 
-	@Query("select b from BbsTblEntity b where b.updateDate <= now() ")
-	public List<BbsTblEntity> getRecentlyBbs();
+	@Query("select b from BbsTblEntity b "
+			+ "left join b.categoryTbl c "
+			+ "left join c.roomTbl r "
+			+ "  where (now() - b.updateDate) <= 6048000 "
+			+ " and exists(select 1 from RoomUserTblEntity ru where ru.roomId = r.roomId and ru.userId = :userId) "
+			+ " and b.parentBbsId is null "
+			+ "order by b.updateDate DESC")
+	public List<BbsTblEntity> getRecentlyBbs(@Param("userId")Integer userId);
 	
 	@Query("select count(*) from BbsTblEntity b where categoryTbl = :categoryTblEntity and b.parentBbsId is null")
 	public int getCount(@Param("categoryTblEntity")CategoryTblEntity categoryTblEntity);

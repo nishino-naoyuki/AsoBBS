@@ -188,6 +188,15 @@ public class BbsController {
         return "redirect:/bbs/complete";
     }
 
+	/**
+	 * 掲示板挿入処理
+	 * 
+	 * @param mv
+	 * @return
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 * @throws AsoBbsSystemErrException
+	 */
 	@RequestMapping(value= {"/edit_insert"}, method=RequestMethod.POST)
     public String editInsert(ModelAndView mv) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		

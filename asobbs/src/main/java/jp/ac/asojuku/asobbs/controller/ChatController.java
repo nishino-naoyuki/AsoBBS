@@ -31,12 +31,13 @@ public class ChatController {
 	CourseService courseService;
 	
 	@RequestMapping(value= {"/view"}, method=RequestMethod.GET)
-    public ModelAndView view(ModelAndView mv) {
+    public ModelAndView view(@ModelAttribute("userId")String userId,ModelAndView mv) {
 
         //学科の一覧を取得する
         List<CourseDto> list = courseService.getAllList();
 		mv.setViewName("/view_chat");
         mv.addObject("courseList",list);
+        mv.addObject("targetUserId",userId);
 		
 		return mv;
     }

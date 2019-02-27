@@ -32,7 +32,7 @@ public class Validator {
 	 * @param errCode
 	 * @throws AsoBbsSystemErrException
 	 */
-	protected static void setErrorcode(String columnName,BindingResult error,ErrorCode errCode) throws AsoBbsSystemErrException {
+	public static void setErrorcode(String columnName,BindingResult error,ErrorCode errCode) throws AsoBbsSystemErrException {
 		error.rejectValue(columnName,
 				ValidationConfig.ERR_PROP_PREFIX+errCode.getCode(),
 				ValidationConfig.getInstance().getMsg(errCode));
