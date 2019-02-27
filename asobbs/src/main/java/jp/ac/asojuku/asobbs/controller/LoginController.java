@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jp.ac.asojuku.asobbs.config.MessageProperty;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
+import jp.ac.asojuku.asobbs.form.LoginForm;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.service.LoginService;
 
@@ -31,7 +32,7 @@ public class LoginController {
 	HttpSession session;
 	
 	@RequestMapping(value= {"/","/login"}, method=RequestMethod.GET)
-    public ModelAndView login(@ModelAttribute("msg")String msg,ModelAndView mv) {
+    public ModelAndView login(@ModelAttribute("msg")String msg,@ModelAttribute("mail")String mail,ModelAndView mv) {
 		
         mv.setViewName("login");
         
@@ -41,6 +42,9 @@ public class LoginController {
         }else {
         	mv.addObject("msg", "");
         }
+        LoginForm form = new LoginForm();
+        form.setMail(mail);
+    	mv.addObject("loginForm", form);
         return mv;
     }
 
@@ -55,8 +59,7 @@ public class LoginController {
 	@RequestMapping(value= {"/auth"}, method=RequestMethod.POST)
 	public String auth(
 			RedirectAttributes redirectAttributes,
-			@RequestParam("mail")String mail, 
-    		@RequestParam("password")String password,
+			LoginForm form,
     		ModelAndView mv
 			) throws AsoBbsSystemErrException {
 
@@ -64,13 +67,13 @@ public class LoginController {
 		//login
 		LoginInfoDto loginInfo = null;
 		//ログイン処理を行う
-		loginInfo = loginService.login(mail,password);
+		loginInfo = loginService.login(form.getMail(),form.getPassword());
 		if( loginInfo != null) {
 			//セッションにログイン情報を保存
 			session.setAttribute(SessionConst.LOGININFO,loginInfo);
 			url = "redirect:dashboad";
 		}else {
-			url = fowardLoginError(redirectAttributes);
+			url = fowardLoginError(redirectAttributes,form);
 		}
 		
         return url;
@@ -103,11 +106,12 @@ public class LoginController {
 	 * @return
 	 * @throws AsoBbsSystemErrException
 	 */
-	private String fowardLoginError(RedirectAttributes redirectAttributes) throws AsoBbsSystemErrException {
+	private String fowardLoginError(RedirectAttributes redirectAttributes,LoginForm form) throws AsoBbsSystemErrException {
 		//エラーメッセージを取得
 		String errMsg = MessageProperty.getInstance().getProperty(MessageProperty.LOGIN_ERR_LOGINERR);
 		//エラーメッセージをセット
 		redirectAttributes.addFlashAttribute("msg", errMsg);
+		redirectAttributes.addFlashAttribute("mail", form.getMail());
 		
 		return "redirect:login";
 	}

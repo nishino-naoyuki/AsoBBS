@@ -74,6 +74,7 @@ public class UserService {
 		return ( userRepository.getUserByMail(mail) != null ? true:false);
 	}
 	
+	
 	/**
 	 * 学籍番号が存在するかどうかを返す
 	 * @param studentNo
@@ -170,19 +171,46 @@ public class UserService {
 	 * @param userId
 	 * @param mail
 	 * @param newPassword
+	 * @param updateUserId
 	 * @throws AsoBbsSystemErrException
 	 */
 	public void changePassword(Integer userId,String mail,String newPassword) throws AsoBbsSystemErrException {
 
-		//ハッシュ計算する
-		String hashedPwd  = Digest.createPassword(mail, newPassword);
-		
 		//ユーザー情報を取得
 		UserTblEntity userEntity = userRepository.getOne(userId);
+		
+		changePassword(userEntity,mail,newPassword);
+	}
+	
+	/**
+	 * パスワードを変更する
+	 * @param userEntity
+	 * @param mail
+	 * @param newPassword
+	 * @param updateUserId
+	 * @throws AsoBbsSystemErrException
+	 */
+	private void changePassword(UserTblEntity userEntity,String mail,String newPassword) throws AsoBbsSystemErrException {
+
+		//ハッシュ計算する
+		String hashedPwd  = Digest.createPassword(mail, newPassword);
 		
 		//パスワード部分を変更
 		userEntity.setPassword(hashedPwd);
 		
 		userRepository.save(userEntity);
+	}
+	
+	/**
+	 * パスワードを変更する
+	 * 
+	 * @param mail
+	 * @param newPassword
+	 * @throws AsoBbsSystemErrException
+	 */
+	public void changePassword(String mail,String newPassword) throws AsoBbsSystemErrException {
+		UserTblEntity userEntity = userRepository.getUserByMail(mail);
+
+		changePassword(userEntity,mail,newPassword);
 	}
 }

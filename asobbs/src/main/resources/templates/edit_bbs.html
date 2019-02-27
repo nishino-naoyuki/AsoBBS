@@ -154,6 +154,7 @@
 												
 												    <div id="editor" th:utext="*{content}">
 												    </div>
+												    <div id="left_strings"></div>
 												    <input type="hidden" name="content" id="bbs_content" >
 	                                				<!-- bootstrap-wysiwyg  -->
 	                                		</div>
@@ -266,6 +267,15 @@
 	  $('#bbs_content').val($('#editor').html());
 	});
 
+	$('#editor').on('DOMSubtreeModified propertychange', function() {
+        //alert('Change!');
+        var left_strings = 15000 - $('#editor').html().length;
+        if( left_strings < 0){
+        	$('#left_strings').html("文字が多すぎます。減らしてください。オーバーした文字数："+(0-left_strings)+"文字");
+        	return;
+        }
+        $('#left_strings').html("あと"+left_strings+"文字入力できます。（画像も文字数に含みます）");
+    });
  </script>
     </div>
     <!-- /#wrapper -->

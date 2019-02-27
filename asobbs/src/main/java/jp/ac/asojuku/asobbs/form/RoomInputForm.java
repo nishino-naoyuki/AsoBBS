@@ -12,7 +12,7 @@ import lombok.Data;
 public class RoomInputForm implements Serializable {
 	
 	@NotEmpty(message = "{errmsg0201}")
-	@Size(max = 100, message="{errmsg0202}")
+	@Size(max = 30, message="{errmsg0202}")
 	private String roomName;
 	
 	@NotEmpty(message = "{errmsg0203}")

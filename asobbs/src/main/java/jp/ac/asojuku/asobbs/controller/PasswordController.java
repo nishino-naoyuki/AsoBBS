@@ -19,6 +19,7 @@ import jp.ac.asojuku.asobbs.err.ErrorCode;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.form.BbsInputForm;
 import jp.ac.asojuku.asobbs.form.PasswordChangeForm;
+import jp.ac.asojuku.asobbs.form.PasswordResetForm;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.service.LoginService;
 import jp.ac.asojuku.asobbs.service.UserService;
@@ -118,4 +119,48 @@ public class PasswordController {
         
         return mv;
     }
+
+	/**
+	 * パスワード変更入力画面
+	 * 
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping(value= {"/reset_input"}, method=RequestMethod.GET)
+    public ModelAndView resetInput(ModelAndView mv) {
+		
+		PasswordResetForm form = new PasswordResetForm();
+        mv.setViewName("/input_passreset");
+        mv.addObject("passwordResetForm",form);
+        
+        
+        return mv;
+    }
+
+	@RequestMapping(value= {"/reset"}, method=RequestMethod.POST)
+    public String reset(
+    		@Valid PasswordResetForm form,
+    		BindingResult bindingResult,
+    		ModelAndView mv) throws AsoBbsSystemErrException {
+		
+		
+		//エラーチェック
+		PasswordValidator.match(form.getNewPassword1(),form.getNewPassword2(),bindingResult);
+		
+		if( !userService.isExistMailadress(form.getMail()) ) {
+			PasswordValidator.setErrorcode("mail",bindingResult,ErrorCode.ERR_PWD_CHG_OLD_PWD_WRONG);
+		}
+				
+		if( bindingResult.hasErrors()) {
+			return "/input_passreset";
+		}
+		
+		//パスワード変更
+		userService.changePassword(
+				form.getMail(),
+				form.getNewPassword1()
+				);
+
+        return "redirect:/pwd/chg_complete";
+	}
 }

@@ -1,64 +1,58 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>ログイン</title>
-</head>
-<body>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"></link>
-<!------ Include the above in your HEAD tag ---------->
+<html lang="en">
 
-<div class="login-body">
-    <article class="container-login center-block">
-		<section>
-			<ul id="top-bar" class="nav nav-tabs nav-justified">
-				<li class="active"><a href="#" data-target="#login-access" data-toggle="tab">Login</a></li>
-				<li><a href="#" data-target="#password-access" data-toggle="tab">パスワードリセット</a></li>
-			</ul>
-			<div class="tab-content tabs-login col-lg-12 col-md-12 col-sm-12 cols-xs-12">
-				<div id="login-access" class="tab-pane fade active in">
-    				<p th:text="${msg}" ></p>
-					<h2><i class="glyphicon glyphicon-log-in"></i> Login</h2>						
-					<form action="/auth" method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
-						<div class="form-group ">
-							<label for="login" class="sr-only">Email</label>
-								<input type="text" class="form-control" name="mail" id="login_value" 
-									placeholder="Email" tabindex="1" value="" />
-						</div>
-						<div class="form-group ">
-							<label for="password" class="sr-only">Password</label>
-								<input type="password" class="form-control" name="password" id="password"
-									placeholder="Password" value="" tabindex="2" />
-						</div>
-						<div class="checkbox">
-								<label class="control-label" for="remember_me">
-									<input type="checkbox" name="remember_me" id="remember_me" value="1" class="" tabindex="3" /> 次回からユーザー名の入力を省略する
-								</label>
-						</div>
-						<br/>
-						<div class="form-group ">				
-								<button type="submit" name="log-me-in" id="submit" tabindex="5" class="btn btn-lg btn-primary">ログイン</button>
-						</div>
-					</form>			
-				</div>
-                <div id="password-access" name="password-access" class="tab-pane fade">
-                    <h2><i class="glyphicon glyphicon-lock"></i> Password Dimenticata</h2>
-                    <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
-                        <div class="form-group">
-                            <label type="text" class="sr-only" for="password-reset">Email Address</label>
-                            <input name="password-reset" id="password-reset" class="form-control" placeholder="Email Address" value="" tabindex="6">
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" name="password-reset-button" id="submit" tabindex="7" class="btn btn-lg btn-success">Reset Password</button>
-                        </div>
-                    </form>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ログイン</title>
+
+	<meta  th:replace="/header/include1">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Sign In</h3>
+                    </div>
+                    <div class="panel-body">
+                    	<p id="error" th:text="${msg}" ></p>
+                        <form action="/auth" method="post"  role="form" th:object="${loginForm}">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus th:field="*{mail}">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button class="btn btn-lg btn-success btn-block">ログイン</button>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
-		</section>
-	</article>
-</div>
+        </div>
+    </div>
+
+	<div th:replace="/header/include2"></div>
+
 </body>
+
 </html>

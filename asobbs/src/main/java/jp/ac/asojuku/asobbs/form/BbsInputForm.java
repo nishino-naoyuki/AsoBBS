@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,13 +15,16 @@ import lombok.Data;
 @Data
 public class BbsInputForm {
 	@NotEmpty(message = "{errmsg0302}")
+	@Size(max = 30, message="{errmsg0306}")
 	private String categoryName;
 	
 	@NotEmpty(message = "{errmsg0303}")
+	@Size(max = 30, message="{errmsg0305}")
 	private String title;
 	private Boolean emergencyFlg;
 	
 	@NotEmpty(message = "{errmsg0303}")
+	@Size(max = 15000, message="{errmsg0305}")
 	private String content;
 	
 	private Integer roomId;
