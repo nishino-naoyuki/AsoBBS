@@ -1,4 +1,4 @@
-package jp.ac.asojuku.asobbs.exception.handler;
+package jp.ac.asojuku.asobbs.controller;
 
 import org.apache.tomcat.util.http.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.slf4j.Logger;
