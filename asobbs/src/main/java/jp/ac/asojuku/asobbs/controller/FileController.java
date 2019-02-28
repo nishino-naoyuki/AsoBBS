@@ -3,13 +3,18 @@ package jp.ac.asojuku.asobbs.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +30,8 @@ import jp.ac.asojuku.asobbs.dto.CSVProgressDto;
 import jp.ac.asojuku.asobbs.err.ActionError;
 import jp.ac.asojuku.asobbs.err.ActionErrors;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
+import jp.ac.asojuku.asobbs.form.UserInputCSVForm;
+import jp.ac.asojuku.asobbs.form.UserInputForm;
 import jp.ac.asojuku.asobbs.service.UserCSVService;
 import jp.ac.asojuku.asobbs.util.FileUtils;
 
@@ -41,7 +48,7 @@ public class FileController {
 	private ActionErrors errors;
 	
 	@RequestMapping(value= {"/csvinput"}, method=RequestMethod.POST)
-	public Object csvinput(@RequestParam("upload_file") MultipartFile file) throws AsoBbsSystemErrException {
+	public Object csvinput(@Valid UserInputCSVForm userInputCSVForm,BindingResult err) throws AsoBbsSystemErrException, Exception {
 		// ファイルが空の場合は HTTP 400 を返す。
 	   // if (file.isEmpty()) {
 	   //   response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -51,37 +58,32 @@ public class FileController {
 	    //ディレクトリを作成する
 	    File uploadDir = mkdirs();
 	    
-	    try {
-		    //出力ファイル名を決定する
-		    File uploadFile = new File(uploadDir.getPath() + "/" + "test.csv");
-		    //アップロードファイルを取得
-		    byte[] bytes = file.getBytes();
-		    //出力ストリームを取得
-		    BufferedOutputStream uploadFileStream =
-	                new BufferedOutputStream(new FileOutputStream(uploadFile));
-		    //ストリームに書き込んでクローズ
-		    uploadFileStream.write(bytes);
-	        uploadFileStream.close();
-	        
-	        //エラーチェックを行う
-	        List<UserCSV> userList = userCSVService.checkForCSV(uploadFile.getAbsolutePath(),errors,"");
-
-			if( errors.isHasErr() ){
-				return outputErrorResult();
-			}
-			
-			//登録処理
-			userCSVService.insertByCSV(userList);
-
-			//処理件数を返す
-			return outputResult(userList);
-	    } catch (Exception e) {
-            // 異常終了時の処理
-        } catch (Throwable t) {
-            // 異常終了時の処理
-        }
+	    //出力ファイル名を決定する
+	    File uploadFile = new File(uploadDir.getPath() + "/" + "test.csv");
+	    //アップロードファイルを取得
+	    byte[] bytes = userInputCSVForm.getUploadFile().getBytes();
+	    //出力ストリームを取得
+	    BufferedOutputStream uploadFileStream =
+                new BufferedOutputStream(new FileOutputStream(uploadFile));
+	    //ストリームに書き込んでクローズ
+	    uploadFileStream.write(bytes);
+        uploadFileStream.close();
         
-	    return "error";
+        //エラーチェックを行う
+        List<UserCSV> userList = userCSVService.checkForCSV(uploadFile.getAbsolutePath(),err,"");
+
+		//if( errors.isHasErr() ){
+        if(err.hasErrors()) {
+			String jsonMsg =  outputErrorResult(err);
+			return jsonMsg;
+		}
+        
+		
+		//登録処理
+		userCSVService.insertByCSV(userList);
+
+		//処理件数を返す
+		return outputResult(userList);
 	}
 	
 
@@ -120,12 +122,16 @@ public class FileController {
 	 * @return
 	 * @throws JsonProcessingException
 	 */
-	private String outputErrorResult() throws JsonProcessingException {
+	private String outputErrorResult(BindingResult err) throws JsonProcessingException {
 		CSVProgressDto progress = new CSVProgressDto();
 		StringBuffer sb = new StringBuffer();
 
-		for( ActionError error : errors.getList() ){
-			sb.append( error.getMessage() );
+//		for( ActionError error : errors.getList() ){
+//			sb.append( error.getMessage() );
+//			sb.append("\n");
+//		}
+		for( ObjectError error : err.getAllErrors() ){
+			sb.append( error.getDefaultMessage() );
 			sb.append("\n");
 		}
 		progress.setErrorMsg(sb.toString());

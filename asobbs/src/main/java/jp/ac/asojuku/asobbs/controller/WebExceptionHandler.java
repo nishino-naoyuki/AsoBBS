@@ -15,6 +15,11 @@ import jp.ac.asojuku.asobbs.filter.LoginCheckFilter;
 public class WebExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(LoginCheckFilter.class);
 	
+	/**
+	 * システムエラー画面
+	 * @param exception
+	 * @return
+	 */
 	@ExceptionHandler(AsoBbsSystemErrException.class)
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	public String handleException(Exception exception) {
@@ -22,6 +27,24 @@ public class WebExceptionHandler {
 
 		return "/error/systemerror";	// error1.htmlへ遷移
 	}
+
+	/**
+	 * 404エラー
+	 * @param exception
+	 * @return
+	 */
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public String notFound(Exception exception) {
+		logger.error("NOT_FOUND", exception);
+
+		return "/error/404";	// error1.htmlへ遷移
+	}
+	
+	/**
+	 * 例外全般
+	 * @param exception
+	 * @return
+	 */
 	@ExceptionHandler(Throwable.class)
     public String ThrowableHandler(Exception exception) {
 		logger.error("ThrowableHandler", exception);
@@ -29,6 +52,11 @@ public class WebExceptionHandler {
     }
 	
 
+	/**
+	 * ファイルサイズ
+	 * @param exception
+	 * @return
+	 */
 	@ExceptionHandler(FileSizeLimitExceededException.class)
 	public String fileSizeException(Exception exception) {
 		logger.error("fileSizeException", exception);

@@ -47,7 +47,7 @@ public enum ErrorCode {
 	ERR_ROOM_BELONG_FMT_ERROR("0206"),
 	
 	//掲示板関連(03xx)
-	ERR_CSV_FORMAT_ERROR("0304"),
+	ERR_CSV_FORMAT_ERROR("0401"),
 	//お知らせ関連(04xx)
 	ERR_INFO_TITLE_LEN("0401"),
 	ERR_INFO_MSG_LEN("0402"),

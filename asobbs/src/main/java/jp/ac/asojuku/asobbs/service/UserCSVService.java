@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
@@ -46,12 +47,9 @@ public class UserCSVService {
 	 * @return
 	 * @throws AsoBbsSystemErrException
 	 */
-	public List<UserCSV> checkForCSV(String csvPath, ActionErrors errors,String type) throws AsoBbsSystemErrException {
+	public List<UserCSV> checkForCSV(String csvPath, BindingResult err,String type) throws AsoBbsSystemErrException {
 		List<UserCSV> list = null;
 		FileReader fileReader = null;
-
-		//いったんエラーをクリアする
-		errors.clear();
 		
 		try {
 			///////////////////////////////
@@ -62,14 +60,14 @@ public class UserCSVService {
 
             // エラーチェック
             for(UserCSV userCsv : list){
-        		UserValidator.useName(userCsv.getName(), errors);
-        		UserValidator.useNickName(userCsv.getNickName(), errors);
-        		UserValidator.roleId(String.valueOf(userCsv.getRoleId()), errors);
+        		UserValidator.useName(userCsv.getName(), err);
+        		UserValidator.useNickName(userCsv.getNickName(), err);
+        		UserValidator.roleId(String.valueOf(userCsv.getRoleId()), err);
         		if( RoleId.STUDENT.equals(userCsv.getRoleId())){
-        			UserValidator.admissionYear(userCsv.getAdmissionYear(), errors);
+        			UserValidator.admissionYear(userCsv.getAdmissionYear(), err);
         		}
-        		UserValidator.mailAddress(userCsv.getMailAddress(), errors);
-        		UserValidator.password(userCsv.getPassword(), errors);
+        		UserValidator.mailAddress(userCsv.getMailAddress(), err);
+        		UserValidator.password(userCsv.getPassword(), err);
             }
             
 //            CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(csvPath), "SJIS"), ',', '"', 1);
@@ -80,7 +78,7 @@ public class UserCSVService {
 //            list = csv.parse(strat, reader);
 		}catch (Exception e) {
         	logger.warn("CSVパースエラー：",e);
-        	errors.add(ErrorCode.ERR_CSV_FORMAT_ERROR);
+        	UserValidator.setErrorcode("",err,ErrorCode.ERR_CSV_FORMAT_ERROR);
         }finally {
         	if( fileReader != null ) {
         		try {
@@ -160,6 +158,7 @@ public class UserCSVService {
 		entity.setRemark(null);
 		entity.setRepeatYearCount(0);
 		entity.setStudentNo(userCSV.getName());
+		entity.setDelFlg(0);
 		
 		CourseMasterEntity cm = new CourseMasterEntity();
 		cm.setCourseId(userCSV.getCourseId());

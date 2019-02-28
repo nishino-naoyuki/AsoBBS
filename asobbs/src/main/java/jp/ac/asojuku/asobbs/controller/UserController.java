@@ -30,8 +30,6 @@ import jp.ac.asojuku.asobbs.validator.UserValidator;
 @Controller
 @RequestMapping(value= {"/user"})
 public class UserController {
-	@Autowired
-	ActionErrors errs;
 	
 	@Autowired
 	CourseService courseService;
@@ -62,7 +60,6 @@ public class UserController {
         UserInputForm userInputForm = new UserInputForm();
 		mv.addObject("createUserDto",dto);
         mv.addObject("courseList",list);
-        mv.addObject("errs",errs);
         mv.addObject("userInputForm",userInputForm);
         
         return mv;
@@ -91,24 +88,18 @@ public class UserController {
 
         //学科の一覧を取得する
         List<CourseDto> list = courseService.getAllList();
-        
-        //いったんエラーをクリアする
-        errs.clear();
-        
+                
 		//入力チェックを行う
-		errs = 
-				validateRequestParams(userInputForm,list);
+		validateRequestParams(userInputForm,list,bindingResult);
 
 		//DTOに入れなおす
 		CreateUserDto dto = getCreateUserDto(userInputForm);
 		
-		if( !errs.isHasErr() ) {
+		if( bindingResult.hasErrors() ) {
 			//エラーが無ければ、セッションに保存して確認画面へ
 			session.setAttribute("createUserDto",dto);
 	        mv.setViewName("confirm_user");
 		}else {
-			//エラー情報をセットする
-			mv.addObject("errs",errs);
 			//エラーの場合はリクエストパラメータに保存して、入力画面へ
 			mv.addObject("createUserDto",dto);
 	        mv.addObject("courseList",list);
@@ -138,6 +129,21 @@ public class UserController {
         return "redirect:/user/complete_user";
     }
 
+	/**
+	 * ユーザー登録完了
+	 * 
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
+	@RequestMapping(value= {"/complete_user"}, method=RequestMethod.POST)
+    public ModelAndView complete_user(ModelAndView mv) throws AsoBbsSystemErrException {
+		
+		mv.setViewName("complete_user");
+        
+		return mv;
+    }
+	
 	
 	/**
 	 * リクエストパラメータのチェック
@@ -154,39 +160,40 @@ public class UserController {
 	 */
 	private ActionErrors validateRequestParams(
 			UserInputForm userInputForm,
-			List<CourseDto> list) throws AsoBbsSystemErrException {
+			List<CourseDto> list,
+			BindingResult err) throws AsoBbsSystemErrException {
 		
 		ActionErrors errs = new ActionErrors();
 		
 		//学籍番号
 		if( userService.isExistStudentNo(userInputForm.getStudentNo()) ) {
-			errs.add(ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_STUDENTNO);
+			UserValidator.setErrorcode("studentNo",err,ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_STUDENTNO);
 		}
 		
 		//ニックネーム
-		UserValidator.useNickName(userInputForm.getNickname(),errs);
+		UserValidator.useNickName(userInputForm.getNickname(),err);
 		
 		//メールアドレス
-		UserValidator.mailAddress(userInputForm.getMailadress(),errs);
+		UserValidator.mailAddress(userInputForm.getMailadress(),err);
 		if( userService.isExistMailadress(userInputForm.getMailadress()) ) {
-			errs.add(ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_MEIL);
+			UserValidator.setErrorcode("mailadress",err,ErrorCode.ERR_MEMBER_ENTRY_DUPLICATE_MEIL);
 		}
 
 		//学科ID
-		UserValidator.courseId(userInputForm.getCourse_id(),list,errs);
+		UserValidator.courseId(userInputForm.getCourse_id(),list,err);
 		
 		//パスワード
 		if( userInputForm.getPassword1().equals(userInputForm.getPassword2()) != true) {
 			//パスワード不一致
-			errs.add(ErrorCode.ERR_MEMBER_ENTRY_PASSWORD_NOTMATCH);
+			UserValidator.setErrorcode("password1",err,ErrorCode.ERR_MEMBER_ENTRY_PASSWORD_NOTMATCH);
 		}
-		UserValidator.password(userInputForm.getPassword1(),errs);
+		UserValidator.password(userInputForm.getPassword1(),err);
 		
 		//ロールID
-		UserValidator.roleId(userInputForm.getRole(),errs);
+		UserValidator.roleId(userInputForm.getRole(),err);
 		
 		//入学年度
-		UserValidator.admissionYear(userInputForm.getAdmission_year(),errs);
+		UserValidator.admissionYear(userInputForm.getAdmission_year(),err);
 		
 		return errs;
 	}

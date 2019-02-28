@@ -109,6 +109,7 @@
 	<script th:inline="javascript">
 		var modalempdata = null;
 		var modalemptable = null;
+		var redrawTimer = null;
 		$(function(){
 			// datatableの設定を変更
 			modalemptable = $("#modal-emplist-table").DataTable({
@@ -136,8 +137,18 @@
                     { data: "nickname" },
                     { data: "mailadress",className:"mail" },
                 ]
-			})
+			});
+			redrawTimer=setInterval("redrawMonitor()",1000);
 		})
+		
+		//　なぜか、表示した直後、表の見出し行と1行目がずれる
+		//　バグがあり、どうしても修正できない（ライブラリの問題っぽい）
+		//　ので、最初の表示後1行後にリドローをかけることで
+		//　（再描画するとなおる）解決させる（1秒以下だとダメ）
+		function redrawMonitor(){
+			modalemptable.draw();
+			clearInterval(redrawTimer);
+		}
 		
 
 		

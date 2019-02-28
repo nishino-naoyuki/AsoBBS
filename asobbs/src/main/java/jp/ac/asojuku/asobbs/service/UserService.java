@@ -152,6 +152,7 @@ public class UserService {
 		entity.setRemark(null);
 		entity.setRepeatYearCount(0);
 		entity.setStudentNo(userdto.getStudentNo());
+		entity.setDelFlg(0);
 		
 		CourseMasterEntity cm = new CourseMasterEntity();
 		cm.setCourseId(userdto.getCourseId());

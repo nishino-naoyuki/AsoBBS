@@ -6,6 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
@@ -32,4 +33,6 @@ public class UserInputForm implements Serializable {
 	private String password2;
 	
 	private String admission_year;
+
+	private MultipartFile uploadFile;
 }

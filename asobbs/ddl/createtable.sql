@@ -266,6 +266,14 @@ ROLEが「先生」の場合も必要
 	AVATAR_ID_CSV varchar(100) COMMENT 'NULLの場合は未設定',
 	-- 2018/1/19で追加
 	GRADE int DEFAULT 1 NOT NULL COMMENT '2018/1/19で追加',
+	-- 卒業や退学などで無効となったデータについて
+	-- 検索しやすいようにフラグを立てる
+	-- 1=削除済み
+	-- 0=未削除
+	DEL_FLG int DEFAULT 0 NOT NULL COMMENT '卒業や退学などで無効となったデータについて
+検索しやすいようにフラグを立てる
+1=削除済み
+0=未削除',
 	PRIMARY KEY (USER_ID),
 	UNIQUE (STUDENT_NO),
 	UNIQUE (MAILADRESS)

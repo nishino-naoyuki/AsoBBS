@@ -65,9 +65,7 @@
                         </div>
                         <form action="/user/confirm"  method="post" th:object="${userInputForm}">
 		               	<div class="panel-body">
-		               	<div th:if="${errs.isHasErr()}">
-		               		<p id="error" th:each="err:${errs.getList()}" th:text="${err.message}"></p>
-		               	</div>
+		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
 		               		<div class="table-responsive">
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
@@ -163,7 +161,7 @@
 			                		<p id="errorMsg" ></p>
 			                	</div>
 			                     <form id="data_upload_form" enctype="multipart/form-data" method="post">
-			                         <div><input type="file" class="btn btn-default"  name="upload_file"></div>
+			                         <div><input type="file" class="btn btn-default"  name="uploadFile"></div>
 			                         <div><input type="button" class="btn btn-default" value="CSV登録" id="csv_start" ></div>
 			                      </form>
 			                     </div>
@@ -217,6 +215,7 @@
     	        
             }).done(function(json) {        // Ajax通信が成功した時の処理
                 $("#csv_start").attr('disabled', false);
+    			$("#errorMsg").text("");
     			//エラーメッセージがある場合はエラーを表示する
         		if( json.errorMsg != null){
     	    		$("#errorMsg").text(json.errorMsg);

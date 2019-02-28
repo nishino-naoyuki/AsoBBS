@@ -3,6 +3,7 @@ package jp.ac.asojuku.asobbs.validator;
 import java.util.List;
 
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 
 import jp.ac.asojuku.asobbs.config.AppSettingProperty;
 import jp.ac.asojuku.asobbs.dto.CourseDto;
@@ -26,15 +27,15 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void useName(String name,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void useName(String name,BindingResult err) throws AsoBbsSystemErrException{
 
 		//必須
 		if( StringUtils.isEmpty(name) ){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_NAME_ISNEED);
+			setErrorcode("nickname",err,ErrorCode.ERR_MEMBER_ENTRY_NAME_ISNEED);
 		}
 		//最大文字数
 		if( name != null && name.length() > 100){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_NAME);
+			setErrorcode("nickname",err,ErrorCode.ERR_MEMBER_ENTRY_NAME);
 		}
 	}
 
@@ -45,15 +46,15 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void useNickName(String nickname,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void useNickName(String nickname,BindingResult err) throws AsoBbsSystemErrException{
 
 		//必須
 		if( StringUtils.isEmpty(nickname) ){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_NICKNAME_ISNEED);
+			setErrorcode("nickname",err,ErrorCode.ERR_MEMBER_ENTRY_NICKNAME_ISNEED);
 		}
 		//最大文字数
 		if( nickname != null && nickname.length() > 100){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_NICKNAME);
+			setErrorcode("nickname",err,ErrorCode.ERR_MEMBER_ENTRY_NICKNAME);
 		}
 	}
 	/**
@@ -63,18 +64,18 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void mailAddress(String mailAddress,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void mailAddress(String mailAddress,BindingResult err) throws AsoBbsSystemErrException{
 
 		//必須
 		if( StringUtils.isEmpty(mailAddress) ){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS_ISNEED);
+			setErrorcode("mailadress",err,ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS_ISNEED);
 		}
-		if (!chkMailFormat(mailAddress)) {
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
+		if (mailAddress != null && !chkMailFormat(mailAddress)) {
+			setErrorcode("mailadress",err,ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
 		}
 		//最大文字数
 		if( mailAddress != null && mailAddress.length() > 256){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
+			setErrorcode("mailadress",err,ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
 		}
 	}
 
@@ -85,7 +86,7 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void courseId(String couseId,List<CourseDto> list,ActionErrors errors ) throws AsoBbsSystemErrException{
+	public static void courseId(String couseId,List<CourseDto> list,BindingResult err ) throws AsoBbsSystemErrException{
 
 		int intCourseId;
 		try{
@@ -101,11 +102,11 @@ public class UserValidator extends Validator{
 			}
 
 			if( !find ){
-				errors.add(ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
+				setErrorcode("course_id",err,ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
 			}
 
 		}catch(NumberFormatException e){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
+			setErrorcode("course_id",err,ErrorCode.ERR_MEMBER_ENTRY_MAILADDRESS);
 		}
 	}
 
@@ -115,7 +116,7 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void admissionYear(String admissionYear,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void admissionYear(String admissionYear,BindingResult err) throws AsoBbsSystemErrException{
 
 		try{
 			//数値チェック
@@ -123,11 +124,11 @@ public class UserValidator extends Validator{
 
 			//4桁以下の場合は、西暦じゃないと判断しエラーとする
 			if( admissionYear != null && admissionYear.length()  < 4){
-				errors.add(ErrorCode.ERR_MEMBER_ENTRY_ADMISSIONYEAR_ERR);
+				setErrorcode("admission_year",err,ErrorCode.ERR_MEMBER_ENTRY_ADMISSIONYEAR_ERR);
 			}
 
 		}catch(NumberFormatException e){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_ADMISSIONYEAR);
+			setErrorcode("admission_year",err,ErrorCode.ERR_MEMBER_ENTRY_ADMISSIONYEAR);
 		}
 	}
 
@@ -137,7 +138,7 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void graduateYear(String graduateYear,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void graduateYear(String graduateYear,BindingResult err) throws AsoBbsSystemErrException{
 
 		try{
 			//数値チェック
@@ -145,11 +146,11 @@ public class UserValidator extends Validator{
 
 			//4桁以下の場合は、西暦じゃないと判断しエラーとする
 			if( graduateYear != null && graduateYear.length()  < 4){
-				errors.add(ErrorCode.ERR_MEMBER_ENTRY_GRADUATE_ERR);
+				setErrorcode("admission_year",err,ErrorCode.ERR_MEMBER_ENTRY_GRADUATE_ERR);
 			}
 
 		}catch(NumberFormatException e){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_GRADUATEYEAR);
+			setErrorcode("admission_year",err,ErrorCode.ERR_MEMBER_ENTRY_GRADUATEYEAR);
 		}
 	}
 
@@ -159,7 +160,7 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void gibeupYear(String giveupYear,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void gibeupYear(String giveupYear,BindingResult err) throws AsoBbsSystemErrException{
 
 		try{
 			//数値チェック
@@ -167,11 +168,11 @@ public class UserValidator extends Validator{
 
 			//4桁以下の場合は、西暦じゃないと判断しエラーとする
 			if(giveupYear != null && giveupYear.length() < 4){
-				errors.add(ErrorCode.ERR_MEMBER_ENTRY_GIVEUP_ERR);
+				setErrorcode("admission_year",err,ErrorCode.ERR_MEMBER_ENTRY_GIVEUP_ERR);
 			}
 
 		}catch(NumberFormatException e){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_GIVEUPYEAR);
+			setErrorcode("admission_year",err,ErrorCode.ERR_MEMBER_ENTRY_GIVEUPYEAR);
 		}
 	}
 
@@ -181,18 +182,18 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void roleId(String roleId,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void roleId(String roleId,BindingResult err) throws AsoBbsSystemErrException{
 
 		int introleId;
 		try{
 			introleId = Integer.parseInt(roleId);
 
 			if( !RoleId.check(introleId) ){
-				errors.add(ErrorCode.ERR_MEMBER_ENTRY_ROLEID_ERR);
+				setErrorcode("role",err,ErrorCode.ERR_MEMBER_ENTRY_ROLEID_ERR);
 			}
 
 		}catch(NumberFormatException e){
-			errors.add(ErrorCode.ERR_MEMBER_ENTRY_ROLEID_ERR);
+			setErrorcode("role",err,ErrorCode.ERR_MEMBER_ENTRY_ROLEID_ERR);
 		}
 	}
 
@@ -202,12 +203,12 @@ public class UserValidator extends Validator{
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void password(String password,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void password(String password,BindingResult err) throws AsoBbsSystemErrException{
 		String policy = AppSettingProperty.getInstance().getPasswordPolicy();
 
 		if( !StringUtils.isEmpty(policy)){
 			if(!password.matches(policy)){
-				errors.add(ErrorCode.ERR_MEMBER_ENTRY_PASSWORD_POLICY);
+				setErrorcode("password1",err,ErrorCode.ERR_MEMBER_ENTRY_PASSWORD_POLICY);
 			}
 
 		}

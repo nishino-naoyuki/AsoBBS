@@ -13,13 +13,13 @@ import jp.ac.asojuku.asobbs.entity.UserTblEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserTblEntity,Integer>,JpaSpecificationExecutor<UserTblEntity> {
 
-	@Query("select u from UserTblEntity u where mailadress = :mail and password = :password")
+	@Query("select u from UserTblEntity u where mailadress = :mail and password = :password and delFlg = 0")
 	public UserTblEntity getUser(@Param("mail")String mail,@Param("password")String password);
 
-	@Query("select u from UserTblEntity u where mailadress = :mail")
+	@Query("select u from UserTblEntity u where mailadress = :mail and delFlg = 0")
 	public UserTblEntity getUserByMail(@Param("mail")String mail);
 
-	@Query("select u from UserTblEntity u where studentNo = :studentno")
+	@Query("select u from UserTblEntity u where studentNo = :studentno and delFlg = 0")
 	public UserTblEntity getUserByStudentNo(@Param("studentno")String studentno);
 	
 	/* private */ static Specification<UserTblEntity> mailContain(String mail) {

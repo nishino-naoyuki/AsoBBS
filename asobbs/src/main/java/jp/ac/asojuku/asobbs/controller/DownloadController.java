@@ -50,7 +50,11 @@ public class DownloadController {
 
 		    response.setContentType("application/octet-stream");
 		    response.setContentLength((int) file.length());
-		    response.setHeader("Content-Disposition", "attachment; filename="+FileUtils.getFileNameFromPath(fPath));
+		    response.setHeader(
+		    		"Content-Disposition", 
+		    		"attachment; filename=\""+
+		    		FileUtils.getFileNameFromPath(fPath)+"\""
+		    		);
 		  //ファイルの読み込み
 		    int bytes = 0;
 		    os = response.getOutputStream();
