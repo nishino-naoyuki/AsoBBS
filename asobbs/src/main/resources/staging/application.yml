@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/asobbs?serverTimezone=JST
+    username: asobbs_user
+    password: AsoBBS-User123#
+  jpa:
+    hibernate:
+      ddl-auto: update

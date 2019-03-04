@@ -1,0 +1,18 @@
+#MySQLサーバー起動・停止
+systemctl start mysqld.service
+systemctl stop mysqld.service
+
+#tomcat起動・停止
+/opt/apache-tomcat/apache-tomcat-8.5.38/bin/startup.sh
+/opt/apache-tomcat/apache-tomcat-8.5.38/bin/shutdown.sh
+
+#apache起動・停止
+systemctl start httpd
+systemctl stop httpd
+systemctl restart httpd
+
+#MySQLのrootのパスワード
+Abcc123.#
+
+#catalina.outの監視
+tail -f /opt/apache-tomcat/apache-tomcat-8.5.38/logs/catalina.out
