@@ -33,7 +33,7 @@
                     </div>
                     <div class="panel-body">
                     	<p id="error" th:text="${msg}" ></p>
-                        <form action="/auth" method="post"  role="form" th:object="${loginForm}">
+                        <form th:action="@{/auth}" method="post"  role="form" th:object="${loginForm}">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus th:field="*{mail}">

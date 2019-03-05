@@ -124,7 +124,7 @@
 		               				</tbody>
 		               			</table>
 		               			
-			                     <form action="/room/edit" method="POST">
+			                     <form th:action="@{/room/edit}" method="POST">
 			                     <input type="hidden" name="roomId" th:value="${roomDetailDto.roomId}">
 		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >編集</button>
 		               			</form>

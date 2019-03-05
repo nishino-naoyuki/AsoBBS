@@ -98,7 +98,7 @@
 
     </div>
     <!-- /#wrapper -->
-	<script>
+	<script th:inline="javascript">
 	var chatTimer;	//チャット監視タイマー
 	var bbsListTable;
 	$(function(){
@@ -116,8 +116,13 @@
 		var comment = $("#chat_comment").val();
 		//alert("userId="+userId);
 		//alert("comment="+comment);
+		if( userId == "" ){
+			alert("「ユーザー選択」でチャットする相手を選んでください");
+			return;
+		}
 
-		var ajaxurl = "/chat/send_comment?userId="+userId+"&comment="+comment;
+		var url =  /*[[@{/chat/send_comment}]]*/ "/chat/send_comment";
+		var ajaxurl = url + "?userId="+userId+"&comment="+comment;
 
 		$.ajax({
 	        type : "GET",                  // HTTP通信の種類
@@ -127,8 +132,8 @@
 	        contentType: false,
 	    }).done(function(data) {        // Ajax通信が成功した時の処理
 	    	//alert(data.messageList);
-	    	outputAllMessage(data);
-	    	$("#chat_comment").vla("");
+	    	outputAllMessage(data,true);
+	    	$("#chat_comment").val("");
 	    }).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
 	        alert("チャット情報の取得に失敗しました");
 	    });
@@ -175,7 +180,8 @@
 	}
 	
 	function loadMessaes(userId,bAutoScroll){
-		var ajaxurl = "/chat/getmsglist?userId="+userId;
+		var url = /*[[@{/chat/getmsglist}]]*/ "/chat/getmsglist";
+		var ajaxurl = url + "?userId="+userId;
 
 		$.ajax({
 	        type : "POST",                  // HTTP通信の種類
@@ -198,6 +204,7 @@
 		return false;
 	}
 	
+	//ユーザー選択クリック時
 	 $(document).on("click","#btn-modalemp-select", function() {
 		 	var count = 0;
 		 	var checkUser;
@@ -215,6 +222,12 @@
 			//alert(checkUser);
 			//Ajaxでチャット内容を取得
 			var userId = checkUser.substr(4);
+			var myUserId = /*[[${session['LoginInfo'].userId}]]*/ 0;
+			
+			if( myUserId == userId ){
+				alert("チャットの相手は自分以外を選択してください");
+				return;
+			}
 			
 			loadMessaes(userId,true);
 	    	//監視開始

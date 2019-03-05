@@ -12,8 +12,8 @@
     <title>掲示板 新規作成</title>
 
 	<meta  th:replace="/header/include1">
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
-    <link href="/css/wysiwyg/bbs.css" rel="stylesheet" type="text/css">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+    <link th:href="@{/css/wysiwyg/bbs.css}" rel="stylesheet" type="text/css">
 	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -113,7 +113,7 @@
 		               				</tbody>
 		               			</table>
 		               			
-			                     <form action="/bbs/insert" method="POST">
+			                     <form th:action="@{/bbs/insert}" method="POST">
 		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >登録</button>
 		               			</form>
 		               		</div>

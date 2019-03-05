@@ -6,4 +6,4 @@ spring:
     password: AsoBBS-User123#
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none

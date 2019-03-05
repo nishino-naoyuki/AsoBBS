@@ -63,7 +63,7 @@
                         <div class="panel-heading">
                         		変更したい人のメールアドレスと新パスワードを入力してください
                         </div>
-                        <form action="/pwd/reset"  method="post" th:object="${passwordResetForm}">
+                        <form th:action="@{/pwd/reset}"  method="post" th:object="${passwordResetForm}">
 		               	<div class="panel-body">
 		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
 		               		<div class="table-responsive">

@@ -74,16 +74,16 @@
 				                       <tr th:each="bbsDto:*{bbsList}">
 				                       		<td>
 				                       			<div th:if="${bbsDto.update}" >
-				                       				掲示板情報「<a th:href="'/bbs/detail?id='+${bbsDto.bbsId}" th:text="${bbsDto.bbsName}"></a>」が更新されています
+				                       				掲示板情報「<a th:href="@{'/bbs/detail?id='+${bbsDto.bbsId}}" th:text="${bbsDto.bbsName}"></a>」が更新されています
 				                       			</div>
 				                       			<div th:unless="${bbsDto.update}" >
-				                       				掲示板情報「<a th:href="'/bbs/detail?id='+${bbsDto.bbsId}" th:text="${bbsDto.bbsName}"></a>」が追加されています
+				                       				掲示板情報「<a th:href="@{'/bbs/detail?id='+${bbsDto.bbsId}}" th:text="${bbsDto.bbsName}"></a>」が追加されています
 				                       			</div>
 				                       		</td>
 				                       </tr>
 				                       <tr th:each="chatDto:*{chatList}">
 				                       		<td>
-				                       			<a th:href="'/chat/view?userId='+${chatDto.fromUserId}" th:text="${chatDto.fromUserName}"></a>さんからメッセージが来ています
+				                       			<a th:href="@{'/chat/view?userId='+${chatDto.fromUserId}}" th:text="${chatDto.fromUserName}"></a>さんからメッセージが来ています
 				                       		</td>
 				                       </tr>
 				                       </tbody>

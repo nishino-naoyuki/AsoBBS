@@ -96,14 +96,14 @@ public class UserController {
 		CreateUserDto dto = getCreateUserDto(userInputForm);
 		
 		if( bindingResult.hasErrors() ) {
-			//エラーが無ければ、セッションに保存して確認画面へ
-			session.setAttribute("createUserDto",dto);
-	        mv.setViewName("confirm_user");
-		}else {
 			//エラーの場合はリクエストパラメータに保存して、入力画面へ
 			mv.addObject("createUserDto",dto);
 	        mv.addObject("courseList",list);
 	        mv.setViewName("input_user");
+		}else {
+			//エラーが無ければ、セッションに保存して確認画面へ
+			session.setAttribute("createUserDto",dto);
+	        mv.setViewName("confirm_user");
 		}
 		
         return mv;
@@ -136,7 +136,7 @@ public class UserController {
 	 * @return
 	 * @throws AsoBbsSystemErrException
 	 */
-	@RequestMapping(value= {"/complete_user"}, method=RequestMethod.POST)
+	@RequestMapping(value= {"/complete_user"}, method=RequestMethod.GET)
     public ModelAndView complete_user(ModelAndView mv) throws AsoBbsSystemErrException {
 		
 		mv.setViewName("complete_user");
@@ -158,12 +158,11 @@ public class UserController {
 	 * @return
 	 * @throws AsoBbsSystemErrException
 	 */
-	private ActionErrors validateRequestParams(
+	private void validateRequestParams(
 			UserInputForm userInputForm,
 			List<CourseDto> list,
 			BindingResult err) throws AsoBbsSystemErrException {
 		
-		ActionErrors errs = new ActionErrors();
 		
 		//学籍番号
 		if( userService.isExistStudentNo(userInputForm.getStudentNo()) ) {
@@ -195,7 +194,7 @@ public class UserController {
 		//入学年度
 		UserValidator.admissionYear(userInputForm.getAdmission_year(),err);
 		
-		return errs;
+		return ;
 	}
 	
 	/**

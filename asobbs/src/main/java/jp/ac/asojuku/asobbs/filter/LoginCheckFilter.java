@@ -26,7 +26,7 @@ public class LoginCheckFilter implements Filter {
 	//チェック除外画面
 	private String excludeDispList[] =
 		{
-			"/login","/auth","/logout","/css/.+","/img/.+","/sbadmin/.+","favicon.ico","/error/.*"
+			"/","/login","/auth","/logout","/css/.+","/img/.+","/sbadmin/.+","/favicon.ico","/error/.*"
 		};
 
 	@Autowired
@@ -53,7 +53,7 @@ public class LoginCheckFilter implements Filter {
 		if( loginInfo == null ) {
 			//ログイン画面へ転送
 			logger.info("Filter!!! servletPath="+servletPath);
-			((HttpServletResponse)response).sendRedirect("/login");
+			((HttpServletResponse)response).sendRedirect( "/");
 			return;
 		}
 		

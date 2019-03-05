@@ -63,7 +63,7 @@
                         <div class="panel-heading">
                         		項目登録
                         </div>
-                        <form action="/user/confirm"  method="post" th:object="${userInputForm}">
+                        <form th:action="@{/user/confirm}"  method="post" th:object="${userInputForm}">
 		               	<div class="panel-body">
 		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
 		               		<div class="table-responsive">
@@ -179,7 +179,7 @@
 	
 	<div id="parent" th:replace="/header/include2"></div>
 	
-	<script>
+	<script th:inline="javascript">
 
 	$('#csv_start').on('click', function() {
 		//alert("csv_start")
@@ -190,7 +190,7 @@
 			return;
 		}
 		
-        var ajaxUrl = "/file/csvinput";
+        var ajaxUrl = /*[[@{/file/csvinput}]]*/ "/file/csvinput";
         //alert(ajaxUrl)
 		//Ajax！
         if(window.FormData){

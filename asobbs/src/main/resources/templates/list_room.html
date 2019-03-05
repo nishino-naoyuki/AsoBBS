@@ -89,7 +89,8 @@
 
     </div>
     <!-- /#wrapper -->
-	<script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
 	var modalemptable;
 	$(function(){
 		// datatableの設定を変更
@@ -104,13 +105,14 @@
 			"language": {
                 "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
             },
-            "ajax": { url: '/getroomlist', dataSrc: '' },
+            "ajax": { url: /*[[@{/getroomlist}]]*/' /getroomlist', dataSrc: '' },
             "columns": [
             	{
             		data:"name" ,
             		type:"roomId",
                 	render: function ( data, type, row ) {
-                		return '<a href="/room/detail?roomId='+row.roomId+'">'+data+'</a>';
+                		var url = /*[[@{/room/detail}]]*/ "/room/dummy";
+                		return '<a href="'+url+'?roomId='+row.roomId+'">'+data+'</a>';
                 	}
             	},
                 { data: "adminUserName" },
@@ -119,6 +121,7 @@
             ]
 		});
 	})
+	/*]]>*/
 	</script>
 </body>
 </html>

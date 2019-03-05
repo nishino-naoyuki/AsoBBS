@@ -1,423 +1,423 @@
-SET SESSION FOREIGN_KEY_CHECKS=0;
+set session foreign_key_checks=0;
 
-/* Drop Indexes */
+/* drop indexes */
 
-DROP INDEX IDX_ATTACED_FILE_BBSID ON ATTACHED_FILE_TBL;
-DROP INDEX INDEX_CATEGORYTBL_ROOMID ON CATEGORY_TBL;
-DROP INDEX IDX_HIS_USER_ID ON HISTORY_TBL;
-DROP INDEX IDX_HIS_ACTION_ID ON HISTORY_TBL;
-DROP INDEX IDX_HIS_ACTION_DATE ON HISTORY_TBL;
-DROP INDEX IDX_USER_COURSE_ID ON USER_TBL;
-DROP INDEX IDX_USER_ROLE_ID ON USER_TBL;
-DROP INDEX IDX_USER_TBL_NICKNAME ON USER_TBL;
-DROP INDEX IDX_USER_GRADE ON USER_TBL;
-DROP INDEX IDX_USER_MAILADRESS ON USER_TBL;
-DROP INDEX INDEX_USERTBL_STUDENTNO ON USER_TBL;
-
-
-
-/* Drop Tables */
-
-DROP TABLE IF EXISTS HISTORY_TBL;
-DROP TABLE IF EXISTS ACTION_MASTER;
-DROP TABLE IF EXISTS ATTACHED_FILE_TBL;
-DROP TABLE IF EXISTS BBS_CHECK_TBL;
-DROP TABLE IF EXISTS BBS_TBL;
-DROP TABLE IF EXISTS CATEGORY_TBL;
-DROP TABLE IF EXISTS CHAT_TABLE;
-DROP TABLE IF EXISTS ROOM_USER_TBL;
-DROP TABLE IF EXISTS ROOM_TBL;
-DROP TABLE IF EXISTS USER_TBL;
-DROP TABLE IF EXISTS COURSE_MASTER;
-DROP TABLE IF EXISTS ROLE_MASTER;
+drop index idx_attaced_file_bbsid on attached_file_tbl;
+drop index index_categorytbl_roomid on category_tbl;
+drop index idx_his_user_id on history_tbl;
+drop index idx_his_action_id on history_tbl;
+drop index idx_his_action_date on history_tbl;
+drop index idx_user_course_id on user_tbl;
+drop index idx_user_role_id on user_tbl;
+drop index idx_user_tbl_nickname on user_tbl;
+drop index idx_user_grade on user_tbl;
+drop index idx_user_mailadress on user_tbl;
+drop index index_usertbl_studentno on user_tbl;
 
 
 
+/* drop tables */
 
-/* Create Tables */
+drop table if exists history_tbl;
+drop table if exists action_master;
+drop table if exists attached_file_tbl;
+drop table if exists bbs_check_tbl;
+drop table if exists bbs_tbl;
+drop table if exists category_tbl;
+drop table if exists chat_table;
+drop table if exists room_user_tbl;
+drop table if exists room_tbl;
+drop table if exists user_tbl;
+drop table if exists course_master;
+drop table if exists role_master;
+
+
+
+
+/* create tables */
 
 -- 操作マスター
-CREATE TABLE ACTION_MASTER
+create table action_master
 (
-	ACTION_ID int NOT NULL,
-	ACTION_NAME varchar(200),
-	PRIMARY KEY (ACTION_ID)
-) COMMENT = '操作マスター';
+	action_id int not null,
+	action_name varchar(200),
+	primary key (action_id)
+) comment = '操作マスター';
 
 
-CREATE TABLE ATTACHED_FILE_TBL
+create table attached_file_tbl
 (
-	ATTACHED_FILE_ID int NOT NULL AUTO_INCREMENT,
-	BBS_ID int NOT NULL,
+	attached_file_id int not null auto_increment,
+	bbs_id int not null,
 	-- ファイルのフルパス
-	FILE_PATH varchar(600) NOT NULL COMMENT 'ファイルのフルパス',
-	-- 不正防止用に、ファイルをDLさせるときは必ずファイルIDとファイルサイズとをマッチングさせる
-	FILE_SIZE bigint NOT NULL COMMENT '不正防止用に、ファイルをDLさせるときは必ずファイルIDとファイルサイズとをマッチングさせる',
-	PRIMARY KEY (ATTACHED_FILE_ID)
+	file_path varchar(600) not null comment 'ファイルのフルパス',
+	-- 不正防止用に、ファイルをdlさせるときは必ずファイルidとファイルサイズとをマッチングさせる
+	file_size bigint not null comment '不正防止用に、ファイルをdlさせるときは必ずファイルidとファイルサイズとをマッチングさせる',
+	primary key (attached_file_id)
 );
 
 
-CREATE TABLE BBS_CHECK_TBL
+create table bbs_check_tbl
 (
-	BBS_ID int NOT NULL,
-	-- ユーザーID
-	USER_ID int NOT NULL COMMENT 'ユーザーID',
-	CHECK_DATE datetime NOT NULL,
-	PRIMARY KEY (BBS_ID, USER_ID)
+	bbs_id int not null,
+	-- ユーザーid
+	user_id int not null comment 'ユーザーid',
+	check_date datetime not null,
+	primary key (bbs_id, user_id)
 );
 
 
-CREATE TABLE BBS_TBL
+create table bbs_tbl
 (
-	BBS_ID int NOT NULL AUTO_INCREMENT,
+	bbs_id int not null auto_increment,
 	-- ルーム毎に設定されている掲示板のカテゴリ
-	CATEGORY_ID int NOT NULL COMMENT 'ルーム毎に設定されている掲示板のカテゴリ',
-	TITLE varchar(100) NOT NULL,
-	MESSAGE varchar(16000) NOT NULL,
-	-- 緊急の書き込みの場合はONにする
+	category_id int not null comment 'ルーム毎に設定されている掲示板のカテゴリ',
+	title varchar(100) not null,
+	message varchar(16000) not null,
+	-- 緊急の書き込みの場合はonにする
 	-- 1:緊急の書き込み
 	-- 0:通常の書き込み
-	EMERGENCY_FLG int DEFAULT 0 NOT NULL COMMENT '緊急の書き込みの場合はONにする
+	emergency_flg int default 0 not null comment '緊急の書き込みの場合はonにする
 1:緊急の書き込み
 0:通常の書き込み',
-	-- 返信元のBBSID
-	-- おおもとの書き込みの場合はNULLとなる
-	PARENT_BBS_ID int COMMENT '返信元のBBSID
-おおもとの書き込みの場合はNULLとなる',
+	-- 返信元のbbsid
+	-- おおもとの書き込みの場合はnullとなる
+	parent_bbs_id int comment '返信元のbbsid
+おおもとの書き込みの場合はnullとなる',
 	-- 返信可能な書き込みかどうかを表す
-	Reply_OK_FLG int NOT NULL COMMENT '返信可能な書き込みかどうかを表す',
-	CREATE_DATE datetime NOT NULL,
-	CREATE_USER_ID int NOT NULL,
-	UPDATE_DATE datetime NOT NULL,
-	UPDATE_USER_ID int NOT NULL,
-	PRIMARY KEY (BBS_ID)
+	reply_ok_flg int not null comment '返信可能な書き込みかどうかを表す',
+	create_date datetime not null,
+	create_user_id int not null,
+	update_date datetime not null,
+	update_user_id int not null,
+	primary key (bbs_id)
 );
 
 
-CREATE TABLE CATEGORY_TBL
+create table category_tbl
 (
 	-- ルーム毎に設定されている掲示板のカテゴリ
-	CATEGORY_ID int NOT NULL AUTO_INCREMENT COMMENT 'ルーム毎に設定されている掲示板のカテゴリ',
-	-- カテゴリが属しているルームID
-	ROOM_ID int NOT NULL COMMENT 'カテゴリが属しているルームID',
-	NAME varchar(100) NOT NULL,
-	COUNT int NOT NULL,
-	PRIMARY KEY (CATEGORY_ID),
-	CONSTRAINT UNIQUE_CATEGORY_BY_ROOM_CNAME UNIQUE (ROOM_ID, NAME)
+	category_id int not null auto_increment comment 'ルーム毎に設定されている掲示板のカテゴリ',
+	-- カテゴリが属しているルームid
+	room_id int not null comment 'カテゴリが属しているルームid',
+	name varchar(100) not null,
+	count int not null,
+	primary key (category_id),
+	constraint unique_category_by_room_cname unique (room_id, name)
 );
 
 
-CREATE TABLE CHAT_TABLE
+create table chat_table
 (
-	MSG_ID int NOT NULL AUTO_INCREMENT,
+	msg_id int not null auto_increment,
 	-- メッセージ
-	MSG varchar(1000) NOT NULL COMMENT 'メッセージ',
-	regster_datetime datetime NOT NULL,
-	-- ユーザーID
-	from_user_id int NOT NULL COMMENT 'ユーザーID',
-	-- ユーザーID
-	to_user_id int NOT NULL COMMENT 'ユーザーID',
-	PRIMARY KEY (MSG_ID)
+	msg varchar(1000) not null comment 'メッセージ',
+	regster_datetime datetime not null,
+	-- ユーザーid
+	from_user_id int not null comment 'ユーザーid',
+	-- ユーザーid
+	to_user_id int not null comment 'ユーザーid',
+	primary key (msg_id)
 );
 
 
-CREATE TABLE COURSE_MASTER
+create table course_master
 (
-	COURSE_ID int NOT NULL,
+	course_id int not null,
 	-- 学科名
-	COURSE_NAME varchar(100) NOT NULL COMMENT '学科名',
-	PRIMARY KEY (COURSE_ID)
+	course_name varchar(100) not null comment '学科名',
+	primary key (course_id)
 );
 
 
 -- 操作履歴テーブル
 -- 操作履歴のテーブルです
-CREATE TABLE HISTORY_TBL
+create table history_tbl
 (
-	HISTORY_ID int NOT NULL AUTO_INCREMENT,
-	-- ユーザーID
-	USER_ID int NOT NULL COMMENT 'ユーザーID',
-	ACTION_ID int NOT NULL,
-	ACTION_DATE datetime NOT NULL,
+	history_id int not null auto_increment,
+	-- ユーザーid
+	user_id int not null comment 'ユーザーid',
+	action_id int not null,
+	action_date datetime not null,
 	-- 付加情報
-	MESSAGE varchar(2000) COMMENT '付加情報',
-	PRIMARY KEY (HISTORY_ID)
-) COMMENT = '操作履歴テーブル
+	message varchar(2000) comment '付加情報',
+	primary key (history_id)
+) comment = '操作履歴テーブル
 操作履歴のテーブルです';
 
 
 -- 役割マスタ
--- ロールによる画面へのアクセス権限は、Webアプリの設定ファイルにて行う
--- （いちいちDBにアクセスするとパ
-CREATE TABLE ROLE_MASTER
+-- ロールによる画面へのアクセス権限は、webアプリの設定ファイルにて行う
+-- （いちいちdbにアクセスするとパ
+create table role_master
 (
-	ROLE_ID int NOT NULL,
-	ROLE_NAME varchar(100) NOT NULL,
-	PRIMARY KEY (ROLE_ID)
-) COMMENT = '役割マスタ
-ロールによる画面へのアクセス権限は、Webアプリの設定ファイルにて行う
-（いちいちDBにアクセスするとパ';
+	role_id int not null,
+	role_name varchar(100) not null,
+	primary key (role_id)
+) comment = '役割マスタ
+ロールによる画面へのアクセス権限は、webアプリの設定ファイルにて行う
+（いちいちdbにアクセスするとパ';
 
 
-CREATE TABLE ROOM_TBL
+create table room_tbl
 (
-	-- ルームID
-	ROOM_ID int NOT NULL AUTO_INCREMENT COMMENT 'ルームID',
+	-- ルームid
+	room_id int not null auto_increment comment 'ルームid',
 	-- ルーム名
-	NAME varchar(100) NOT NULL COMMENT 'ルーム名',
+	name varchar(100) not null comment 'ルーム名',
 	-- 作成日時
-	CREATE_DATE datetime NOT NULL COMMENT '作成日時',
-	-- 作成ユーザーID
-	CREATE_USER_ID int NOT NULL COMMENT '作成ユーザーID',
-	-- 初回作成時、UPDATE_DATEとCREATE_DATEは同じになる
-	UPDATE_DATE datetime NOT NULL COMMENT '初回作成時、UPDATE_DATEとCREATE_DATEは同じになる',
-	-- ユーザーID
-	UPDATE_USER_ID int NOT NULL COMMENT 'ユーザーID',
-	PRIMARY KEY (ROOM_ID),
-	UNIQUE (NAME)
+	create_date datetime not null comment '作成日時',
+	-- 作成ユーザーid
+	create_user_id int not null comment '作成ユーザーid',
+	-- 初回作成時、update_dateとcreate_dateは同じになる
+	update_date datetime not null comment '初回作成時、update_dateとcreate_dateは同じになる',
+	-- ユーザーid
+	update_user_id int not null comment 'ユーザーid',
+	primary key (room_id),
+	unique (name)
 );
 
 
-CREATE TABLE ROOM_USER_TBL
+create table room_user_tbl
 (
-	-- ルームID
-	ROOM_ID int NOT NULL COMMENT 'ルームID',
-	-- ユーザーID
-	USER_ID int NOT NULL COMMENT 'ユーザーID',
+	-- ルームid
+	room_id int not null comment 'ルームid',
+	-- ユーザーid
+	user_id int not null comment 'ユーザーid',
 	-- 0:管理者（ルームの編集可能）
 	-- 1:閲覧者（ルームの編集不可能）
-	ROOM_ROLE int NOT NULL COMMENT '0:管理者（ルームの編集可能）
+	room_role int not null comment '0:管理者（ルームの編集可能）
 1:閲覧者（ルームの編集不可能）',
-	PRIMARY KEY (ROOM_ID, USER_ID)
+	primary key (room_id, user_id)
 );
 
 
 -- 利用者テーブル
 -- ログイン可能な利用者は全てこのテーブルに登録される
-CREATE TABLE USER_TBL
+create table user_tbl
 (
-	-- ユーザーID
-	USER_ID int NOT NULL AUTO_INCREMENT COMMENT 'ユーザーID',
-	STUDENT_NO varchar(10) NOT NULL,
-	-- メールアドレス（ログインID）
-	MAILADRESS varchar(255) NOT NULL COMMENT 'メールアドレス（ログインID）',
+	-- ユーザーid
+	user_id int not null auto_increment comment 'ユーザーid',
+	student_no varchar(10) not null,
+	-- メールアドレス（ログインid）
+	mailadress varchar(255) not null comment 'メールアドレス（ログインid）',
 	-- パスワードのハッシュ値
 	-- ソルト値は設定ファイルから取得
 	-- ソルト+パスワード+ソルト
 	-- でハッシュ値を計算
-	PASSWORD varchar(255) NOT NULL COMMENT 'パスワードのハッシュ値
+	password varchar(255) not null comment 'パスワードのハッシュ値
 ソルト値は設定ファイルから取得
 ソルト+パスワード+ソルト
 でハッシュ値を計算',
 	-- 学生は学籍番号
-	-- 職員は職員ID
-	NAME varchar(100) NOT NULL COMMENT '学生は学籍番号
-職員は職員ID',
+	-- 職員は職員id
+	name varchar(100) not null comment '学生は学籍番号
+職員は職員id',
 	-- ニックネーム
-	-- ※AESで暗号化する
+	-- ※aesで暗号化する
 	-- 鍵は、設定ファイルの設定値+メアド
-	NICK_NAME varchar(100) NOT NULL COMMENT 'ニックネーム
-※AESで暗号化する
+	nick_name varchar(100) not null comment 'ニックネーム
+※aesで暗号化する
 鍵は、設定ファイルの設定値+メアド',
 	-- アカウントの有効期限（指定日まで有効）
-	-- NULLの場合は無期限
-	ACCOUNT_EXPRY_DATE date COMMENT 'アカウントの有効期限（指定日まで有効）
-NULLの場合は無期限',
-	-- NULLは無期限
-	PASSWORD_EXPIRYDATE date COMMENT 'NULLは無期限',
+	-- nullの場合は無期限
+	account_expry_date date comment 'アカウントの有効期限（指定日まで有効）
+nullの場合は無期限',
+	-- nullは無期限
+	password_expirydate date comment 'nullは無期限',
 	-- ユーザーの所属学科
-	-- ROLEが「先生」の場合も必要
+	-- roleが「先生」の場合も必要
 	-- どこにも所属していない場合は
-	-- 学科「その他」のIDが入る
-	COURSE_ID int NOT NULL COMMENT 'ユーザーの所属学科
-ROLEが「先生」の場合も必要
+	-- 学科「その他」のidが入る
+	course_id int not null comment 'ユーザーの所属学科
+roleが「先生」の場合も必要
 どこにも所属していない場合は
-学科「その他」のIDが入る',
-	-- 役割ID
-	ROLE_ID int NOT NULL COMMENT '役割ID',
+学科「その他」のidが入る',
+	-- 役割id
+	role_id int not null comment '役割id',
 	-- 初めてのログインかどうかを判定するフラグ
-	IS_FIRST_FLG int NOT NULL COMMENT '初めてのログインかどうかを判定するフラグ',
+	is_first_flg int not null comment '初めてのログインかどうかを判定するフラグ',
 	-- 認証失敗時カウントアップされる
 	-- 何度失敗してもアカウントをロックしない場合は、カウントアップしない
-	CERTIFY_ERR_CNT int DEFAULT 0 NOT NULL COMMENT '認証失敗時カウントアップされる
+	certify_err_cnt int default 0 not null comment '認証失敗時カウントアップされる
 何度失敗してもアカウントをロックしない場合は、カウントアップしない',
-	IS_LOCK_FLG int DEFAULT 0 NOT NULL,
+	is_lock_flg int default 0 not null,
 	-- 入学年度
 	-- ロールが学生の場合のみ
-	-- そのほかはNULL
-	ADMISSION_YEAR int COMMENT '入学年度
+	-- そのほかはnull
+	admission_year int comment '入学年度
 ロールが学生の場合のみ
-そのほかはNULL',
-	-- 在校生や現役の教務はNULL
-	GRADUATE_YEAR int COMMENT '在校生や現役の教務はNULL',
+そのほかはnull',
+	-- 在校生や現役の教務はnull
+	graduate_year int comment '在校生や現役の教務はnull',
 	-- 留年するたびに１プラスする
 	-- 学年は
 	-- 現在の年度-入学年度-留年回数+1
 	-- で求める
-	REPEAT_YEAR_COUNT int DEFAULT 0 NOT NULL COMMENT '留年するたびに１プラスする
+	repeat_year_count int default 0 not null comment '留年するたびに１プラスする
 学年は
 現在の年度-入学年度-留年回数+1
 で求める',
-	GIVE_UP_YEAR int,
-	REMARK varchar(4000),
-	ENTRY_DATE datetime NOT NULL,
-	UPDATE_DATE datetime NOT NULL,
-	-- NULLの場合は未設定
-	AVATAR_ID_CSV varchar(100) COMMENT 'NULLの場合は未設定',
+	giVe_up_year int,
+	remark varchar(4000),
+	entry_date datetime not null,
+	update_date datetime not null,
+	-- nullの場合は未設定
+	aVatar_id_csV varchar(100) comment 'nullの場合は未設定',
 	-- 2018/1/19で追加
-	GRADE int DEFAULT 1 NOT NULL COMMENT '2018/1/19で追加',
+	grade int default 1 not null comment '2018/1/19で追加',
 	-- 卒業や退学などで無効となったデータについて
 	-- 検索しやすいようにフラグを立てる
 	-- 1=削除済み
 	-- 0=未削除
-	DEL_FLG int DEFAULT 0 NOT NULL COMMENT '卒業や退学などで無効となったデータについて
+	del_flg int default 0 not null comment '卒業や退学などで無効となったデータについて
 検索しやすいようにフラグを立てる
 1=削除済み
 0=未削除',
-	PRIMARY KEY (USER_ID),
-	UNIQUE (STUDENT_NO),
-	UNIQUE (MAILADRESS)
-) COMMENT = '利用者テーブル
+	primary key (user_id),
+	unique (student_no),
+	unique (mailadress)
+) comment = '利用者テーブル
 ログイン可能な利用者は全てこのテーブルに登録される';
 
 
 
-/* Create Foreign Keys */
+/* create foreign keys */
 
-ALTER TABLE HISTORY_TBL
-	ADD FOREIGN KEY (ACTION_ID)
-	REFERENCES ACTION_MASTER (ACTION_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table history_tbl
+	add foreign key (action_id)
+	references action_master (action_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE ATTACHED_FILE_TBL
-	ADD FOREIGN KEY (BBS_ID)
-	REFERENCES BBS_TBL (BBS_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table attached_file_tbl
+	add foreign key (bbs_id)
+	references bbs_tbl (bbs_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE BBS_CHECK_TBL
-	ADD FOREIGN KEY (BBS_ID)
-	REFERENCES BBS_TBL (BBS_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table bbs_check_tbl
+	add foreign key (bbs_id)
+	references bbs_tbl (bbs_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE BBS_TBL
-	ADD FOREIGN KEY (CATEGORY_ID)
-	REFERENCES CATEGORY_TBL (CATEGORY_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table bbs_tbl
+	add foreign key (category_id)
+	references category_tbl (category_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE USER_TBL
-	ADD FOREIGN KEY (COURSE_ID)
-	REFERENCES COURSE_MASTER (COURSE_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table user_tbl
+	add foreign key (course_id)
+	references course_master (course_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE USER_TBL
-	ADD FOREIGN KEY (ROLE_ID)
-	REFERENCES ROLE_MASTER (ROLE_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table user_tbl
+	add foreign key (role_id)
+	references role_master (role_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE CATEGORY_TBL
-	ADD FOREIGN KEY (ROOM_ID)
-	REFERENCES ROOM_TBL (ROOM_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table category_tbl
+	add foreign key (room_id)
+	references room_tbl (room_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE ROOM_USER_TBL
-	ADD FOREIGN KEY (ROOM_ID)
-	REFERENCES ROOM_TBL (ROOM_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table room_user_tbl
+	add foreign key (room_id)
+	references room_tbl (room_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE BBS_CHECK_TBL
-	ADD FOREIGN KEY (USER_ID)
-	REFERENCES USER_TBL (USER_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table bbs_check_tbl
+	add foreign key (user_id)
+	references user_tbl (user_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE CHAT_TABLE
-	ADD FOREIGN KEY (to_user_id)
-	REFERENCES USER_TBL (USER_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table chat_table
+	add foreign key (to_user_id)
+	references user_tbl (user_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE CHAT_TABLE
-	ADD FOREIGN KEY (from_user_id)
-	REFERENCES USER_TBL (USER_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table chat_table
+	add foreign key (from_user_id)
+	references user_tbl (user_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE HISTORY_TBL
-	ADD FOREIGN KEY (USER_ID)
-	REFERENCES USER_TBL (USER_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table history_tbl
+	add foreign key (user_id)
+	references user_tbl (user_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE ROOM_TBL
-	ADD FOREIGN KEY (UPDATE_USER_ID)
-	REFERENCES USER_TBL (USER_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table room_tbl
+	add foreign key (update_user_id)
+	references user_tbl (user_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE ROOM_TBL
-	ADD FOREIGN KEY (CREATE_USER_ID)
-	REFERENCES USER_TBL (USER_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table room_tbl
+	add foreign key (create_user_id)
+	references user_tbl (user_id)
+	on update restrict
+	on delete restrict
 ;
 
 
-ALTER TABLE ROOM_USER_TBL
-	ADD FOREIGN KEY (USER_ID)
-	REFERENCES USER_TBL (USER_ID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
+alter table room_user_tbl
+	add foreign key (user_id)
+	references user_tbl (user_id)
+	on update restrict
+	on delete restrict
 ;
 
 
 
-/* Create Indexes */
+/* create indexes */
 
-CREATE INDEX IDX_ATTACED_FILE_BBSID ON ATTACHED_FILE_TBL (BBS_ID ASC);
-CREATE INDEX INDEX_CATEGORYTBL_ROOMID ON CATEGORY_TBL (ROOM_ID ASC);
-CREATE INDEX IDX_HIS_USER_ID ON HISTORY_TBL (USER_ID ASC);
-CREATE INDEX IDX_HIS_ACTION_ID ON HISTORY_TBL (ACTION_ID ASC);
-CREATE INDEX IDX_HIS_ACTION_DATE ON HISTORY_TBL (ACTION_DATE ASC);
-CREATE INDEX IDX_USER_COURSE_ID ON USER_TBL (COURSE_ID ASC);
-CREATE INDEX IDX_USER_ROLE_ID ON USER_TBL (ROLE_ID ASC);
-CREATE INDEX IDX_USER_TBL_NICKNAME ON USER_TBL (NICK_NAME ASC);
-CREATE INDEX IDX_USER_GRADE ON USER_TBL (GRADE ASC);
-CREATE INDEX IDX_USER_MAILADRESS ON USER_TBL (MAILADRESS ASC);
-CREATE INDEX INDEX_USERTBL_STUDENTNO ON USER_TBL (STUDENT_NO ASC);
+create index idx_attaced_file_bbsid on attached_file_tbl (bbs_id asc);
+create index index_categorytbl_roomid on category_tbl (room_id asc);
+create index idx_his_user_id on history_tbl (user_id asc);
+create index idx_his_action_id on history_tbl (action_id asc);
+create index idx_his_action_date on history_tbl (action_date asc);
+create index idx_user_course_id on user_tbl (course_id asc);
+create index idx_user_role_id on user_tbl (role_id asc);
+create index idx_user_tbl_nickname on user_tbl (nick_name asc);
+create index idx_user_grade on user_tbl (grade asc);
+create index idx_user_mailadress on user_tbl (mailadress asc);
+create index index_usertbl_studentno on user_tbl (student_no asc);
 
 
 

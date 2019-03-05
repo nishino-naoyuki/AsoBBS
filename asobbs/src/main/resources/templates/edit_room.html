@@ -68,7 +68,7 @@
 		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
 		               		
 		               		<div class="table-responsive">
-		               			<form action="/room/confirm_edit" method="POST" th:object="${roomInputForm}">
+		               			<form th:action="@{/room/confirm_edit}" method="POST" th:object="${roomInputForm}">
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
 	                                	<tr>

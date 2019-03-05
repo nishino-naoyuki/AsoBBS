@@ -143,7 +143,9 @@ public class UserCSVService {
 		String hashedPwd  = Digest.createPassword(userCSV.getMailAddress(), userCSV.getPassword());
 		
 		entity.setAccountExpryDate(null);
-		entity.setAdmissionYear(Integer.parseInt(userCSV.getAdmissionYear()));
+		if( RoleId.STUDENT.equals(userCSV.getRoleId())){
+			entity.setAdmissionYear(Integer.parseInt(userCSV.getAdmissionYear()));
+		}
 		entity.setCertifyErrCnt(0);
 		entity.setGiveUpYear(null);
 		entity.setGrade(1);//後でバッチで更新

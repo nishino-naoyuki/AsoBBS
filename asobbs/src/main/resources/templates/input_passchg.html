@@ -63,7 +63,7 @@
                         <div class="panel-heading">
                         		旧パスワードと新パスワードを入力してください
                         </div>
-                        <form action="/pwd/change"  method="post" th:object="${passwordChangeForm}">
+                        <form th:action="@{/pwd/change}"  method="post" th:object="${passwordChangeForm}">
 		               	<div class="panel-body">
 		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
 		               		<div class="table-responsive">

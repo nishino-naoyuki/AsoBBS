@@ -108,16 +108,17 @@
 
     </div>
     <!-- /#wrapper -->
-	<script>
+	<script th:inline="javascript">
 	var bbsListTable;
 	$(function(){
 		// datatableの設定を変更
 		//alert($(".categorylink-all").data("rid"));
 		var ajaxurl ;
+		var url = /*[[@{/bbslist/list}]]*/ "/bbslist/list";
 		if( $("#cId").val() != ""){
-			ajaxurl = "/bbslist/list?id="+$("#cId").val()+"&roomId="+$(".categorylink-all").data("rid");
+			ajaxurl = url+"?id="+$("#cId").val()+"&roomId="+$(".categorylink-all").data("rid");
 		}else{
-			ajaxurl = "/bbslist/list?id="+$(".categorylink-all").data("id")+"&roomId="+$(".categorylink-all").data("rid");
+			ajaxurl = url+"?id="+$(".categorylink-all").data("id")+"&roomId="+$(".categorylink-all").data("rid");
 		}
 		//var ajaxurl = "/bbslist/list?id="+$(".categorylink-all").data("id")+"&roomId="+$(".categorylink-all").data("rid");
 		//alert(ajaxurl);
@@ -137,7 +138,8 @@
             		data:"title" ,
             		type:"id",
                 	render: function ( data, type, row ) {
-                		return '<a href="/bbs/detail?id='+row.id+'">'+data+'</a>';
+                		var url = /*[[@{/bbs/detail}]]*/ "/bbs/detail";
+                		return '<a href="'+url+'?id='+row.id+'">'+data+'</a>';
                 	}
             	},
                 { data: "updateDate" },
@@ -155,7 +157,7 @@
 		//alert(name);
 		$.ajax({
 	        type : "GET",                  // HTTP通信の種類
-	        url  : "/bbslist/list",                 // リクエストを送信する先のURL
+	        url  : /*[[@{/bbs/list}]]*/ "/bbslist/list",                 // リクエストを送信する先のURL
 	        dataType : "json",              // サーバーから返されるデータの型
 	        data : param,
 	        processData : false,
@@ -181,7 +183,8 @@
                 		data:"title" ,
                 		type:"id",
 	                	render: function ( data, type, row ) {
-	                		return '<a href="/bbs/detail?id='+row.id+'">'+data+'</a>';
+	                		var url = /*[[@{/bbs/detail}]]*/ "/bbs/detail";
+	                		return '<a href="'+url+'?id='+row.id+'">'+data+'</a>';
 	                	}
                 	},
                     { data: "updateDate" },

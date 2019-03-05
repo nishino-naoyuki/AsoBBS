@@ -83,7 +83,6 @@
 		      <configuration>
 		        	<source>${java.version}</source>
 		        	<target>${java.version}</target>
-                    <executable>true</executable>
 		      </configuration>
 			</plugin>
 		</plugins>
@@ -94,7 +93,7 @@
                 <build>
                         <resources>
                                 <resource>
-                                        <directory>src/main/resources/dev</directory>
+                                        <directory>setting/dev</directory>
                                 </resource>
                                 <resource>
                                         <directory>src/main/resources</directory>
@@ -107,7 +106,7 @@
                 <build>
                         <resources>
                                 <resource>
-                                        <directory>src/main/resources/production</directory>
+                                        <directory>setting/production</directory>
                                 </resource>
                                 <resource>
                                         <directory>src/main/resources</directory>
@@ -120,7 +119,7 @@
                 <build>
                         <resources>
                                 <resource>
-                                        <directory>src/main/resources/staging</directory>
+                                        <directory>setting/staging</directory>
                                 </resource>
                                 <resource>
                                         <directory>src/main/resources</directory>

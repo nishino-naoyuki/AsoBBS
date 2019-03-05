@@ -16,7 +16,8 @@ extends JpaRepository<ChatTableEntity,Integer>,
 	@Query("select c from ChatTableEntity c where (c.fromUserTbl.userId = :userId1 and c.toUserTbl.userId = :userId2) or (c.fromUserTbl.userId = :userId2 and c.toUserTbl.userId = :userId1) order by c.regsterDatetime")
 	List<ChatTableEntity> getList(@Param("userId1")Integer userId1,@Param("userId2")Integer userId2);
 	
-	@Query("select c from ChatTableEntity  c "
+	@Query("select c "
+			+ "from ChatTableEntity  c "
 			+ "where "
 			+ " c.toUserId = :userId  and "
 			+ "(now() - c.regsterDatetime) <= 2592000 "
