@@ -40,9 +40,9 @@ extends JpaRepository<BbsTblEntity,Integer>,
 			+ "left join b.categoryTbl c "
 			+ "left join c.roomTbl r "
 			+ "left join r.roomUserTblSet ru "
-			+ "where b.bbsId = :bbsId and ru.userId = :userId")
+			+ "where b.bbsId = :bbsId and (ru.userId = :userId or r.allFlg = 1) ")
 	public BbsTblEntity getBy(@Param("bbsId")Integer bbsId,@Param("userId")Integer userId);
 
-	@Query("select b from BbsTblEntity b where parentBbsId = :bbsId order by b.updateDate desc")
+	@Query("select b from BbsTblEntity b where parentBbsId = :bbsId order by b.updateDate ASC")
 	public List<BbsTblEntity> getReply(@Param("bbsId")Integer bbsId);
 }

@@ -13,5 +13,5 @@ public class RoomListDto {
 	//カテゴリ数
 	private Integer categoryNum;
 	//ユーザー数
-	private Integer userNum;
+	private String userNum;
 }

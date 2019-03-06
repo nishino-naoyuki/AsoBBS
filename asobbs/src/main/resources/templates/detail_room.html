@@ -100,6 +100,10 @@
 	                                		<th>ルーム所属者</th>
 	                                		<td>
 	                                		<div class="form-group">
+	                                			<div th:if="${roomDetailDto.allUser}">
+	                                				全ユーザー
+	                                			</div>
+	                                			<div th:unless="${roomDetailDto.allUser}">
 	                                			<table class="table table-bordered table-hover" id="userMailList">
 	                                				<thead class="thead-light">
 			                                			<tr>
@@ -118,6 +122,7 @@
 			                                			</tr>
 		                                			</tbody>
 	                                			</table>
+	                                			</div>
 	                                			</div>
 	                                		</td>
 	                                	</tr>

@@ -14,6 +14,7 @@ public class RoomDetailDto {
 	private List<UserListDto> userList = new ArrayList<UserListDto>();
 	private List<CategoryListDto> categoryList = new ArrayList<CategoryListDto>();
 	private Integer roomBbsNum;	//このルーム内のすべての掲示情報数
+	private Boolean allUser;
 
 	public void addAdminListDto( UserListDto userListDto ) {
 		adminList.add(userListDto);

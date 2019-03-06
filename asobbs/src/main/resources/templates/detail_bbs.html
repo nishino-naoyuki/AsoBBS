@@ -63,16 +63,22 @@
 					  <li><a th:href="@{'/room/disp?id='+*{roomId}+'&cid='+*{categoryId}}"  th:text="*{categoryName}"></a></li>
 					  <li class="active" th:text="*{title}"></li>
 					</ol>
-                    <div class="panel panel-green">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
-                        	<div th:text="'タイトル：'+*{title}"></div>
-                        	<div th:unless="${session['LoginInfo'].isStudent()}">
-                        		<button class="form-control-sm bg-default btn btn-primary"  id="edit_bbs">修正</button>
+                        	<div class="row">
+	                        	<div class="h3 col-xs-8" th:text="'タイトル：'+*{title}"></div>
+	                        	<div class="text-right col-xs-4">
+		                        	<div th:unless="${session['LoginInfo'].isStudent()}">
+		                        		<button class="form-control-sm bg-default btn btn-default"  id="edit_bbs">修正</button>
+		                        	</div>
+	                        		<div th:text="'更新者：'+*{updateName}"></div>
+	                        		<div th:text="'更新日：'+*{updateDate}"></div>
+	                        	</div>
                         	</div>
                         </div>
 		               	<div class="panel-body">
 		               		<div class="table-responsive">
-		               			<table class="table table-bordered table-hover" id="bbs">
+		               			<table class="table" id="bbs">
 		               				<tbody>
 	                                	<tr>
 	                                		<td>
@@ -82,13 +88,16 @@
 	                                	</tr>
 	                                	<tr th:if="*{replyDtoList.size()}">
 	                                		<td>
-	                                			<table class="table table-bordered table-hover" >
+	                                			<table class="table table-striped" >
 	                                			<tr>
 	                                				<th colspan="2">返信</th>
 	                                			</tr>
 			                                	<tr th:each="replyDto:*{replyDtoList}" class="reply" >
-			                                		<td class="w-75" th:utext="${replyDto.content}"></td>
-			                                		<td th:utext="'返信者：'+${replyDto.writerName}+'<BR>'+${replyDto.writeDate}"></td>		
+			                                		<td class="col-xs-9"><div  th:text="${replyDto.content}"></div></td>
+			                                		<td>
+				                                		<div th:text="'返信者：'+${replyDto.writerName}"></div>
+				                                		<div th:text="${replyDto.writeDate}"></div>
+			                                		</td>		
 			                                	</tr>
 			                                	</table>
 	                                		</td>

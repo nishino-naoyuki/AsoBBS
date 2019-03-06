@@ -17,6 +17,8 @@ public class BbsDetailDto {
 	private Boolean emergencyFlg;
 	private Boolean replyOkFlg;
 	private String content;
+	private String updateDate;
+	private String updateName;
 	private List<ReplyDto> replyDtoList = new ArrayList<ReplyDto>();
 	private List<AttachedFileDto> attachedFileList  = new ArrayList<AttachedFileDto>();
 	private Boolean emergencyReplyFlg;	//すでに緊急掲示板に返信済みかどうか

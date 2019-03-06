@@ -26,6 +26,7 @@ import jp.ac.asojuku.asobbs.form.RoomInputForm;
 import jp.ac.asojuku.asobbs.form.RoomSearchForm;
 import jp.ac.asojuku.asobbs.param.RoleId;
 import jp.ac.asojuku.asobbs.param.RoomRoleId;
+import jp.ac.asojuku.asobbs.param.StringConst;
 import jp.ac.asojuku.asobbs.repository.BbsRepository;
 import jp.ac.asojuku.asobbs.repository.CategoryRepository;
 import jp.ac.asojuku.asobbs.repository.RoomRepository;
@@ -90,6 +91,7 @@ public class RoomService {
 		
 		//ルーム情報
 		roomEntity.setName(roomInsetDto.getRoomName());
+		roomEntity.setAllFlg( (roomInsetDto.getAllUserFlag() ? 1:0) );
 		
 		//作成情報
 		UserTblEntity createUserTbl = userRepository.getOne(userId);
@@ -112,10 +114,12 @@ public class RoomService {
 		
 		//学生の場合は自分が所属持しているルームのみを取得する
 		Integer filterUserId = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? loginInfo.getUserId() : null );
+		Integer allFlg = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? 1 : null );
+		
 		//検索条件を指定して実行
 		List<RoomTblEntity> entityList = roomRepository.findAll(
 				Specification.where(roomNameContains(searchCondition.getName())).
-				and(roomUserContains(filterUserId))
+				and(roomUserContains(filterUserId)).or(roomAllUsers(allFlg))
 				);
 		
 		//entity->dto
@@ -184,6 +188,9 @@ public class RoomService {
 		
 		roomDetailDto.setRoomBbsNum(allBbsNum);
 		
+		//全員フラグ
+		roomDetailDto.setAllUser( (entity.getAllFlg() == 1 ? true:false) );
+		
 		return roomDetailDto;
 	}
 	
@@ -225,7 +232,12 @@ public class RoomService {
 			userCount++;
 		}
 		dto.setAdminUserName(adminNames.toString());
-		dto.setUserNum(userCount);
+		if( entity.getAllFlg() == 1 ) {
+			//全員
+			dto.setUserNum(StringConst.ALLUSERS);
+		}else {
+			dto.setUserNum(String.valueOf(userCount));
+		}
 		dto.setCategoryNum(entity.getCategoryTblSet().size());
 		
 		return dto;
@@ -249,7 +261,10 @@ public class RoomService {
 		
 		/////////////////////////////////////////////
 		//所属ユーザー（管理者と一般ユーザー）
-		roomUserList = addRoomUsers(roomUserList,roomId,roomInsetDto);
+		if( !roomInsetDto.getAllUserFlag() ) {
+			//対象が全員の場合は登録しない
+			roomUserList = addRoomUsers(roomUserList,roomId,roomInsetDto);
+		}
 		roomUserList = addRoomAdmins(roomUserList,roomId,roomInsetDto);
 		
 		roomUserRepository.saveAll(roomUserList);
@@ -282,6 +297,8 @@ public class RoomService {
 
 	/**
 	 * 一般ユーザーを登録する
+	 * ※対象者が全員の場合は、登録しない
+	 * 
 	 * @param roomUserList
 	 * @param roomId
 	 * @param roomInsetDto
@@ -290,30 +307,16 @@ public class RoomService {
 	private List<RoomUserTblEntity> addRoomUsers(
 			List<RoomUserTblEntity> roomUserList,Integer roomId,RoomInsertDto roomInsetDto) {
 
-		if( roomInsetDto.getAllUserFlag() != null && roomInsetDto.getAllUserFlag() ) {
-			//全ての場合は、全権取得した後に登録する
-			List<UserTblEntity> userList = userRepository.findAll();
-			for(UserTblEntity userEntity : userList) {
-				RoomUserTblEntity roomUserTbl = new RoomUserTblEntity();
-				roomUserTbl.setRoomId(roomId);
-				roomUserTbl.setUserId(userEntity.getUserId());
-				roomUserTbl.setRoomRole(RoomRoleId.USER.getId());
-				
-				roomUserList.add(roomUserTbl);
-			}
+		//個別に追加する場合は１けんづつ登録していく
+		for(String mail : roomInsetDto.getUserMailList()) {
+			RoomUserTblEntity roomUserTbl = new RoomUserTblEntity();
+			UserTblEntity userEntity = userRepository.getUserByMail(mail);
+
+			roomUserTbl.setRoomId(roomId);
+			roomUserTbl.setUserId(userEntity.getUserId());
+			roomUserTbl.setRoomRole(RoomRoleId.USER.getId());
 			
-		}else {
-			//個別に追加する場合は１けんづつ登録していく
-			for(String mail : roomInsetDto.getUserMailList()) {
-				RoomUserTblEntity roomUserTbl = new RoomUserTblEntity();
-				UserTblEntity userEntity = userRepository.getUserByMail(mail);
-	
-				roomUserTbl.setRoomId(roomId);
-				roomUserTbl.setUserId(userEntity.getUserId());
-				roomUserTbl.setRoomRole(RoomRoleId.USER.getId());
-				
-				roomUserList.add(roomUserTbl);
-			}
+			roomUserList.add(roomUserTbl);
 		}
 
 		return roomUserList;
@@ -344,6 +347,8 @@ public class RoomService {
 		for( String user : users ) {
 			roomConfirmDto.addUserMailDto(user);
 		}
+		//全員フラグ
+		roomConfirmDto.setAllUserFlag(roomInputForm.getAllUserFlg());
 		
 		return roomConfirmDto;
 	}
@@ -376,7 +381,7 @@ public class RoomService {
 	private RoomInputForm getRoomInputFormFrom(RoomTblEntity entity) {
 		RoomInputForm roomInputForm = new RoomInputForm();
 		
-		roomInputForm.setAllUserFlg(false);
+		roomInputForm.setAllUserFlg( (entity.getAllFlg()==1?true:false) );
 		roomInputForm.setRoomName(entity.getName());
 		//所属ユーザー名
 		StringBuffer sbUsers = new StringBuffer();

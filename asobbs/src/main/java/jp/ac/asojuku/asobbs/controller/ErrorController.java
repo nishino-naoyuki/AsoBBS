@@ -18,4 +18,12 @@ public class ErrorController {
         
         return mv;
     }
+
+	@RequestMapping(value= {"/404"}, method=RequestMethod.GET)
+    public ModelAndView err404(ModelAndView mv) {
+		
+        mv.setViewName("/error/404");
+        
+        return mv;
+    }
 }

@@ -57,14 +57,14 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                	<p>
+                	<p th:unless="${session['LoginInfo'].isStudent()}">
                 	<a  th:href="@{'/bbs/input?id='+${roomDetailDto.roomId}}" class="btn btn-primary">新規作成</a>
                 	</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="panel panel-green">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
                             カテゴリ一覧
                         </div>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <div class="panel panel-green">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
                             <div id="title">タイトル一覧</div>
                         </div>
@@ -157,7 +157,7 @@
 		//alert(name);
 		$.ajax({
 	        type : "GET",                  // HTTP通信の種類
-	        url  : /*[[@{/bbs/list}]]*/ "/bbslist/list",                 // リクエストを送信する先のURL
+	        url  : /*[[@{/bbslist/list}]]*/ "/bbslist/list",                 // リクエストを送信する先のURL
 	        dataType : "json",              // サーバーから返されるデータの型
 	        data : param,
 	        processData : false,

@@ -3,21 +3,21 @@ $(".room_list_drop").on('click', function() {
 	//alert("room_list_drop clicked");
 	//alert( $("#room_list_top").html() );
 	$.ajax({
-        type : "POST",                  // HTTP’ÊM‚Ìí—Ş
-        url  : /*[[@{/getroomlist}]]*/ "/getroomlist",                 // ƒŠƒNƒGƒXƒg‚ğ‘—M‚·‚éæ‚ÌURL
-        dataType : "json",              // ƒT[ƒo[‚©‚ç•Ô‚³‚ê‚éƒf[ƒ^‚ÌŒ^
+        type : "POST",                  // HTTPé€šä¿¡ã®ç¨®é¡
+        url  : /*[[@{/getroomlist}]]*/ "/getroomlist",                 // ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é€ä¿¡ã™ã‚‹å…ˆã®URL
+        dataType : "json",              // ã‚µãƒ¼ãƒãƒ¼ã‹ã‚‰è¿”ã•ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®å‹
         processData : false,
         contentType: false
-    }).done(function(data) {        // Ajax’ÊM‚ª¬Œ÷‚µ‚½‚Ìˆ—
+    }).done(function(data) {        // Ajaxé€šä¿¡ãŒæˆåŠŸã—ãŸæ™‚ã®å‡¦ç†
 
 		var tagStr = "";
 //		if( data.length == 1 ){
-//			tagStr += "   <a href='/room/disp?id="+data[0].roomId+"'><i class='fa fa-dashboard fa-fw'></i>Œf¦”ÂF"+data[0].name+"</a>\n";
+//			tagStr += "   <a href='/room/disp?id="+data[0].roomId+"'><i class='fa fa-dashboard fa-fw'></i>æ²ç¤ºæ¿ï¼š"+data[0].name+"</a>\n";
 //			$("#sidebar_bbs_list").html(tagStr);
 //			return;
 //		}
     	for( var i =0; i < data.length; i++ ){
-    		//ƒ‹[ƒ€–¼ˆê——
+    		//ãƒ«ãƒ¼ãƒ åä¸€è¦§
     		/*<![CDATA[*/
     		var url = /*[[@{/room/disp}]]*/ "/room/detail";
     		/*]]>*/
@@ -28,8 +28,8 @@ $(".room_list_drop").on('click', function() {
     	$("#room_list_top").html(tagStr);
 		//alert( tagStr );
     	
-    }).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax’ÊM‚ª¸”s‚µ‚½‚Ìˆ—
-        alert("ƒ‹[ƒ€î•ñ‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½");
+    }).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajaxé€šä¿¡ãŒå¤±æ•—ã—ãŸæ™‚ã®å‡¦ç†
+        alert("ãƒ«ãƒ¼ãƒ æƒ…å ±ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ");
     });
 })
 </script>

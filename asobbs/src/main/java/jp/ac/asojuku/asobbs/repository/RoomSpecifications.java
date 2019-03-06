@@ -44,4 +44,19 @@ public class RoomSpecifications {
 			}
         };
     }
+
+    /**
+     * 全体通知かどうか
+     * @return
+     */
+    public static Specification<RoomTblEntity> roomAllUsers(Integer allFlg) {
+        return  allFlg == null ? null :  new Specification<RoomTblEntity>() {
+			@Override
+			public Predicate toPredicate(Root<RoomTblEntity> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				// TODO 自動生成されたメソッド・スタブ
+				return cb.equal(root.get("allFlg"),  1 );
+			}
+        };
+    }
 }

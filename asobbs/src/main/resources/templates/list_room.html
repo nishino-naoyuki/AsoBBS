@@ -109,7 +109,6 @@
             "columns": [
             	{
             		data:"name" ,
-            		type:"roomId",
                 	render: function ( data, type, row ) {
                 		var url = /*[[@{/room/detail}]]*/ "/room/dummy";
                 		return '<a href="'+url+'?roomId='+row.roomId+'">'+data+'</a>';
@@ -117,7 +116,7 @@
             	},
                 { data: "adminUserName" },
                 { data: "categoryNum" },
-                { data: "userNum" },
+                { data: "userNum"  },
             ]
 		});
 	})

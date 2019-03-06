@@ -1,0 +1,790 @@
+mkdir /data/dbbk/asobbs
+mkdir: ディレクトリ `/data/dbbk/asobbs' を作成できません: そのようなファイルやディレクトリはありません
+[abcc@localhost ~]$ su 
+パスワード:
+[root@localhost abcc]# mkdicd /
+[root@localhost /]# ls -la
+合計 24
+dr-xr-xr-x.  17 root root  224  2月 28 19:30 .
+dr-xr-xr-x.  17 root root  224  2月 28 19:30 ..
+lrwxrwxrwx.   1 root root    7  2月 28 19:26 bin -> usr/bin
+dr-xr-xr-x.   5 root root 4096  3月  1 13:15 boot
+drwxr-xr-x.  19 root root 3140  3月  1 13:15 dev
+drwxr-xr-x.  80 root root 8192  3月  5 21:13 etc
+drwxr-xr-x.   5 root root   43  3月  4 10:26 home
+lrwxrwxrwx.   1 root root    7  2月 28 19:26 lib -> usr/lib
+lrwxrwxrwx.   1 root root    9  2月 28 19:26 lib64 -> usr/lib64
+drwxr-xr-x.   2 root root    6  4月 11  2018 media
+drwxr-xr-x.   2 root root    6  4月 11  2018 mnt
+drwxr-xr-x.   3 root root   27  3月  4 12:03 opt
+dr-xr-xr-x. 205 root root    0  3月  1 13:15 proc
+dr-xr-x---.   3 root root  181  3月  5 21:13 root
+drwxr-xr-x.  27 root root  780  3月  4 12:17 run
+lrwxrwxrwx.   1 root root    8  2月 28 19:26 sbin -> usr/sbin
+drwxr-xr-x.   2 root root    6  4月 11  2018 srv
+dr-xr-xr-x.  13 root root    0  3月  1 13:15 sys
+drwxrwxrwt.  10 root root 4096  3月  6 03:17 tmp
+drwxr-xr-x.  13 root root  155  2月 28 19:26 usr
+drwxr-xr-x.  21 root root 4096  3月  4 10:34 var
+[root@localhost /]# cd usr/
+[root@localhost usr]# ls -la
+合計 108
+drwxr-xr-x. 13 root root   155  2月 28 19:26 .
+dr-xr-xr-x. 17 root root   224  2月 28 19:30 ..
+dr-xr-xr-x.  2 root root 24576  3月  4 12:16 bin
+drwxr-xr-x.  2 root root     6  4月 11  2018 etc
+drwxr-xr-x.  2 root root     6  4月 11  2018 games
+drwxr-xr-x.  3 root root    23  2月 28 19:26 include
+dr-xr-xr-x. 38 root root  4096  3月  4 10:24 lib
+dr-xr-xr-x. 40 root root 24576  3月  4 12:15 lib64
+drwxr-xr-x. 21 root root  4096  3月  4 10:54 libexec
+drwxr-xr-x. 12 root root   131  2月 28 19:26 local
+dr-xr-xr-x.  2 root root 12288  3月  4 12:17 sbin
+drwxr-xr-x. 95 root root  4096  3月  4 12:17 share
+drwxr-xr-x.  4 root root    34  2月 28 19:26 src
+lrwxrwxrwx.  1 root root    10  2月 28 19:26 tmp -> ../var/tmp
+[root@localhost usr]# cd share/
+[root@localhost share]# ls -la
+合計 96
+drwxr-xr-x.  95 root root  4096  3月  4 12:17 .
+drwxr-xr-x.  13 root root   155  2月 28 19:26 ..
+drwxr-xr-x.   2 root root    94  2月 28 19:27 GeoIP
+drwxr-xr-x.   4 root root    49  3月  4 10:24 X11
+drwxr-xr-x.   2 root root    39  3月  4 10:24 aclocal
+drwxr-xr-x.   7 root root    90  2月 28 19:27 alsa
+drwxr-xr-x.   4 root root    33  2月 28 19:27 anaconda
+drwxr-xr-x.   2 root root   128  3月  4 10:25 applications
+drwxr-xr-x.   3 root root    20  2月 28 19:26 augeas
+drwxr-xr-x.   2 root root  4096  2月 28 19:28 authconfig
+drwxr-xr-x.   2 root root  4096  2月 28 19:26 awk
+drwxr-xr-x.   2 root root   161  2月 28 19:27 backgrounds
+drwxr-xr-x.   3 root root    25  2月 28 19:26 bash-completion
+drwxr-xr-x.   2 root root    67  2月 28 19:27 centos-logos
+drwxr-xr-x.   2 root root    18  2月 28 19:26 centos-release
+drwxr-xr-x.   2 root root   163  2月 28 19:26 cracklib
+drwxr-xr-x.   5 root root   102  2月 28 19:27 dbus-1
+drwxr-xr-x.   2 root root     6  4月 11  2018 desktop-directories
+drwxr-xr-x.   2 root root     6  4月 11  2018 dict
+drwxr-xr-x. 285 root root 12288  3月  4 12:17 doc
+dr-xr-xr-x.   2 root root     6  4月 11  2018 empty
+drwxr-xr-x.   2 root root    19  2月 28 19:26 file
+drwxr-xr-x.   2 root root     6 10月 31 07:47 firewalld
+drwxr-xr-x.   3 root root    20  2月 28 19:27 firstboot
+drwxr-xr-x.   3 root root    24  3月  4 10:24 fontconfig
+drwxr-xr-x.   3 root root    33  3月  4 10:24 fonts
+drwxr-xr-x.   2 root root     6  4月 11  2018 games
+drwxr-xr-x.   3 root root    20  2月 28 19:26 gcc-4.8.2
+lrwxrwxrwx.   1 root root     9  2月 28 19:26 gcc-4.8.5 -> gcc-4.8.2
+drwxr-xr-x.   3 root root    23  2月 28 19:26 gdb
+drwxr-xr-x.   5 root root    58  2月 28 19:26 gettext
+drwxr-xr-x.   3 root root    17  2月 28 19:26 gettext-0.19.8
+drwxr-xr-x.   3 root root    20  2月 28 19:26 ghostscript
+drwxr-xr-x.   3 root root    21  2月 28 19:26 glib-2.0
+drwxr-xr-x.   2 root root     6  4月 11  2018 gnome
+drwxr-xr-x.   2 root root    45  2月 28 19:27 gnome-background-properties
+drwxr-xr-x.   2 root root  4096  2月 28 19:27 gnupg
+drwxr-xr-x.   3 root root    35  2月 28 19:26 groff
+drwxr-xr-x.   2 root root    83  3月  1 13:09 grub
+drwxr-xr-x.   5 root root    47  3月  4 10:34 httpd
+drwxr-xr-x.   2 root root    97  2月 28 19:27 hwdata
+drwxr-xr-x.   4 root root    37  1月 30 02:29 i18n
+drwxr-xr-x.   5 root root    52  2月 28 19:27 icons
+drwxr-xr-x.   2 root root     6  4月 11  2018 idl
+drwxr-xr-x.   2 root root  4096  3月  4 10:22 info
+drwxr-xr-x.   2 root root     6 11月 21  2015 java
+drwxr-xr-x.   2 root root     6 11月 21  2015 java-1.5.0
+drwxr-xr-x.   2 root root     6 11月 21  2015 java-1.6.0
+drwxr-xr-x.   2 root root     6 11月 21  2015 java-1.7.0
+drwxr-xr-x.   2 root root     6 11月 21  2015 java-1.8.0
+drwxr-xr-x.   2 root root     6 11月 21  2015 java-ext
+drwxr-xr-x.   2 root root   158  3月  4 10:24 java-utils
+drwxr-xr-x.   2 root root     6 11月 21  2015 javadoc
+drwxr-xr-x.  13 root root  4096  3月  4 10:24 javazi
+drwxr-xr-x.   2 root root    22  3月  4 10:24 javazi-1.8
+drwxr-xr-x.   2 root root     6 11月 21  2015 jvm
+drwxr-xr-x.   2 root root     6 11月 21  2015 jvm-commmon
+drwxr-xr-x.   3 root root    18 10月  1  2015 kde4
+drwxr-xr-x.   2 root root     6 11月  5 02:10 kdump
+drwxr-xr-x.   2 root root    24  2月 28 19:27 libdrm
+drwxr-xr-x.  37 root root  4096  3月  4 10:24 licenses
+drwxr-xr-x. 592 root root 12288  3月  1 13:09 locale
+drwxr-xr-x.   3 root root    17  2月 28 19:26 lua
+lrwxrwxrwx.   1 root root    10  2月 28 19:26 magic -> misc/magic
+drwxr-xr-x.  44 root root  4096  3月  4 11:46 man
+drwxr-xr-x.   2 root root     6 11月 21  2015 maven-effective-poms
+drwxr-xr-x.   2 root root    37  3月  4 10:24 maven-fragments
+drwxr-xr-x.   2 root root     6 11月 21  2015 maven-poms
+drwxr-xr-x.   4 root root    51  2月 28 19:28 microcode_ctl
+drwxr-xr-x.  14 root root  4096  2月 28 19:28 mime
+drwxr-xr-x.   2 root root     6  4月 11  2018 mime-info
+drwxr-xr-x.   2 root root    36  2月 28 19:26 misc
+drwxr-xr-x.  27 root root  4096  3月  4 12:17 mysql-8.0
+drwxr-xr-x.   2 root root     6  4月 11  2018 omf
+drwxr-xr-x.   2 root root    23  2月 28 19:27 os-prober
+drwxr-xr-x.   3 root root    21  2月 28 19:26 p11-kit
+drwxr-xr-x.  46 root root  4096  3月  4 12:15 perl5
+drwxr-xr-x.   2 root root   195  2月 28 19:27 pixmaps
+drwxr-xr-x.   2 root root    65  3月  1 13:09 pkgconfig
+drwxr-xr-x.   4 root root    52  2月 28 19:26 pki
+drwxr-xr-x.   3 root root    75  2月 28 19:27 plymouth
+drwxr-xr-x.   4 root root    36  2月 20 02:35 polkit-1
+lrwxrwxrwx.   1 root root    14  2月 28 19:26 redhat-release -> centos-release
+drwxr-xr-x.   4 root root    38  1月 30 03:11 selinux
+drwxr-xr-x.   2 root root     6  4月 11  2018 sounds
+drwxr-xr-x.   2 root root    56  3月  1 13:09 systemd
+drwxr-xr-x.   3 root root    20  2月 28 19:26 systemtap
+drwxr-xr-x.   2 root root    57  2月 28 19:26 tabset
+drwxr-xr-x.  23 root root   195  2月 28 19:26 terminfo
+drwxr-xr-x.   2 root root     6  4月 11  2018 themes
+drwxr-xr-x.   3 root root    19  2月 28 19:28 tuned
+drwxr-xr-x.   3 root root    40  2月 28 19:27 wallpapers
+drwxr-xr-x.   3 root root    24  3月  4 10:24 xml
+drwxr-xr-x.   2 root root     6  4月 11  2018 xsessions
+drwxr-xr-x.   2 root root   285  2月 28 19:27 yum-cli
+drwxr-xr-x.   2 root root     6 11月  5 10:53 yum-plugins
+drwxr-xr-x.  20 root root  4096  3月  1 13:09 zoneinfo
+drwxr-xr-x.   3 root root    28  2月 20 02:35 zsh
+[root@localhost share]# cd xml
+[root@localhost xml]# ls -la
+合計 4
+drwxr-xr-x.  3 root root   24  3月  4 10:24 .
+drwxr-xr-x. 95 root root 4096  3月  4 12:17 ..
+drwxr-xr-x.  2 root root   23  3月  4 10:24 fontconfig
+[root@localhost xml]# cd fontconfig/
+[root@localhost fontconfig]# ls -la
+合計 8
+drwxr-xr-x. 2 root root   23  3月  4 10:24 .
+drwxr-xr-x. 3 root root   24  3月  4 10:24 ..
+-rw-r--r--. 1 root root 7250 12月  2  2016 fonts.dtd
+[root@localhost fontconfig]# cd /lib
+[root@localhost lib]# ls -la
+合計 32
+dr-xr-xr-x. 38 root root  4096  3月  4 10:24 .
+drwxr-xr-x. 13 root root   155  2月 28 19:26 ..
+drwxr-xr-x.  4 root root    31 11月 29 05:48 NetworkManager
+drwxr-xr-x.  2 root root     6  2月 20 02:35 binfmt.d
+drwxr-xr-x.  3 root root    64  4月 11  2018 debug
+drwxr-xr-x.  4 root root   236  2月 28 19:27 dracut
+drwxr-xr-x.  8 root root    98  2月 28 19:26 firewalld
+drwxr-xr-x. 87 root root 12288  3月  1 13:09 firmware
+drwxr-xr-x.  3 root root    19  3月  4 10:24 fontconfig
+dr-xr-xr-x.  2 root root     6  4月 11  2018 games
+drwxr-xr-x.  3 root root    21  1月 30 22:58 grub
+drwxr-xr-x.  2 root root     6 11月 21  2015 java
+drwxr-xr-x.  2 root root     6 11月 21  2015 java-1.5.0
+drwxr-xr-x.  2 root root     6 11月 21  2015 java-1.6.0
+drwxr-xr-x.  2 root root     6 11月 21  2015 java-1.7.0
+drwxr-xr-x.  2 root root     6 11月 21  2015 java-1.8.0
+drwxr-xr-x.  2 root root     6 11月 21  2015 java-ext
+drwxr-xr-x.  3 root root   187  3月  4 10:25 jvm
+drwxr-xr-x.  2 root root     6 11月 21  2015 jvm-commmon
+drwxr-xr-x.  3 root root   162  3月  4 10:25 jvm-exports
+drwxr-xr-x.  4 root root   122  3月  4 10:24 jvm-private
+drwxr-xr-x.  6 root root    76  2月 28 19:27 kbd
+drwxr-xr-x.  2 root root    56  2月 28 19:28 kdump
+drwxr-xr-x.  3 root root    23  2月 20 02:35 kernel
+drwxr-xr-x.  2 root root    55  3月  1 13:09 locale
+drwxr-xr-x.  2 root root    55  2月 28 19:27 modprobe.d
+drwxr-xr-x.  4 root root    68  3月  1 13:09 modules
+drwxr-xr-x.  2 root root     6  2月 20 02:35 modules-load.d
+drwxr-xr-x.  2 root root    50  2月 28 19:27 polkit-1
+drwxr-xr-x.  3 root root    27  2月 28 19:26 python2.7
+drwxr-xr-x.  5 root root  4096  3月  4 10:24 rpm
+lrwxrwxrwx.  1 root root    30  2月 28 19:28 sendmail -> /etc/alternatives/mta-sendmail
+lrwxrwxrwx.  1 root root    24  2月 28 19:28 sendmail.postfix -> ../sbin/sendmail.postfix
+dr-xr-xr-x.  2 root root     6  4月 11  2018 sse2
+drwxr-xr-x.  2 root root    85  3月  1 13:09 sysctl.d
+drwxr-xr-x. 12 root root  4096  3月  1 13:09 systemd
+drwxr-xr-x.  2 root root  4096  3月  4 12:16 tmpfiles.d
+drwxr-xr-x. 12 root root   237  2月 28 19:28 tuned
+drwxr-xr-x.  4 root root   252  3月  1 13:09 udev
+drwxr-xr-x.  2 root root    80 11月  5 10:53 yum-plugins
+[root@localhost lib]# cd /user/local/bin
+[root@localhost bin]# ls -la
+合計 0
+drwxr-xr-x.  2 root root   6  4月 11  2018 .
+drwxr-xr-x. 12 root root 131  2月 28 19:26 ..
+[root@localhost bin]# mkdir asobbs
+[root@localhost bin]# chmod 777 -R asobbs/
+[root@localhost bin]# mkdir /usr/local/lib/asbbs
+[root@localhost bin]# chmod 77 77 /usr/local/ibliba/asbbs/
+[root@localhost bin]# cd /usr/local/liba/asbbs/
+[root@localhost asbbs]# ls -la
+合計 3288
+drwxrwxrwx. 2 root root       64  3月  6 10:06 .
+drwxr-xr-x. 3 root root       19  3月  6 10:05 ..
+-rw-r--r--. 1 abcc users    2168  3月  6 10:06 BatchCSVFileDelete.jar
+-rw-r--r--. 1 abcc users 3360521  3月  6 09:15 BatchUpdateGrade.jar
+[root@localhost asbbs]# chmod 755 *
+[root@localhost asbbs]# ls -la
+合計 3288
+drwxrwxrwx. 2 root root       64  3月  6 10:06 .
+drwxr-xr-x. 3 root root       19  3月  6 10:05 ..
+-rwxr-xr-x. 1 abcc users    2168  3月  6 10:06 BatchCSVFileDelete.jar
+-rwxr-xr-x. 1 abcc users 3360521  3月  6 09:15 BatchUpdateGrade.jar
+[root@localhost asbbs]# cd /usr/local/bin/asobbs/
+[root@localhost asobbs]# ls -la
+合計 8
+drwxrwxrwx. 2 root root   52  3月  6 10:08 .
+drwxr-xr-x. 3 root root   20  3月  6 10:01 ..
+-rw-r--r--. 1 abcc users 206  3月  6 10:08 csvFileDelete.sh
+-rw-r--r--. 1 abcc users 174  3月  6 10:08 updateGrade.sh
+[root@localhost asobbs]# chmod 755 *
+[root@localhost asobbs]# ls -la
+合計 8
+drwxrwxrwx. 2 root root   52  3月  6 10:08 .
+drwxr-xr-x. 3 root root   20  3月  6 10:01 ..
+-rwxr-xr-x. 1 abcc users 206  3月  6 10:08 csvFileDelete.sh
+-rwxr-xr-x. 1 abcc users 174  3月  6 10:08 updateGrade.sh
+[root@localhost asobbs]# sh 
+[root@localhost asobbs]# updateGrade.sh
+bash: updateGrade.sh: コマンドが見つかりません
+[root@localhost asobbs]# updateGrade.shsupdateGrade.shhupdateGrade.sh updateGrade.sh
+10:09:32.334 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -start-
+jp.ac.asojuku.batch.updategrade.exception.DBConnectException: Access denied for user 'root'@'localhost' (using password: YES)
+	at jp.ac.asojuku.batch.updategrade.dao.Dao.connect(Dao.java:62)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.run(BatchUpdateGrade.java:42)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.main(BatchUpdateGrade.java:27)
+10:09:33.012 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade:[Ljava.lang.StackTraceElement;@10a035a0
+10:09:33.013 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -end-
+[root@localhost asobbs]# sh updateGrade.sh
+BatchCSVFileDelete:arg error[0]
+[root@localhost asobbs]# sh updateGrade.sh
+10:29:24.485 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -start-
+jp.ac.asojuku.batch.updategrade.exception.DBConnectException: Access denied for user 'root'@'localhost' (using password: YES)
+	at jp.ac.asojuku.batch.updategrade.dao.Dao.connect(Dao.java:62)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.run(BatchUpdateGrade.java:42)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.main(BatchUpdateGrade.java:27)
+10:29:25.202 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade:[Ljava.lang.StackTraceElement;@10a035a0
+10:29:25.202 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -end-
+[root@localhost asobbs]# sh updateGrade.sh
+10:29:57.270 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -start-
+jp.ac.asojuku.batch.updategrade.exception.DBConnectException: Access denied for user 'asobbs_user'@'localhost' (using password: YES)
+	at jp.ac.asojuku.batch.updategrade.dao.Dao.connect(Dao.java:62)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.run(BatchUpdateGrade.java:42)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.main(BatchUpdateGrade.java:27)
+10:29:57.946 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade:[Ljava.lang.StackTraceElement;@10a035a0
+10:29:57.946 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -end-
+[root@localhost asobbs]# sh updateGrade.sh
+10:30:58.514 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -start-
+java.sql.SQLSyntaxErrorException: Table 'asobbs.USER_TBL' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:120)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:974)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:1024)
+	at jp.ac.asojuku.batch.updategrade.dao.UserDao.searchUserTask(UserDao.java:69)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.run(BatchUpdateGrade.java:48)
+	at jp.ac.asojuku.batch.updategrade.BatchUpdateGrade.main(BatchUpdateGrade.java:27)
+10:30:59.239 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade:[Ljava.lang.StackTraceElement;@1e4a7dd4
+10:30:59.242 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -end-
+[root@localhost asobbs]# sh updateGrade.sh
+10:36:50.354 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -start-
+10:36:51.261 INFO  j.a.a.b.u.BatchUpdateGrade BatchUpdateGrade -end-
+[root@localhost asobbs]# ls -la
+合計 8
+drwxrwxrwx. 2 root root   52  3月  6 10:08 .
+drwxr-xr-x. 3 root root   20  3月  6 10:01 ..
+-rwxr-xr-x. 1 abcc users 206  3月  6 10:08 csvFileDelete.sh
+-rwxr-xr-x. 1 abcc users 174  3月  6 10:08 updateGrade.sh
+[root@localhost asobbs]# sh csvFileDelete.sh 
+BatchCSVFileDelete -start-
+BatchCSVFileDelete -end-
+[root@localhost asobbs]# cd /var
+[root@localhost var]# ls -la
+合計 16
+drwxr-xr-x. 21 root  root  4096  3月  4 10:34 .
+dr-xr-xr-x. 17 root  root   224  2月 28 19:30 ..
+-rw-r--r--.  1 root  root   163  2月 28 19:26 .updated
+drwxr-xr-x.  2 root  root     6  4月 11  2018 adm
+drwxr-xr-x.  5 root  root    43  3月  4 19:34 attachments
+drwxr-xr-x.  6 root  root    57  3月  4 10:34 cache
+drwxr-xr-x.  2 root  root     6 11月  5 02:10 crash
+drwxr-xr-x.  3 mysql mysql  201  3月  4 12:28 db
+drwxr-xr-x.  3 root  root    18  2月 28 19:28 empty
+drwxr-xr-x.  2 root  root     6  4月 11  2018 games
+drwxr-xr-x.  2 root  root     6  4月 11  2018 gopher
+drwxr-xr-x.  3 root  root    18  1月 30 02:32 kerberos
+drwxr-xr-x. 28 root  root  4096  3月  4 12:17 lib
+drwxr-xr-x.  2 root  root     6  4月 11  2018 local
+lrwxrwxrwx.  1 root  root    11  2月 28 19:26 lock -> ../run/lock
+drwxr-xr-x.  8 root  root  4096  3月  4 12:17 log
+lrwxrwxrwx.  1 root  root    10  2月 28 19:26 mail -> spool/mail
+drwxr-xr-x.  2 root  root     6  4月 11  2018 nis
+drwxr-xr-x.  2 root  root     6  4月 11  2018 opt
+drwxr-xr-x.  2 root  root     6  4月 11  2018 preserve
+lrwxrwxrwx.  1 root  root     6  2月 28 19:26 run -> ../run
+drwxr-xr-x.  8 root  root    87  2月 28 19:28 spool
+drwxrwxrwt.  4 root  root   162  3月  5 12:37 tmp
+drwxr-xr-x.  4 root  root    33  3月  4 10:34 www
+drwxr-xr-x.  2 root  root     6  4月 11  2018 yp
+[root@localhost var]# mkdir asobbs
+[root@localhost var]# cd asobbs/
+[root@localhost asobbs]# mkdir dbbk
+[root@localhost asobbs]# chmod 777 dbbk/
+[root@localhost asobbs]# mysqldump -uroot -r /var/dbbk/asobbs`date "+%Y%m%d_%H%M %S"`.bakcup --single-transaction asobbs
+mysqldump: Can't create/write to file '/var/dbbk/asobbs20190306_103928.bakcup' (OS errno 2 - No such file or directory)
+[root@localhost asobbs]# mysqldump -uroot -r /var/asobbs/dbbk/asobbs`date "+%Y%m %d_%H%M%S"`.bakcup --single-transaction asobbs
+mysqldump: Got error: 1045: Access denied for user 'root'@'localhost' (using password: NO) when trying to connect
+[root@localhost asobbs]# mysqldump -uroot -pAbc123.# -r /var/asobbs/dbbk/asobbs` date "+%Y%m%d_%H%M%S"`.bakcup --single-transaction asobbs
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
+mysqldump: Got error: 1045: Access denied for user 'root'@'localhost' (using password: YES) when trying to connect
+[root@localhost asobbs]# mysqldump -uroot -pAbcc123.# -r /var/asobbs/dbbk/asobbs `date "+%Y%m%d_%H%M%S"`.bakcup --single-transaction asobbs
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
+[root@localhost asobbs]# cd /usr/local/bin/
+[root@localhost bin]# ls -la
+合計 0
+drwxr-xr-x.  3 root root  20  3月  6 10:01 .
+drwxr-xr-x. 12 root root 131  2月 28 19:26 ..
+drwxrwxrwx.  2 root root  71  3月  6 10:42 asobbs
+[root@localhost bin]# cd asobbs/
+[root@localhost asobbs]# lch mod 755 dbbackup.sh 
+[root@localhost asobbs]# sh dbbackup.sh 
+dbbackup.sh: 行 2: $'\r': コマンドが見つかりません
+dbbackup.sh: 行 8: $'\r': コマンドが見つかりません
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
+[root@localhost asobbs]# /opt/apache-tomcat/apache-tomcat-9.0.16/bin/shutdown.sh h
+Using CATALINA_BASE:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_HOME:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_TMPDIR: /opt/apache-tomcat/apache-tomcat-9.0.16/temp
+Using JRE_HOME:        /usr
+Using CLASSPATH:       /opt/apache-tomcat/apache-tomcat-9.0.16/bin/bootstrap.jar:/opt/apache-tomcat/apache-tomcat-9.0.16/bin/tomcat-juli.jar
+[root@localhost asobbs]# systemctl stop httpd
+[root@localhost asobbs]# mysql -u root -pPaAbcc123.#
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 361
+Server version: 8.0.15 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use asobbs
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> ls 
+mysql> show tables;
++-------------------+
+| Tables_in_asobbs  |
++-------------------+
+| action_master     |
+| attached_file_tbl |
+| bbs_check_tbl     |
+| bbs_tbl           |
+| category_tbl      |
+| chat_table        |
+| course_master     |
+| history_tbl       |
+| role_master       |
+| room_tbl          |
+| room_user_tbl     |
+| user_tbl          |
++-------------------+
+12 rows in set (0.00 sec)
+
+mysql> select }* from user_tbl;
++---------+------------+-----------------------+----------------------------------+-----------+--------------+--------------------+---------------------+-----------+---------+--------------+-----------------+-------------+----------------+---------------+-------------------+--------------+--------+---------------------+---------------------+---------------+-------+---------+
+| user_id | student_no | mailadress            | password                         | name      | nick_name    | account_expry_date | password_expirydate | course_id | role_id | is_first_flg | certify_err_cnt | is_lock_flg | admission_year | graduate_year | repeat_year_count | giVe_up_year | remark | entry_date          | update_date         | aVatar_id_csV | grade | del_flg |
++---------+------------+-----------------------+----------------------------------+-----------+--------------+--------------------+---------------------+-----------+---------+--------------+-----------------+-------------+----------------+---------------+-------------------+--------------+--------+---------------------+---------------------+---------------+-------+---------+
+|       1 | 0000001    | nishino@asojuku.ac.jp | a2b06f65cf9c6797c6d3e8ae38d618b0 | 123456789 | 西野先生     | NULL               | NULL                |         1 |       2 |            1 |               0 |           0 |           NULL |          NULL |                 0 |         NULL | NULL   | 2019-03-05 00:00:00 | 2019-03-05 00:00:00 | NULL          |     1 |       0 |
++---------+------------+-----------------------+----------------------------------+-----------+--------------+--------------------+---------------------+-----------+---------+--------------+-----------------+-------------+----------------+---------------+-------------------+--------------+--------+---------------------+---------------------+---------------+-------+---------+
+1 row in set (0.00 sec)
+
+mysql> cdshow select * from course_master;
++-----------+-----------------------------------+
+| course_id | course_name                       |
++-----------+-----------------------------------+
+|         0 | 情報システム科                    |
+|         1 | 情報システム専攻科                |
+|         2 | 情報工学科                        |
+|         3 | 組込みシステム科                  |
+|         4 | ネットワーク科                    |
+|         5 | 電子システム科                    |
+|         6 | 情報システム科 Ad                 |
+|         7 | 情報システム専攻科 Ad             |
+|         8 | 税理士専攻科                      |
+|         9 | 税理士科                          |
+|        10 | 経理科                            |
+|        11 | 経営ビジネス科                    |
+|        12 | ビジネスエキスパート科            |
+|        13 | 情報エキスパート科                |
+|        14 | 情報ビジネス科                    |
+|        15 | 国際ビジネス科                    |
+|       999 | その他                            |
++-----------+-----------------------------------+
+17 rows in set (0.00 sec)
+
+mysql> drop database asobbs_st;
+Query OK, 12 rows affected (0.13 sec)
+
+mysql> exit
+Bye
+[root@localhost asobbs]# cd //opt/apache-tomcat/apache-tomcat-9.0.16/webapps/
+[root@localhost webapps]# ls -la
+合計 41724
+drwxrwxrwx. 3 tomcat tomcat       68  3月  5 21:15 .
+drwxr-xr-x. 9 tomcat tomcat      220  3月  5 11:40 ..
+drwxr-x---. 5 root   root         48  3月  5 21:15 asobbs-0.0.1-SNAPSHOT
+-rw-r--r--. 1 abcc   users  42723272  3月  5 21:13 asobbs-0.0.1-SNAPSHOT.war
+[root@localhost webapps]# rm -rf asobbs-0.0.1-SNAPSHOT
+[root@localhost webapps]# rm -rf asobbs-0.0.1-SNAPSHOT.war 
+[root@localhost webapps]# /opt/apache-tomcat/apache-tomcat-9.0.16/bin/startup.sh h
+Using CATALINA_BASE:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_HOME:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_TMPDIR: /opt/apache-tomcat/apache-tomcat-9.0.16/temp
+Using JRE_HOME:        /usr
+Using CLASSPATH:       /opt/apache-tomcat/apache-tomcat-9.0.16/bin/bootstrap.jar:/opt/apache-tomcat/apache-tomcat-9.0.16/bin/tomcat-juli.jar
+Tomcat started.
+[root@localhost webapps]# systemctl restart httpd
+[root@localhost webapps]# vi /opt/httetc/httpd/conf.d/ssl.conf 
+"/etc/httpd/conf.d/ssl.conf" 230L, 9775C#
+# When we also provide SSL we have to listen to the
+# the HTTPS port in addition.
+#
+Listen 443 https
+
+##
+##  SSL Global Context
+##
+##  All SSL configuration in this context applies both to
+##  the main server and all SSL-enabled virtual hosts.
+##
+
+#   Pass Phrase Dialog:
+#   Configure the pass phrase gathering process.
+#   The filtering dialog program (`builtin' is a internal
+#   terminal dialog) has to provide the pass phrase on stdout.
+SSLPassPhraseDialog exec:/usr/libexec/httpd-ssl-pass-dialog
+
+#   Inter-Process Session Cache:
+#   Configure the SSL Session Cache: First the mechanism
+#   to use and second the expiring timeout (in seconds).
+SSLSessionCacheshmcb:/run/httpd/sslcache(512000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SSLSessionCacheTimeout  300
+
+#   Pseudo Random Number Generator (PRNG):
+#   Configure one or more sources to seed the PRNG of the
+#   SSL library. The seed data should be of good random quality.
+#   WARNING! On some platforms /dev/random blocks if not enough entropy
+#   is available. This means you then cannot use the /dev/random device
+#   because it would lead to very long connection times (as long as
+#   it requires to make more entropy available). But usually those
+#   platforms additionally provide a /dev/urandom device which doesn't
+#   block. So, if available, use this one instead. Read the mod_ssl User
+#   Manual for more details.
+SSLRandomSeed startup file:/dev/urandom  256
+SSLRandomSeed connect builtin
+#SSLRandomSeed startup file:/dev/random  512
+#SSLRandomSeed connect file:/dev/random  512
+#SSLRandomSeed connect file:/dev/urandom 512
+
+#
+# Use "SSLCryptoDevice" to enable any supported hardware
+# accelerators. Use "openssl engine -v" to list supported
+# engine names.  NOTE: If you enable an accelerator and the
+# server does not start, consult the error logs and ensure
+# your accelerator is functioning properly.
+#
+SSLCryptoDevice builtin
+#SSLCryptoDevice ubsec
+
+##
+## SSL Virtual Host Context
+##
+
+<VirtualHost _default_:443>
+
+# General setup for the virtual host, inherited from global configuration
+#DocumentRoot "/var/www/html"
+#ServerName www.example.com:443
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog logs/ssl_error_log
+TransferLog logs/ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   SSL Protocol support:
+# List the enable protocol levels with which clients will be able to
+# connect.  Disable SSLv2 access by default:
+SSLProtocol all -SSLv2 -SSLv3
+
+#   SSL Cipher Suite:
+#   List the ciphers that the client is permitted to negotiate.
+#   See the mod_ssl documentation for a complete list.
+SSLCipherSuite HIGH:3DES:!aNULL:!MD5:!SEED:!IDEA
+
+#   Speed-optimized SSL Cipher configuration:
+#   If speed is your main concern (on busy HTTPS servers e.g.),
+#   you might want to force clients to specific, performance
+#   optimized ciphers. In this case, prepend those ciphers
+#   to the SSLCipherSuite list, and enable SSLHonorCipherOrder.
+#   Caveat: by giving precedence to RC4-SHA and AES128-SHA
+#   (as in the example below), most connections will no longer
+#   have perfect forward secrecy - if the server's key is
+#   compromised, captures of past or future traffic must be
+#   considered compromised, too.
+#SSLCipherSuite RC4-SHA:AES128-SHA:HIGH:MEDIUM:!aNULL:!MD5
+#SSLHonorCipherOrder on
+
+#   Server Certificate:
+# Point SSLCertificateFile at a PEM encoded certificate.  If
+# the certificate is encrypted, then you will be prompted for a
+# pass phrase.  Note that a kill -HUP will prompt again.  A new
+# certificate can be generated using the genkey(1) command.
+#SSLCertificateFile /etc/pki/tls/certs/localhost.crt
+SSLCertificateFile /etc/httpd/conf/server.crt
+
+#   Server Private Key:
+#   If the key is not combined with the certificate, use this
+#   directive to point at the key file.  Keep in mind that if
+#   you've both a RSA and a DSA private key you can configure
+#   both in parallel (to also allow the use of DSA ciphers, etc.)
+#SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
+SSLCertificateKeyFile /etc/httpd/conf/server.key
+
+#   Server Certificate Chain:
+#   Point SSLCertificateChainFile at a file containing the
+#   concatenation of PEM encoded CA certificates which form the
+#   certificate chain for the server certificate. Alternatively
+#   the referenced file can be the same as SSLCertificateFile
+#   when the CA certificates are directly appended to the server
+#   certificate for convinience.
+#SSLCertificateChainFile /etc/pki/tls/certs/server-chain.crt
+
+#   Certificate Authority (CA):
+#   Set the CA certificate verification path where to find CA
+#   certificates for client authentication or alternatively one
+#   huge file containing all of them (file must be PEM encoded)
+#SSLCACertificateFile /etc/pki/tls/certs/ca-bundle.crt
+
+#   Client Authentication (Type):
+#   Client certificate verification type and depth.  Types are
+#   none, optional, require and optional_no_ca.  Depth is a
+#   number which specifies how deeply to verify the certificate
+#   issuer chain before deciding the certificate is not valid.
+#SSLVerifyClient require
+#SSLVerifyDepth  10
+
+#   Access Control:
+#   With SSLRequire you can do per-directory access control based
+#   on arbitrary complex boolean expressions containing server
+#   variable checks and other lookup directives.  The syntax is a
+#   mixture between C and Perl.  See the mod_ssl documentation
+#   for more details.
+#<Location />
+#SSLRequire (    %{SSL_CIPHER} !~ m/^(EXP|NULL)/ \
+#and %{SSL_CLIENT_S_DN_O} eq "Snake Oil, Ltd." \
+#and %{SSL_CLIENT_S_DN_OU} in {"Staff", "CA", "Dev"} \
+#and %{TIME_WDAY} >= 1 and %{TIME_WDAY} <= 5 \
+#and %{TIME_HOUR} >= 8 and %{TIME_HOUR} <= 20) \
+#or %{REMOTE_ADDR} =~ m/^192\.76\.162\.[0-9]+$/
+#</Location>
+
+#   SSL Engine Options:
+#   Set various options for the SSL engine.
+#   o FakeBasicAuth:
+#     Translate the client X.509 into a Basic Authorisation.  This means that
+#     the standard Auth/DBMAuth methods can be used for access control.  The
+#     user name is the `one line' version of the client's X.509 certificate.
+#     Note that no password is obtained from the user. Every entry in the user
+#     file needs this password: `xxj31ZMTZzkVA'.
+#   o ExportCertData:
+#     This exports two additional environment variables: SSL_CLIENT_CERT and
+#     SSL_SERVER_CERT. These contain the PEM-encoded certificates of the
+#     server (always existing) and the client (only existing when client
+#     authentication is used). This can be used to import the certificates
+#     into CGI scripts.
+#   o StdEnvVars:
+#     This exports the standard SSL/TLS related `SSL_*' environment variables.
+#     Per default this exportation is switched off for performance reasons,
+#     because the extraction step is an expensive operation and is usually
+#     useless for serving static content. So one usually enables the
+#     exportation for CGI and SSI requests only.
+#   o StrictRequire:
+#     This denies access when "SSLRequireSSL" or "SSLRequire" applied even
+#     under a "Satisfy any" situation, i.e. when it applies access is denied
+#     and no other module can change it.
+#   o OptRenegotiate:
+#     This enables optimized SSL connection renegotiation handling when SSL
+#     directives are used in per-directory context.
+#SSLOptions +FakeBasicAuth +ExportCertData +StrictRequire
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+#   The safe and default but still SSL/TLS standard compliant shutdown
+#   approach is that mod_ssl sends the close notify alert but doesn't wait for
+#   the close notify alert from client. When you need a different shutdown
+#   approach you can use one of the following variables:
+#   o ssl-unclean-shutdown:
+#     This forces an unclean shutdown when the connection is closed, i.e. no
+#     SSL close notify alert is send or allowed to received.  This violates
+#     the SSL/TLS standard but is needed for some brain-dead browsers. Use
+#     this when you receive I/O errors because of the standard approach where
+#     mod_ssl sends the close notify alert.
+#   o ssl-accurate-shutdown:
+#     This forces an accurate shutdown when the connection is closed, i.e. a
+#     SSL close notify alert is send and mod_ssl waits for the close notify
+#     alert of the client. This is 100% SSL/TLS standard compliant, but in
+#     practice often causes hanging connections with brain-dead browsers. Use
+#     this only for browsers where you know that their SSL implementation
+#     works correctly.
+#   Notice: Most problems of broken clients are also related to the HTTP
+#   keep-alive facility, so you usually additionally want to disable
+#   keep-alive for those clients, too. Use variable "nokeepalive" for this.
+#   Similarly, one has to force some clients to use HTTP/1.0 to workaround
+#   their broken HTTP/1.1 implementation. Use variables "downgrade-1.0" and
+#   "force-response-1.0" for this.
+BrowserMatch "MSIE [2-5]" \
+nokeepalive ssl-unclean-shutdown \
+downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog logs/ssl_request_log \
+"%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+#add nishino 2019.3.4
+#<Location ~ ".*" >
+#ProxyPass ajp://localhost:8009
+#</Location>
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !.*\.php$
+RewriteRule ^/$ /asobbs-0.0.1-SNAPSHOT/login
+RewriteRule ^(.*) ajp://localhost:8009/$1 [P]
+
+</VirtualHost>
+
+-- INSERT --
+RewriteRule ^/$ /asobbs-0.0.1-SNAPSHOT/login/login/login/login/login/login/login/login/login/login/login/login/login/login/login:wq"/etc/httpd/conf.d/ssl.conf" 230L, 9760C written
+[root@localhost webapps]# vi /etc/httpd/conf.d/ssl.conf systemctl restart httpd
+[root@localhost webapps]# /opt/apache-tomcat/apache-tomcat-9.0.16/bin/shutdown.s h
+Using CATALINA_BASE:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_HOME:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_TMPDIR: /opt/apache-tomcat/apache-tomcat-9.0.16/temp
+Using JRE_HOME:        /usr
+Using CLASSPATH:       /opt/apache-tomcat/apache-tomcat-9.0.16/bin/bootstrap.jar:/opt/apache-tomcat/apache-tomcat-9.0.16/bin/tomcat-juli.jar
+[root@localhost webapps]# ls -la
+合計 41720
+drwxrwxrwx. 3 tomcat tomcat       46  3月  6 10:52 .
+drwxr-xr-x. 9 tomcat tomcat      220  3月  5 11:40 ..
+drwxr-x---. 5 root   root         48  3月  6 10:52 asobbs-1.0
+-rw-r--r--. 1 abcc   users  42718853  3月  6 10:50 asobbs-1.0.war
+[root@localhost webapps]# rm -rf asobbs-1.0
+[root@localhost webapps]# rm -rf asobbs-1.0.war 
+[root@localhost webapps]# /opt/apache-tomcat/apache-tomcat-9.0.16/bin/startup.sh h
+Using CATALINA_BASE:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_HOME:   /opt/apache-tomcat/apache-tomcat-9.0.16
+Using CATALINA_TMPDIR: /opt/apache-tomcat/apache-tomcat-9.0.16/temp
+Using JRE_HOME:        /usr
+Using CLASSPATH:       /opt/apache-tomcat/apache-tomcat-9.0.16/bin/bootstrap.jar:/opt/apache-tomcat/apache-tomcat-9.0.16/bin/tomcat-juli.jar
+Tomcat started.
+[root@localhost webapps]# journalctl -xn
+-- Logs begin at 金 2019-03-01 13:15:24 JST, end at 水 2019-03-06 11:01:01 JST. 
+ 3月 06 10:55:14 localhost.localdomain systemd[1]: Starting The Apache HTTP Serv
+-- Subject: Unit httpd.service has begun start-up
+-- Defined-By: systemd
+-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel
+-- 
+-- Unit httpd.service has begun starting up.
+ 3月 06 10:55:14 localhost.localdomain httpd[11326]: AH00558: httpd: Could not r
+ 3月 06 10:55:14 localhost.localdomain systemd[1]: Started The Apache HTTP Serve
+-- Subject: Unit httpd.service has finished start-up
+-- Defined-By: systemd
+-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel
+-- 
+-- Unit httpd.service has finished starting up.
+-- 
+-- The start-up result is done.
+ 3月 06 10:55:14 localhost.localdomain polkitd[5501]: Unregistered Authenticatio
+ 3月 06 11:01:01 localhost.localdomain systemd[1]: Created slice User Slice of r
+-- Subject: Unit user-0.slice has finished start-up
+-- Defined-By: systemd
+-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel
+-- 
+-- Unit user-0.slice has finished starting up.
+lines 1-23 ESCESCOOBB-- 
+lines 2-24 ESCESCOOBB-- The start-up result is done.
+lines 3-25 ESCESCOOBB 3月 06 11:01:01 localhost.localdomain systemd[1]: Started Session 129 of user r
+lines 4-26 ESCESCOOBB-- Subject: Unit session-129.scope has finished start-up
+lines 5-27 ESCESCOOBB-- Defined-By: systemd
+lines 6-28 ESCESCOOBB-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel
+lines 7-29 ESCESCOOBB-- 
+lines 8-30 ESCESCOOBB-- Unit session-129.scope has finished starting up.
+lines 9-31 ESCESCOOBB-- 
+lines 10-32 ESCESCOOBB-- The start-up result is done.
+lines 11-33 ESCESCOOBB 3月 06 11:01:01 localhost.localdomain CROND[11716]: (root) CMD (run-parts /etc/
+lines 12-34 ESCESCOOBB 3月 06 11:01:01 localhost.localdomain run-parts(/etc/cron.hourly)[11719]: start
+lines 13-35 ESCESCOOBB 3月 06 11:01:01 localhost.localdomain run-parts(/etc/cron.hourly)[11725]: finis
+lines 14-36 ESCESCOOBB 3月 06 11:01:01 localhost.localdomain systemd[1]: Removed slice User Slice of r
+lines 15-37 ESCESCOOBB-- Subject: Unit user-0.slice has finished shutting down
+lines 16-38 ESCESCOOBB-- Defined-By: systemd
+lines 17-39 ESCESCOOBB-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel
+lines 18-40 ESCESCOOBB-- 
+lines 19-41 ESCESCOOBB-- Unit user-0.slice has finished shutting down.
+lines 20-42 ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END) ESCESCOOBBlines 20-42/42 (END)
+[root@localhost webapps]# crontab -l
+no crontab for root
+[root@localhost webapps]# crontab -e
+no crontab for root - using an empty one
+"/tmp/crontab.DD2PO7" 0L, 0C~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               :qcrontab: no changes made to crontab
+[root@localhost webapps]# vi /etc/conr
+[root@localhost webapps]# 
+[root@localhost webapps]# 
+[root@localhost webapps]# vi /etc/cronn.d/aily/asobbs/abssbso
+[root@localhost webapps]# 
+[root@localhost webapps]# vi /etc/cron.d/asobbs
+"/etc/cron.d/asobbs" [New File]~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               ~                                                                               -- INSERT --* 0 0 * * * sh journalctl -xn/usr/local/bin/asobbs/csvFileDelete.sh0 1 1 0 0 sh /usr/local/bin/asobbs/updateGrade.sh0 1 11 1 ^?0 0 sh /usr/local/bin/asobbs/updateGrade.sh*0 0 sh /usr/local/bin/asobbs/updateGrade.sh0 0 sh /usr/local/bin/asobbs/updateGrade.sh0 0 sh /usr/local/bin/asobbs/updateGrade.sh0 0 sh /usr/local/bin/asobbs/updateGrade.sh* 0 sh /usr/local/bin/asobbs/updateGrade.sh 0 sh /usr/local/bin/asobbs/updateGrade.sh* sh /usr/local/bin/asobbs/updateGrade.sh
+0 3 * * 1 sh /usr/local/bin/asobbs/dbbackup.sh:wq"/etc/cron.d/asobbs" [New] 3L, 149C written
+[root@localhost webapps]# cd /etc/cron.d/asobbs 
+bash: cd: /etc/cron.d/asobbs: ディレクトリではありません
+[root@localhost webapps]# cd /etc/cron.d/asobbs 
+[root@localhost cron.d]# ls -la
+合計 20
+drwxr-xr-x.  2 root root   35  3月  6 11:18 .
+drwxr-xr-x. 80 root root 8192  3月  5 21:13 ..
+-rw-r--r--.  1 root root  128 11月 20 23:22 0hourly
+-rw-r--r--.  1 root root  149  3月  6 11:18 asobbs
+[root@localhost cron.d]# chmod 755 asobbs 
+[root@localhost cron.d]# 

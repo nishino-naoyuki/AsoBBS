@@ -1,0 +1,6 @@
+バッチファイル：/usr/local/lib
+シェルファイル：/usr/local/bin
+アパッチ設定ファイル：/etc/httpd/conf.d
+クローン設定ファイル：/etc/cron.d
+
+ヒント：FHS

@@ -458,7 +458,8 @@ public class BbsService {
 		bbsDetailDto.setCategoryId(bbsTblEntity.getCategoryTbl().getCategoryId());
 		bbsDetailDto.setCategoryName( bbsTblEntity.getCategoryTbl().getName() );
 		bbsDetailDto.setEmergencyReplyFlg( (bbsCheckRepository.getCount(bbsTblEntity.getBbsId(),loginInfo.getUserId()) > 0 ? true:false));
-		
+		bbsDetailDto.setUpdateDate(DateUtil.formattedDate(bbsTblEntity.getUpdateDate(), StringConst.DATE_FMT));
+		bbsDetailDto.setUpdateName(bbsTblEntity.getUpdateUserId().getNickName());
 		//添付ファイル情報をセット
 		for(AttachedFileTblEntity attachedFileEntity : bbsTblEntity.getAttachedFileTblSet()) {
 			AttachedFileDto attachedFileDto = new AttachedFileDto();

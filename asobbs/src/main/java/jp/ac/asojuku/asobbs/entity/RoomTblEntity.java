@@ -81,6 +81,10 @@ public class RoomTblEntity implements Serializable {
 	//@Fetch(FetchMode.SUBSELECT)
 	@JoinColumn(name="roomId",insertable=true ,updatable=true)
 	private Set<RoomUserTblEntity> roomUserTblSet;
+	
+
+	/** 全員フラグ. */
+	private Integer allFlg;
 
 	/**
 	 * コンストラクタ.
