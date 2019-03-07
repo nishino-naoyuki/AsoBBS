@@ -70,3 +70,7 @@ div#title h1 {
 .close {
     float: center;
 }
+
+.categorylink{
+	word-break:break-all;
+}

@@ -98,7 +98,7 @@ public class UserCSVService {
 	 * @param userList
 	 * @throws AsoBbsSystemErrException
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void insertByCSV(List<UserCSV> userList) throws AsoBbsSystemErrException {
 		
 		for(UserCSV csv : userList) {

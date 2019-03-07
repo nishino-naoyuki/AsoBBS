@@ -19,13 +19,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import jp.ac.asojuku.asobbs.config.MessageProperty;
+import jp.ac.asojuku.asobbs.config.ValidationConfig;
 import jp.ac.asojuku.asobbs.dto.CourseDto;
 import jp.ac.asojuku.asobbs.dto.CreateUserDto;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.dto.RoomDetailDto;
 import jp.ac.asojuku.asobbs.dto.RoomInsertDto;
 import jp.ac.asojuku.asobbs.err.ActionErrors;
+import jp.ac.asojuku.asobbs.err.ErrorCode;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
+import jp.ac.asojuku.asobbs.exception.MailNotFoundException;
 import jp.ac.asojuku.asobbs.form.RoomInputForm;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.service.CourseService;
@@ -113,6 +117,7 @@ public class RoomController {
 	 * @param mv
 	 * @return
 	 * @throws AsoBbsSystemErrException
+	 * @throws MailNotFoundException 
 	 */
 	@RequestMapping(value= {"/insert"}, method=RequestMethod.POST)
     public String insert(ModelAndView mv) throws AsoBbsSystemErrException {
@@ -122,11 +127,32 @@ public class RoomController {
 		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
         
         //DBに保存
-		roomService.insert(dto,loginInfo);
+		try {
+			roomService.insert(dto,loginInfo);
+		} catch (MailNotFoundException e) {
+			return "redirect:/room/error?errCode="+ErrorCode.ERR_ROOM_MAIL_NOT_FOUND.getCode();
+		}
         
         return "redirect:/room/complete";
     }
 
+	/**
+	 * 登録時に発生したエラーを表示する画面
+	 * 
+	 * @param errCode
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
+	@RequestMapping(value= {"/error"}, method=RequestMethod.GET)
+    public ModelAndView error(@ModelAttribute("errCode")String errCode,ModelAndView mv) throws AsoBbsSystemErrException {
+
+		String errMsg = ValidationConfig.getInstance().getMsg(ErrorCode.ERR_ROOM_MAIL_NOT_FOUND);
+		mv.addObject("errMsg",errMsg);
+		
+		mv.setViewName("error_input_room");
+		return mv;
+	}
 	/**
 	 * 完了処理
 	 * 
@@ -260,7 +286,12 @@ public class RoomController {
 		Integer roomId = (Integer)session.getAttribute(SessionConst.ROOM_ID);
         
         //DBに保存
-		roomService.update(dto,loginInfo,roomId);
+		try {
+			roomService.update(dto,loginInfo,roomId);
+		} catch (MailNotFoundException e) {
+			//存在しないメールアドレスが指定された
+			return "redirect:/room/error?errCode="+ErrorCode.ERR_ROOM_MAIL_NOT_FOUND.getCode();
+		}
         
         return "redirect:/room/complete?edit=true";
     }
@@ -295,14 +326,15 @@ public class RoomController {
 	 */
 	private void validateParams(RoomInputForm roomInputForm,BindingResult bindingResult ) throws AsoBbsSystemErrException {
 		
-		//ルーム名 は、Fromのバリデーションでチェック
-		//RoomValidator.roomName(roomInputForm.getRoomName(),errs);
+		//ルーム名 は、Fromのバリデーションでチェックだがダブリチェックも行うので再度チェック
+		RoomValidator.roomName(roomInputForm.getRoomName(),roomService,bindingResult);
 		//ルーム管理者
-		RoomValidator.roomAdmin(roomInputForm.getRoomAdmins(),bindingResult);
+		RoomValidator.roomAdmin(roomInputForm.getRoomAdmins(),roomService,bindingResult);
 		//ルーム所属者
 		if( !roomInputForm.getAllUserFlg() ) {
-			RoomValidator.roomUser(roomInputForm.getRoomUsers(),bindingResult);
+			RoomValidator.roomUser(roomInputForm.getRoomUsers(),roomService,bindingResult);
 		}
+		
 	}
 	
 }

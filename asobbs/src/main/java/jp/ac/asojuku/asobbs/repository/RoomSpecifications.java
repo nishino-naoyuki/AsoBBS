@@ -39,7 +39,7 @@ public class RoomSpecifications {
 			@Override
 			public Predicate toPredicate(Root<RoomTblEntity> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
-				// TODO 自動生成されたメソッド・スタブ
+				query.distinct(true);
 				return cb.equal(root.join("roomUserTblSet") .get("userId"),  userId );
 			}
         };
@@ -54,7 +54,7 @@ public class RoomSpecifications {
 			@Override
 			public Predicate toPredicate(Root<RoomTblEntity> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
-				// TODO 自動生成されたメソッド・スタブ
+				query.distinct(true);
 				return cb.equal(root.get("allFlg"),  1 );
 			}
         };

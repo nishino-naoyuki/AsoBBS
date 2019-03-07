@@ -36,6 +36,7 @@ import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.form.BbsInputForm;
 import jp.ac.asojuku.asobbs.form.BbsReplyInputForm;
 import jp.ac.asojuku.asobbs.param.IntConst;
+import jp.ac.asojuku.asobbs.param.RoleId;
 import jp.ac.asojuku.asobbs.param.StringConst;
 import jp.ac.asojuku.asobbs.repository.AttachedFileRepository;
 import jp.ac.asojuku.asobbs.repository.BbsCheckRepository;
@@ -123,7 +124,7 @@ public class BbsService {
 	 * @throws IllegalStateException 
 	 * @throws AsoBbsSystemErrException 
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void insert(BbsInputForm bbsInputForm,LoginInfoDto loginInfo) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		
 		//カテゴリを更新する
@@ -146,7 +147,7 @@ public class BbsService {
 	 * @throws IllegalStateException 
 	 * @throws AsoBbsSystemErrException 
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void update(BbsInputForm bbsInputForm,LoginInfoDto loginInfo) throws IllegalStateException, IOException, AsoBbsSystemErrException {
 		
 		//カテゴリを更新する
@@ -166,7 +167,7 @@ public class BbsService {
 	 * @param bbsReplyInputForm
 	 * @param loginInfo
 	 */
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void insertChild(BbsReplyInputForm bbsReplyInputForm,LoginInfoDto loginInfo) {
 		
 		//掲示板登録
@@ -437,7 +438,14 @@ public class BbsService {
 	 * @throws AsoBbsIllegalException 
 	 */
 	public BbsDetailDto getBy(Integer bbsId,LoginInfoDto loginInfo) throws AsoBbsIllegalException, AsoBbsSystemErrException {
-		BbsTblEntity bbsTblEntity = bbsRepository.getBy(bbsId, loginInfo.getUserId());
+
+		BbsTblEntity bbsTblEntity = null;
+		
+		if( RoleId.STUDENT.equals( loginInfo.getRole() )  ) {
+			bbsTblEntity = bbsRepository.getBy(bbsId, loginInfo.getUserId());
+		}else {
+			bbsTblEntity = bbsRepository.getOne(bbsId);
+		}
 		
 		if( bbsTblEntity == null ) {
 			//取得できないということは不正にURLを変更してパラメータを取得しようと

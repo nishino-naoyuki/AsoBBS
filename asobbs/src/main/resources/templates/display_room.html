@@ -68,16 +68,10 @@
                         <div class="panel-heading">
                             カテゴリ一覧
                         </div>
-		               	<div class="panel-body">
-		               		<ul>
-		               			<li>
-		               				<a   th:text="'全て ('+${roomDetailDto.roomBbsNum}+')'" class="categorylink categorylink-all"  th:data-id="-1"  th:data-cname="全て" th:data-rid="${roomDetailDto.roomId}"></a>
-		               			</li>
-		               			<li th:each="category:${roomDetailDto.categoryList}" >
-		               				<a    th:text="${category.name}+'('+${category.bbsNum}+')'" class="categorylink"  th:data-id="${category.id}" th:data-cname="${category.name}" th:data-rid="${roomDetailDto.roomId}"></a>
-		               			</li>
-		               		</ul>
-		               	</div>
+		               		<div class="list-group">
+		               			<a  th:utext="'全て <span class=\'badge\'>'+${roomDetailDto.roomBbsNum}+'</sapn>'" class="categorylink categorylink-all list-group-item"  th:data-id="-1"  th:data-cname="全て" th:data-rid="${roomDetailDto.roomId}"></a>
+		               			<a  th:each="category:${roomDetailDto.categoryList}" th:utext="${category.name}+'<span class=\'badge\'>'+${category.bbsNum}+'</sapn>'" class="categorylink list-group-item"  th:data-id="${category.id}" th:data-cname="${category.name}" th:data-rid="${roomDetailDto.roomId}"></a>
+		               		</div>
                     </div>
                 </div>
                 <div class="col-lg-9">

@@ -5,6 +5,7 @@ import static jp.ac.asojuku.asobbs.repository.RoomSpecifications.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import jp.ac.asojuku.asobbs.entity.CategoryTblEntity;
 import jp.ac.asojuku.asobbs.entity.RoomTblEntity;
 import jp.ac.asojuku.asobbs.entity.RoomUserTblEntity;
 import jp.ac.asojuku.asobbs.entity.UserTblEntity;
+import jp.ac.asojuku.asobbs.exception.MailNotFoundException;
 import jp.ac.asojuku.asobbs.form.RoomInputForm;
 import jp.ac.asojuku.asobbs.form.RoomSearchForm;
 import jp.ac.asojuku.asobbs.param.RoleId;
@@ -50,9 +52,10 @@ public class RoomService {
 	 * 
 	 * @param roomInsetDto
 	 * @param loginInfo
+	 * @throws MailNotFoundException 
 	 */
-	@Transactional
-	public void insert(RoomInsertDto roomInsetDto,LoginInfoDto loginInfo) {
+	@Transactional(rollbackFor = Exception.class)
+	public void insert(RoomInsertDto roomInsetDto,LoginInfoDto loginInfo) throws MailNotFoundException {
 		//DtoからEntityを作成する
 		RoomTblEntity roomEntity = getRoomTblEntityFrom(null,roomInsetDto,loginInfo.getUserId());
 		
@@ -66,9 +69,10 @@ public class RoomService {
 	 * @param roomInsetDto
 	 * @param loginInfo
 	 * @param roomId
+	 * @throws MailNotFoundException 
 	 */
-	@Transactional
-	public void update(RoomInsertDto roomInsetDto,LoginInfoDto loginInfo,Integer roomId) {
+	@Transactional(rollbackFor = Exception.class)
+	public void update(RoomInsertDto roomInsetDto,LoginInfoDto loginInfo,Integer roomId) throws MailNotFoundException {
 		//DtoからEntityを作成する
 		RoomTblEntity roomEntity =roomRepository.getOne(roomId);
 		roomEntity = getRoomTblEntityFrom(roomEntity,roomInsetDto,loginInfo.getUserId());
@@ -248,8 +252,9 @@ public class RoomService {
 	 * ※作成しなおし（いったん削除して追加）する
 	 * @param roomId
 	 * @param roomInsetDto
+	 * @throws MailNotFoundException 
 	 */
-	private void saveRoomAdminUsers(Integer roomId,RoomInsertDto roomInsetDto) {
+	private void saveRoomAdminUsers(Integer roomId,RoomInsertDto roomInsetDto) throws MailNotFoundException {
 		List<RoomUserTblEntity> roomUserList = new ArrayList<RoomUserTblEntity>();
 		
 		/////////////////////////////////////////////
@@ -303,14 +308,20 @@ public class RoomService {
 	 * @param roomId
 	 * @param roomInsetDto
 	 * @return
+	 * @throws MailNotFoundException 
 	 */
 	private List<RoomUserTblEntity> addRoomUsers(
-			List<RoomUserTblEntity> roomUserList,Integer roomId,RoomInsertDto roomInsetDto) {
+			List<RoomUserTblEntity> roomUserList,Integer roomId,RoomInsertDto roomInsetDto) throws MailNotFoundException {
 
 		//個別に追加する場合は１けんづつ登録していく
 		for(String mail : roomInsetDto.getUserMailList()) {
 			RoomUserTblEntity roomUserTbl = new RoomUserTblEntity();
 			UserTblEntity userEntity = userRepository.getUserByMail(mail);
+			
+			//メールアドレスがない
+			if( userEntity == null ) {
+				throw new MailNotFoundException("メールアドレスが存在しません："+mail);
+			}
 
 			roomUserTbl.setRoomId(roomId);
 			roomUserTbl.setUserId(userEntity.getUserId());
@@ -339,13 +350,17 @@ public class RoomService {
 		//管理者リストを取得
 		String[] admins = roomInputForm.getRoomAdmins().split(",",0);
 		for( String admin : admins ) {
-			UserTblEntity userEntity = userRepository.getUserByMail(admin);
-			roomConfirmDto.addAdminListDto( getUserListDtoFrom(userEntity) );
+			if( StringUtils.isNotEmpty(admin)) {
+				UserTblEntity userEntity = userRepository.getUserByMail(admin);
+				roomConfirmDto.addAdminListDto( getUserListDtoFrom(userEntity) );
+			}
 		}
 		//所属者を取得
 		String[] users = roomInputForm.getRoomUsers().split(",",0);
 		for( String user : users ) {
-			roomConfirmDto.addUserMailDto(user);
+			if( StringUtils.isNotEmpty(user)) {
+				roomConfirmDto.addUserMailDto(user);
+			}
 		}
 		//全員フラグ
 		roomConfirmDto.setAllUserFlag(roomInputForm.getAllUserFlg());
@@ -361,6 +376,9 @@ public class RoomService {
 	 * @return
 	 */
 	private UserListDto getUserListDtoFrom(UserTblEntity userEntity) {
+		if( userEntity == null ) {
+			return new UserListDto();
+		}
 		UserListDto userListDto = new UserListDto();
 		
 		userListDto.setCourseName(userEntity.getCourseMaster().getCourseName());
@@ -418,5 +436,25 @@ public class RoomService {
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 名前を指定して一致したEntityを返す
+	 * 
+	 * @param roomName
+	 * @return
+	 */
+	public RoomTblEntity getBy(String roomName ) {
+		return roomRepository.getBy(roomName);
+	}
+	
+	/**
+	 * 指定されたメールアドレスが存在するか？
+	 * 
+	 * @param mail
+	 * @return true：存在する false：存在しない
+	 */
+	public boolean isExistsMailaddress(String mail) {
+		return (userRepository.getUserByMail(mail) != null);
 	}
 }

@@ -1,5 +1,6 @@
 package jp.ac.asojuku.asobbs.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 
@@ -8,6 +9,7 @@ import jp.ac.asojuku.asobbs.config.ValidationConfig;
 import jp.ac.asojuku.asobbs.err.ActionErrors;
 import jp.ac.asojuku.asobbs.err.ErrorCode;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
+import jp.ac.asojuku.asobbs.service.RoomService;
 
 /**
  * ルーム情報のチェック処理
@@ -22,14 +24,18 @@ public class RoomValidator extends Validator {
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void roomName(String name,ActionErrors errors) throws AsoBbsSystemErrException{
+	public static void roomName(String name,RoomService roomService,BindingResult error) throws AsoBbsSystemErrException{
 		//必須
 		if( StringUtils.isEmpty(name) ){
-			errors.add(ErrorCode.ERR_ROOM_NAME_ISNEED);
+			setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_NAME_ISNEED);
 		}
 		//最大文字数
 		if( name != null && name.length() > 100){
-			errors.add(ErrorCode.ERR_ROOM_NAME_ERROR);
+			setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_NAME_ERROR);
+		}
+		//ダブリチェック
+		if( roomService.getBy(name) != null ) {
+			setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_DUPLICATE_ROOMNAME);
 		}
 	}
 	
@@ -40,7 +46,7 @@ public class RoomValidator extends Validator {
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void roomAdmin(String adminCSVList,BindingResult error) throws AsoBbsSystemErrException{
+	public static void roomAdmin(String adminCSVList,RoomService roomService,BindingResult error) throws AsoBbsSystemErrException{
 		//必須
 //		if( StringUtils.isEmpty(adminCSVList) ){
 //			error.rejectValue("roomAdmins",
@@ -56,6 +62,11 @@ public class RoomValidator extends Validator {
 				setErrorcode("roomAdmins",error,ErrorCode.ERR_ROOM_ADMIN_FMT_ERROR);
 				break;
 			}
+			//存在チェック
+			if( !roomService.isExistsMailaddress(mailAddress) ) {
+				setErrorcode("roomAdmins",error,ErrorCode.ERR_ROOM_ADMIN_MAIL_NOT_FOUND);
+				break;				
+			}
 		}
 	}
 	
@@ -66,7 +77,7 @@ public class RoomValidator extends Validator {
 	 * @param errors
 	 * @throws AsoBbsSystemErrException
 	 */
-	public static void roomUser(String userCSVList,BindingResult error) throws AsoBbsSystemErrException{
+	public static void roomUser(String userCSVList,RoomService roomService,BindingResult error) throws AsoBbsSystemErrException{
 				//必須
 				if( StringUtils.isEmpty(userCSVList) ){
 					setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_BELONG_ISNEED);
@@ -80,6 +91,12 @@ public class RoomValidator extends Validator {
 						setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_BELONG_FMT_ERROR);
 						break;
 					}
+					//存在チェック
+					if( !roomService.isExistsMailaddress(mailAddress) ) {
+						setErrorcode("roomUsers",error,ErrorCode.ERR_ROOM_USER_MAIL_NOT_FOUND);
+						break;				
+					}
 				}
 	}
+	
 }
