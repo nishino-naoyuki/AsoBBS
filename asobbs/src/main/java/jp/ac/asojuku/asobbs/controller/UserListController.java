@@ -17,11 +17,25 @@ public class UserListController {
 	@Autowired
 	UserService userService;
 	
+	/**
+	 * ユーザーのリストを取得する
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/getaccountlist")
     public List<UserListDto> getuserlist() {
         return userService.getList();
     }
 
+	/**
+	 * ユーザーを検索する
+	 * 
+	 * @param course_id
+	 * @param grade
+	 * @param mail
+	 * @param nickname
+	 * @return
+	 */
 	@RequestMapping("room/searchUserSelect")
     public List<UserListDto> searchUser(
     		@RequestParam("course_id")String course_id, 

@@ -30,6 +30,13 @@ public class ChatController {
 	@Autowired
 	CourseService courseService;
 	
+	/**
+	 * チャット画面の表示
+	 * 
+	 * @param userId
+	 * @param mv
+	 * @return
+	 */
 	@RequestMapping(value= {"/view"}, method=RequestMethod.GET)
     public ModelAndView view(@ModelAttribute("userId")String userId,ModelAndView mv) {
 

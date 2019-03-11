@@ -68,14 +68,9 @@ public class UserController {
 
 	/**
 	 * 確認画面コントローラー　入力チェックを行う
-	 * @param role
-	 * @param studentNo
-	 * @param mailadress
-	 * @param nickname
-	 * @param course_id
-	 * @param password1
-	 * @param password2
-	 * @param admission_year
+	 * 
+	 * @param userInputForm
+	 * @param bindingResult
 	 * @param mv
 	 * @return
 	 * @throws AsoBbsSystemErrException
@@ -147,14 +142,9 @@ public class UserController {
 	
 	/**
 	 * リクエストパラメータのチェック
-	 * @param role
-	 * @param studentNo
-	 * @param mailadress
-	 * @param nickname
-	 * @param course_id
-	 * @param password1
-	 * @param password2
-	 * @param admission_year
+	 * @param userInputForm
+	 * @param list
+	 * @param err
 	 * @return
 	 * @throws AsoBbsSystemErrException
 	 */
@@ -200,13 +190,7 @@ public class UserController {
 	/**
 	 * CreateUserDtoを生成する
 	 * 
-	 * @param role
-	 * @param studentNo
-	 * @param mailadress
-	 * @param nickname
-	 * @param course_id
-	 * @param password
-	 * @param admission_year
+	 * @param userInputForm
 	 * @return
 	 */
 	private CreateUserDto getCreateUserDto(

@@ -3,6 +3,11 @@ package jp.ac.asojuku.asobbs.config;
 import jp.ac.asojuku.asobbs.err.ErrorCode;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 
+/**
+ * バリデーション用のメッセージクラス
+ * @author nishino
+ *
+ */
 public class ValidationConfig extends ConfigBase {
 
 	public static final String ERR_PROP_PREFIX = "errmsg";

@@ -22,6 +22,12 @@ public class RoomListController {
 	@Autowired
 	HttpSession session;
 
+	/**
+	 * ルーム一覧取得
+	 * 
+	 * @param form
+	 * @return
+	 */
 	@RequestMapping("/getroomlist")
     public List<RoomListDto> getList(RoomSearchForm form) {
 		//セッションからログイン情報を取得する

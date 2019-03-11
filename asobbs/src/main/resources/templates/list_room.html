@@ -60,10 +60,12 @@
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <div class="row">
-                            </div>
                         </div>
 		               	<div class="panel-body">
+                            <div class="row">
+                            <p>ルーム名をクリックするとルーム詳細画面へ遷移します</p>
+                            <p>カテゴリ数をクリックするとカテゴリ一覧画面へ遷移します</p>
+                            </div>
 		               		<div class="table-responsive">
                             		<table class="table table-bordered table-hover" id="room-list">
                             			<thead class="thead-light">
@@ -115,7 +117,13 @@
                 	}
             	},
                 { data: "adminUserName" },
-                { data: "categoryNum" },
+                { 
+                	data: "categoryNum" ,
+                	render: function ( data, type, row ) {
+                		var url = /*[[@{/room/disp}]]*/ "/room/detail";
+                		return '<a href="'+url+'?id='+row.roomId+'">'+data+'</a>';
+                	}
+                },
                 { data: "userNum"  },
             ]
 		});

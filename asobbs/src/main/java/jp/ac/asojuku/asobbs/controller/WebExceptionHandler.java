@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.filter.LoginCheckFilter;
 
+/**
+ * コントローラーに共通する例外発生時の処理
+ * @author nishino
+ *
+ */
 @ControllerAdvice
 public class WebExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(LoginCheckFilter.class);

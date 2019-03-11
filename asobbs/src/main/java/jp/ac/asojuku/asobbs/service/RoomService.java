@@ -117,8 +117,11 @@ public class RoomService {
 		List<RoomListDto> list = new ArrayList<RoomListDto>();
 		
 		//学生の場合は自分が所属持しているルームのみを取得する
-		Integer filterUserId = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? loginInfo.getUserId() : null );
-		Integer allFlg = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? 1 : null );
+		//Integer filterUserId = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? loginInfo.getUserId() : null );
+		//Integer allFlg = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? 1 : null );
+		//先生も自分が所属しているルームのみ表示に変更（じゃないと多すぎる）
+		Integer filterUserId =  loginInfo.getUserId() ;
+		Integer allFlg = 1 ;
 		
 		//検索条件を指定して実行
 		List<RoomTblEntity> entityList = roomRepository.findAll(

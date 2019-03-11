@@ -137,6 +137,14 @@ public class PasswordController {
         return mv;
     }
 
+	/**
+	 * パスワードのリセット処理
+	 * @param form
+	 * @param bindingResult
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
 	@RequestMapping(value= {"/reset"}, method=RequestMethod.POST)
     public String reset(
     		@Valid PasswordResetForm form,

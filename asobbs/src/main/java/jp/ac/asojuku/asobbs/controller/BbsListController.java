@@ -21,6 +21,12 @@ public class BbsListController {
 	@Autowired
 	BbsService bbsService;
 
+	/**
+	 * 掲示板のリストを取得する
+	 * @param id
+	 * @param roomId
+	 * @return
+	 */
 	@RequestMapping("/list")
     public List<BbsListDto> getList(@ModelAttribute("id")Integer id,@ModelAttribute("roomId")Integer roomId) {
 		

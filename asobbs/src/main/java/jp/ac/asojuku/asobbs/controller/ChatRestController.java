@@ -27,6 +27,12 @@ public class ChatRestController {
 	@Autowired
 	ChatService chatService;
 	
+	/**
+	 * チャットのメッセージリストを表示する
+	 * 
+	 * @param userId
+	 * @return
+	 */
 	@RequestMapping("/getmsglist")
     public ChatDto getList(@ModelAttribute("userId")Integer userId) {
 		//セッションからログイン情報を取得する
@@ -35,6 +41,12 @@ public class ChatRestController {
         return chatService.getList(loginInfo.getUserId(),userId);
     }
 
+	/**
+	 * チャットのコメントを行う
+	 * 
+	 * @param form
+	 * @return
+	 */
 	@RequestMapping("/send_comment")
     public ChatDto comment(ChatInputForm form) {
 		//セッションからログイン情報を取得する

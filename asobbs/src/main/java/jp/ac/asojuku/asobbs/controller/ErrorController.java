@@ -7,10 +7,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
+/**
+ * エラー画面表示処理
+ * 
+ * @author nishino
+ *
+ */
 @Controller
 @RequestMapping(value= {"/error"})
 public class ErrorController {
 
+	/**
+	 * 権限エラー画面表示
+	 * 
+	 * @param mv
+	 * @return
+	 */
 	@RequestMapping(value= {"/accessdeny"}, method=RequestMethod.GET)
     public ModelAndView input(ModelAndView mv) {
 		
@@ -19,6 +31,12 @@ public class ErrorController {
         return mv;
     }
 
+	/**
+	 * ４０４画面表示
+	 * 
+	 * @param mv
+	 * @return
+	 */
 	@RequestMapping(value= {"/404"}, method=RequestMethod.GET)
     public ModelAndView err404(ModelAndView mv) {
 		
