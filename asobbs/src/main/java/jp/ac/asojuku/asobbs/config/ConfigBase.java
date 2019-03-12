@@ -63,6 +63,19 @@ public abstract class ConfigBase {
 
 		return retVal;
 	}
+	
+	public Integer getProperty(String paramName,Integer defaultVal) {
+		Integer retVal = defaultVal;
+
+		try{
+			retVal = Integer.parseInt(config.getProperty(paramName));
+		}catch(NumberFormatException e){
+			retVal = defaultVal;
+		}
+
+		return retVal;
+		
+	}
 
 
 	abstract protected String getConfigName();

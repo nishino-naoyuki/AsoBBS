@@ -3,6 +3,7 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 /* Drop Indexes */
 
 DROP INDEX idX_aTTaCED_FILE_BBSid ON attached_file_tbl;
+DROP INDEX IDX_AUTOLOGIN_TOKEN ON autologin_tbl;
 DROP INDEX INDEX_CaTEGORYtbl_roomid ON category_tbl;
 DROP INDEX idX_His_user_id ON history_tbl;
 DROP INDEX idX_His_action_id ON history_tbl;
@@ -21,6 +22,7 @@ DROP INDEX INDEX_usertbl_studentno ON user_tbl;
 DROP TABLE IF EXISTS history_tbl;
 DROP TABLE IF EXISTS action_master;
 DROP TABLE IF EXISTS attached_file_tbl;
+DROP TABLE IF EXISTS autologin_tbl;
 DROP TABLE IF EXISTS bbscheck_tbl;
 DROP TABLE IF EXISTS bbstbl;
 DROP TABLE IF EXISTS category_tbl;
@@ -54,6 +56,21 @@ CREATE TABLE attached_file_tbl
 	-- 不正防止用に、ファイルをDLさせるときは必ずファイルidとファイルサイズとをマッチングさせる
 	file_size bigint NOT NULL COMMENT '不正防止用に、ファイルをDLさせるときは必ずファイルidとファイルサイズとをマッチングさせる',
 	PRIMARY KEY (attached_file_id)
+);
+
+
+CREATE TABLE autologin_tbl
+(
+	autologin_id int NOT NULL AUTO_INCREMENT,
+	-- ユーザーid
+	user_id int NOT NULL COMMENT 'ユーザーid',
+	-- 32文字のトークン
+	token varchar(40) NOT NULL COMMENT '32文字のトークン',
+	-- トークンの有効期限
+	-- 発行日時ではないことに注意
+	lmit_date datetime NOT NULL COMMENT 'トークンの有効期限
+発行日時ではないことに注意',
+	PRIMARY KEY (autologin_id)
 );
 
 
@@ -354,6 +371,14 @@ ALTER TABLE room_user_tbl
 ;
 
 
+ALTER TABLE autologin_tbl
+	ADD FOREIGN KEY (user_id)
+	REFERENCES user_tbl (user_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE bbscheck_tbl
 	ADD FOREIGN KEY (user_id)
 	REFERENCES user_tbl (user_id)
@@ -363,7 +388,7 @@ ALTER TABLE bbscheck_tbl
 
 
 ALTER TABLE chat_table
-	ADD FOREIGN KEY (to_user_id)
+	ADD FOREIGN KEY (from_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -371,7 +396,7 @@ ALTER TABLE chat_table
 
 
 ALTER TABLE chat_table
-	ADD FOREIGN KEY (from_user_id)
+	ADD FOREIGN KEY (to_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -387,7 +412,7 @@ ALTER TABLE history_tbl
 
 
 ALTER TABLE room_tbl
-	ADD FOREIGN KEY (update_user_id)
+	ADD FOREIGN KEY (create_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -395,7 +420,7 @@ ALTER TABLE room_tbl
 
 
 ALTER TABLE room_tbl
-	ADD FOREIGN KEY (create_user_id)
+	ADD FOREIGN KEY (update_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -414,6 +439,7 @@ ALTER TABLE room_user_tbl
 /* Create Indexes */
 
 CREATE INDEX idX_aTTaCED_FILE_BBSid ON attached_file_tbl (bbsid ASC);
+CREATE INDEX IDX_AUTOLOGIN_TOKEN ON autologin_tbl (token ASC);
 CREATE INDEX INDEX_CaTEGORYtbl_roomid ON category_tbl (room_id ASC);
 CREATE INDEX idX_His_user_id ON history_tbl (user_id ASC);
 CREATE INDEX idX_His_action_id ON history_tbl (action_id ASC);

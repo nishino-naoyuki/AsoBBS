@@ -1,7 +1,12 @@
 package jp.ac.asojuku.asobbs.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +21,7 @@ import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.form.LoginForm;
 import jp.ac.asojuku.asobbs.param.SessionConst;
+import jp.ac.asojuku.asobbs.param.StringConst;
 import jp.ac.asojuku.asobbs.service.LoginService;
 
 /**
@@ -25,16 +31,24 @@ import jp.ac.asojuku.asobbs.service.LoginService;
  */
 @Controller
 public class LoginController {
-
+	Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
 	LoginService loginService;
 	@Autowired
 	HttpSession session;
 	
 	@RequestMapping(value= {"/","/login"}, method=RequestMethod.GET)
-    public ModelAndView login(@ModelAttribute("msg")String msg,@ModelAttribute("mail")String mail,ModelAndView mv) {
+    public ModelAndView login(
+    		@ModelAttribute("msg")String msg,
+    		@ModelAttribute("mail")String mail,
+    		ModelAndView mv,
+    		HttpServletRequest request,
+    		HttpServletResponse response) throws AsoBbsSystemErrException {
 		
-        mv.setViewName("login");
+		//トークンによる認証
+        if(  authToken(request,response) ) {
+        	return new ModelAndView("redirect:dashboad");
+        }
         
         //エラーメッセージがあればメッセージを仕込んでおく
         if( msg != null && msg.length() > 0) {
@@ -45,8 +59,46 @@ public class LoginController {
         LoginForm form = new LoginForm();
         form.setMail(mail);
     	mv.addObject("loginForm", form);
+        mv.setViewName("login");
+        
         return mv;
     }
+	
+	/**
+	 * クッキーを使った認証を行う
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
+	private boolean authToken(
+			HttpServletRequest request,HttpServletResponse response) throws AsoBbsSystemErrException {
+		boolean isAuthOk = false;
+
+        Cookie[] cookies = request.getCookies();
+        if( cookies == null ) {
+        	logger.info("authToken: cookie is null");
+        	return false;
+        }
+        
+        for(Cookie cookie : cookies) {
+    		logger.info("cookie("+cookie.getName()+")");
+        	if( StringConst.COOKIE_TOKEN.equals( cookie.getName()) ){
+        		String token = cookie.getValue();
+        		LoginInfoDto loginInfo = loginService.authToken(token);
+        		if( loginInfo != null) {
+        			//トークンを発行して、クッキーに保存
+        			String newToken = loginService.createLoginToken(loginInfo.getUserId());
+        			response.addCookie(new Cookie(StringConst.COOKIE_TOKEN, newToken));
+        			//セッションにログイン情報を保存
+        			session.setAttribute(SessionConst.LOGININFO,loginInfo);
+        			isAuthOk =  true;
+        		}
+        	}
+        }
+        return isAuthOk;
+	}
 
 	/**
 	 * @param redirectAttributes
@@ -60,7 +112,8 @@ public class LoginController {
 	public String auth(
 			RedirectAttributes redirectAttributes,
 			LoginForm form,
-    		ModelAndView mv
+    		ModelAndView mv,
+    		HttpServletResponse response
 			) throws AsoBbsSystemErrException {
 
 		String url;
@@ -69,6 +122,9 @@ public class LoginController {
 		//ログイン処理を行う
 		loginInfo = loginService.login(form.getMail(),form.getPassword());
 		if( loginInfo != null) {
+			//トークンを発行して、クッキーに保存
+			String token = loginService.createLoginToken(loginInfo.getUserId());
+			response.addCookie(new Cookie(StringConst.COOKIE_TOKEN, token));
 			//セッションにログイン情報を保存
 			session.setAttribute(SessionConst.LOGININFO,loginInfo);
 			url = "redirect:dashboad";
@@ -86,7 +142,7 @@ public class LoginController {
 	 * @throws AsoBbsSystemErrException
 	 */
 	@RequestMapping(value= {"/logout"}, method=RequestMethod.GET)
-	public String logout(RedirectAttributes redirectAttributes) throws AsoBbsSystemErrException {
+	public String logout(HttpServletRequest request,RedirectAttributes redirectAttributes) throws AsoBbsSystemErrException {
 		//ログアウトメッセージを取得
 		String errMsg = MessageProperty.getInstance().getProperty(MessageProperty.LOGOUT_MSG);
 		//エラーメッセージをセット
@@ -94,8 +150,20 @@ public class LoginController {
 				
 		//セッション破棄
 		session.invalidate();
+		//DBのトークンを削除する
+		Cookie[] cookies = request.getCookies();
+		if( cookies != null ) {
+	        for(Cookie cookie : cookies) {
+	        	if( StringConst.COOKIE_TOKEN.equals( cookie.getName()) ){
+	        		String token = cookie.getValue();
+	        		loginService.logout(token);
+	        		break;
+	        	}
+	        }
+		}
 		
 		//ログイン画面へリダイレクト
+		//ログアウトの時はauto=falseをつけて自動ログインを防ぐ
 		return "redirect:login";
 	}
 	

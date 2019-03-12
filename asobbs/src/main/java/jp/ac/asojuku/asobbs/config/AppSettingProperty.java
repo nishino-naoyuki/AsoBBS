@@ -37,6 +37,7 @@ public class AppSettingProperty extends ConfigBase {
 	private static final String RANKING_DIFFICAL = "ranking.offset.diffical";
 	private static final String DB_STRING = "db.connect.string";
 	private static final String JSP_DIR = "jsp.directory";
+	private static final String TOKEN_LIMIT_DAY = "token.limit.day";
 
 	//設定値
 	private final String ASP_PWD_SALT = "pwd.hash.salt";	//パスワードソルト
@@ -214,5 +215,12 @@ public class AppSettingProperty extends ConfigBase {
 	 */
 	public String getJspDirString(){
 		return getProperty(JSP_DIR);
+	}
+	/**
+	 * トークンの有効期限を取得する
+	 * @return
+	 */
+	public Integer getTokenLimitDayString(){
+		return getProperty(TOKEN_LIMIT_DAY,10);
 	}
 }
