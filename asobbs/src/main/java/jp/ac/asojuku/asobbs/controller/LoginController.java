@@ -20,6 +20,7 @@ import jp.ac.asojuku.asobbs.config.MessageProperty;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.form.LoginForm;
+import jp.ac.asojuku.asobbs.param.IntConst;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.param.StringConst;
 import jp.ac.asojuku.asobbs.service.LoginService;
@@ -89,8 +90,7 @@ public class LoginController {
         		LoginInfoDto loginInfo = loginService.authToken(token);
         		if( loginInfo != null) {
         			//トークンを発行して、クッキーに保存
-        			String newToken = loginService.createLoginToken(loginInfo.getUserId());
-        			response.addCookie(new Cookie(StringConst.COOKIE_TOKEN, newToken));
+        			setTokenCookie(loginInfo,request,response);
         			//セッションにログイン情報を保存
         			session.setAttribute(SessionConst.LOGININFO,loginInfo);
         			isAuthOk =  true;
@@ -113,6 +113,7 @@ public class LoginController {
 			RedirectAttributes redirectAttributes,
 			LoginForm form,
     		ModelAndView mv,
+    		HttpServletRequest request,
     		HttpServletResponse response
 			) throws AsoBbsSystemErrException {
 
@@ -123,8 +124,7 @@ public class LoginController {
 		loginInfo = loginService.login(form.getMail(),form.getPassword());
 		if( loginInfo != null) {
 			//トークンを発行して、クッキーに保存
-			String token = loginService.createLoginToken(loginInfo.getUserId());
-			response.addCookie(new Cookie(StringConst.COOKIE_TOKEN, token));
+			setTokenCookie(loginInfo,request,response);
 			//セッションにログイン情報を保存
 			session.setAttribute(SessionConst.LOGININFO,loginInfo);
 			url = "redirect:dashboad";
@@ -153,7 +153,9 @@ public class LoginController {
 		//DBのトークンを削除する
 		Cookie[] cookies = request.getCookies();
 		if( cookies != null ) {
+			logger.info("logout: cookie is not null");
 	        for(Cookie cookie : cookies) {
+				logger.info("logout: "+cookie.getName());
 	        	if( StringConst.COOKIE_TOKEN.equals( cookie.getName()) ){
 	        		String token = cookie.getValue();
 	        		loginService.logout(token);
@@ -182,5 +184,25 @@ public class LoginController {
 		redirectAttributes.addFlashAttribute("mail", form.getMail());
 		
 		return "redirect:login";
+	}
+	
+	/**
+	 * 有効期限をセットしてクッキーを保存する
+	 * 
+	 * @param loginInfo
+	 * @param response
+	 * @throws AsoBbsSystemErrException
+	 */
+	private void setTokenCookie(
+			LoginInfoDto loginInfo,HttpServletRequest request,HttpServletResponse response) throws AsoBbsSystemErrException {
+		String token = loginService.createLoginToken(loginInfo.getUserId());
+		Cookie cookie = new Cookie(StringConst.COOKIE_TOKEN, token);
+		
+		String path = request.getContextPath();
+		
+		cookie.setMaxAge(IntConst.AUTO_LOGIN_COOKIE);
+		cookie.setPath(path);
+		
+		response.addCookie(cookie);
 	}
 }

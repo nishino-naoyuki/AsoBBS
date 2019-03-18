@@ -94,7 +94,7 @@ public class RoomController {
     		) throws AsoBbsSystemErrException {
 
 		//入力チェックを行う
-		validateParams(roomInputForm,bindingResult);
+		validateParams(roomInputForm,bindingResult,false);
 	    
 		//エラーがある場合は入力画面へ戻る
 		if( bindingResult.hasErrors() ) {
@@ -200,10 +200,11 @@ public class RoomController {
     public ModelAndView detail(@ModelAttribute("roomId")String roomId,ModelAndView mv) {
 
 		try {
+			LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
 	        mv.setViewName("detail_room");
 	        //詳細データを取得
 	        RoomDetailDto dtailDto = 
-	        		roomService.getRoomDetailDtoBy(Integer.parseInt(roomId));
+	        		roomService.getRoomDetailDtoBy(Integer.parseInt(roomId),loginInfo.getUserId());
 	        mv.addObject("roomDetailDto",dtailDto);
 	        //セッションに更新するルームID
 	        session.setAttribute(SessionConst.ROOM_ID,Integer.parseInt(roomId));
@@ -254,7 +255,7 @@ public class RoomController {
     		) throws AsoBbsSystemErrException {
 
 		//入力チェックを行う
-		validateParams(roomInputForm,bindingResult);
+		validateParams(roomInputForm,bindingResult,true);
 	    
 		//エラーがある場合は入力画面へ戻る
 		if( bindingResult.hasErrors() ) {
@@ -306,8 +307,9 @@ public class RoomController {
 	 */
 	@RequestMapping(value= {"/disp"}, method=RequestMethod.GET)
     public ModelAndView disp(@ModelAttribute("id")Integer roomId,@ModelAttribute("cid")String categoryId,ModelAndView mv) throws AsoBbsSystemErrException {
-		
-		RoomDetailDto roomDetailDto = roomService.getRoomDetailDtoBy(roomId);
+
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+		RoomDetailDto roomDetailDto = roomService.getRoomDetailDtoBy(roomId,loginInfo.getUserId());
 		     
 		mv.addObject("roomDetailDto",roomDetailDto);
 		mv.addObject("categoryId",categoryId);
@@ -324,10 +326,12 @@ public class RoomController {
 	 * @param roombelong
 	 * @throws AsoBbsSystemErrException
 	 */
-	private void validateParams(RoomInputForm roomInputForm,BindingResult bindingResult ) throws AsoBbsSystemErrException {
+	private void validateParams(RoomInputForm roomInputForm,BindingResult bindingResult ,boolean isUpdate) throws AsoBbsSystemErrException {
 		
 		//ルーム名 は、Fromのバリデーションでチェックだがダブリチェックも行うので再度チェック
-		RoomValidator.roomName(roomInputForm.getRoomName(),roomService,bindingResult);
+		if( !isUpdate ) {
+			RoomValidator.roomName(roomInputForm.getRoomName(),roomService,bindingResult);
+		}
 		//ルーム管理者
 		RoomValidator.roomAdmin(roomInputForm.getRoomAdmins(),roomService,bindingResult);
 		//ルーム所属者

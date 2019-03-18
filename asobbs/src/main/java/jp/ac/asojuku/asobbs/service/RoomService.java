@@ -114,14 +114,15 @@ public class RoomService {
 	 * @return
 	 */
 	public List<RoomListDto> getListBy(RoomSearchForm searchCondition,LoginInfoDto loginInfo){
+		return getListBy(searchCondition,loginInfo,false);
+	}
+	public List<RoomListDto> getListBy(RoomSearchForm searchCondition,LoginInfoDto loginInfo,boolean allFlag){
 		List<RoomListDto> list = new ArrayList<RoomListDto>();
 		
 		//学生の場合は自分が所属持しているルームのみを取得する
-		//Integer filterUserId = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? loginInfo.getUserId() : null );
-		//Integer allFlg = ( RoleId.STUDENT.equals( loginInfo.getRole() ) ? 1 : null );
-		//先生も自分が所属しているルームのみ表示に変更（じゃないと多すぎる）
-		Integer filterUserId =  loginInfo.getUserId() ;
-		Integer allFlg = 1 ;
+		Integer filterUserId = ( allFlag == false ? loginInfo.getUserId() : null );
+		Integer allFlg = ( allFlag == false ? 1 : null );
+
 		
 		//検索条件を指定して実行
 		List<RoomTblEntity> entityList = roomRepository.findAll(
@@ -154,10 +155,10 @@ public class RoomService {
 	 * @param roomId
 	 * @return
 	 */
-	public RoomDetailDto getRoomDetailDtoBy(Integer roomId) {
+	public RoomDetailDto getRoomDetailDtoBy(Integer roomId,Integer userId) {
 		RoomTblEntity entity = roomRepository.getOne(roomId);
 		
-		return getRoomDetailDto(entity);
+		return getRoomDetailDto(entity,userId);
 	}
 
 	/**
@@ -166,7 +167,7 @@ public class RoomService {
 	 * @return
 	 */
 	public RoomDetailDto getRoomDetailDto(
-			RoomTblEntity entity
+			RoomTblEntity entity,Integer userId
 			) {
 		RoomDetailDto roomDetailDto = new RoomDetailDto();
 
@@ -174,6 +175,7 @@ public class RoomService {
 		roomDetailDto.setRoomId(entity.getRoomId());
 		roomDetailDto.setRoomName(entity.getName());
 		//管理者リストを取得
+		boolean isAdmin = false;
 		for(RoomUserTblEntity roomUser : entity.getRoomUserTblSet()) {
 			UserTblEntity userEntity = userRepository.getOne(  roomUser.getUserId() );
 			if( RoomRoleId.ADMIN.equals(roomUser.getRoomRole()) ) {
@@ -198,7 +200,31 @@ public class RoomService {
 		//全員フラグ
 		roomDetailDto.setAllUser( (entity.getAllFlg() == 1 ? true:false) );
 		
+		//管理者かどうかをせっと
+		roomDetailDto.setIsAdmin(getIsAdminUser(userId,roomDetailDto));
+		
 		return roomDetailDto;
+	}
+	
+	/**
+	 * 指定されたユーザーがその掲示板情報の管理者かどうかを取得する
+	 * 
+	 * @param userId
+	 * @param roomDetailDto
+	 * @return
+	 */
+	private boolean getIsAdminUser(Integer userId,RoomDetailDto roomDetailDto) {
+		if( roomDetailDto == null ) {
+			return false;
+		}
+		boolean isAdmin = false;
+		for( UserListDto userDto : roomDetailDto.getAdminList() ) {
+			if( userDto.getUserId() == userId ) {
+				isAdmin = true;
+				break;
+			}
+		}
+		return isAdmin;
 	}
 	
 	/**

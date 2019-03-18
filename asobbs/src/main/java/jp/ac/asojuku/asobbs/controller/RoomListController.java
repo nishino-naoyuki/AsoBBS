@@ -23,7 +23,7 @@ public class RoomListController {
 	HttpSession session;
 
 	/**
-	 * ルーム一覧取得
+	 * ルーム一覧取得（ツリー用）
 	 * 
 	 * @param form
 	 * @return
@@ -34,5 +34,18 @@ public class RoomListController {
 		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
 		
         return roomService.getListBy(form,loginInfo);
+    }
+	/**
+	 * ルーム一覧取得（先生・管理者用）
+	 * 
+	 * @param form
+	 * @return
+	 */
+	@RequestMapping("/getroomalllist")
+    public List<RoomListDto> getAllList(RoomSearchForm form) {
+		//セッションからログイン情報を取得する
+		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
+		
+        return roomService.getListBy(form,loginInfo,true);
     }
 }

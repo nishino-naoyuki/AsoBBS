@@ -131,7 +131,7 @@
 		               			
 			                     <form th:action="@{/room/edit}" method="POST">
 			                     <input type="hidden" name="roomId" th:value="${roomDetailDto.roomId}">
-		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" >編集</button>
+		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" th:if="${roomDetailDto.isAdmin}" >編集</button>
 		               			</form>
 		               			<button type="button" class="form-control-sm bg-default btn btn-primary" >もどる</button>
 		               		</div>
