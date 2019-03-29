@@ -14,6 +14,17 @@ insert into course_master(course_id,course_name)values(12,"ビジネスエキス
 insert into course_master(course_id,course_name)values(13,"情報エキスパート科");
 insert into course_master(course_id,course_name)values(14,"情報ビジネス科");
 insert into course_master(course_id,course_name)values(15,"国際ビジネス科");
+insert into course_master(course_id,course_name)values(16,'情報システム科PG');
+insert into course_master(course_id,course_name)values(17,'情報システム科NW');
+insert into course_master(course_id,course_name)values(18,'情報システム科電子');
+insert into course_master(course_id,course_name)values(19,'情報システム専攻科SE');
+insert into course_master(course_id,course_name)values(20,'情報システム専攻科NW');
+insert into course_master(course_id,course_name)values(21,'情報システム専攻科電子');
+insert into course_master(course_id,course_name)values(22,'情報工学科IT');
+insert into course_master(course_id,course_name)values(23,'情報工学科NW');
+insert into course_master(course_id,course_name)values(24,'情報工学科電子');
+insert into course_master(course_id,course_name)values(25,'情報システム科PGアド');
+insert into course_master(course_id,course_name)values(26,'情報システム専攻科SEアド');
 insert into course_master(course_id,course_name)values(999,"その他");
 
 insert into role_master(role_id,role_name)values(0,"学生");

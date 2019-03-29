@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>掲示板 新規作成</title>
+    <title>掲示板 編集画面</title>
 
 	<meta  th:replace="/header/include1">
     <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
@@ -53,7 +53,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">掲示板 新規作成</h1>
+                    <h1 class="page-header">掲示板 編集画面</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -62,7 +62,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                        	掲示板 新規作成
+                        	掲示板 編集画面
                         </div>
 		               	<div class="panel-body" th:object="${bbsInputForm}" >
 		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">

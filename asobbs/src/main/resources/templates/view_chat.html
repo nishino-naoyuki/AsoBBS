@@ -122,8 +122,8 @@
 		}
 
 		var url =  /*[[@{/chat/send_comment}]]*/ "/chat/send_comment";
-		var ajaxurl = url + "?userId="+userId+"&comment="+comment;
-
+		var ajaxurl = url + "?userId="+userId+"&comment="+encodeURI(comment);
+//alert(ajaxurl);
 		$.ajax({
 	        type : "GET",                  // HTTP通信の種類
 	        url  : ajaxurl,                 // リクエストを送信する先のURL

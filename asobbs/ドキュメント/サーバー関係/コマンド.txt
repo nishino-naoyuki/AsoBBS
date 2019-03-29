@@ -16,3 +16,4 @@ Abcc123.#
 
 #catalina.outの監視
 tail -f /opt/apache-tomcat/apache-tomcat-9.0.16/logs/catalina.out
+
