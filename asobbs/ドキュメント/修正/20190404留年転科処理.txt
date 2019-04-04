@@ -1,0 +1,3 @@
+UPDATE user_tbl SET course_id=19,repeat_year_count=1 WHERE student_no=1801111; 
+UPDATE user_tbl SET course_id=19,repeat_year_count=1 WHERE student_no=1801200;
+UPDATE user_tbl SET course_id=18,repeat_year_count=1 WHERE student_no=1801314;

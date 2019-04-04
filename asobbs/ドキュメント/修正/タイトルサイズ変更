@@ -1,0 +1,2 @@
+alter table bbs_tbl change title title varchar(300);
+alter table category_tbl change name name varchar(300);

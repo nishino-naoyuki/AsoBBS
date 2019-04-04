@@ -25,6 +25,7 @@ insert into course_master(course_id,course_name)values(23,'情報工学科NW');
 insert into course_master(course_id,course_name)values(24,'情報工学科電子');
 insert into course_master(course_id,course_name)values(25,'情報システム科PGアド');
 insert into course_master(course_id,course_name)values(26,'情報システム専攻科SEアド');
+insert into course_master(course_id,course_name)values(27,'国際ＩＴエンジニア科');
 insert into course_master(course_id,course_name)values(999,"その他");
 
 insert into role_master(role_id,role_name)values(0,"学生");

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jp.ac.asojuku.asobbs.dto.BbsListDto;
+import jp.ac.asojuku.asobbs.param.StringConst;
 import jp.ac.asojuku.asobbs.service.BbsService;
 import jp.ac.asojuku.asobbs.util.FileUtils;
 
@@ -48,12 +50,14 @@ public class DownloadController {
 			file = new File(fPath);
 			os = response.getOutputStream();
 
+			String fileName = FileUtils.getFileNameFromPath(fPath);
+			//fileName = new String(fileName.getBytes(StringConst.DLFILE_NAME_ENCODE), StringConst.DLFILE_NAME_ENCODE);
 		    response.setContentType("application/octet-stream");
 		    response.setContentLength((int) file.length());
 		    response.setHeader(
 		    		"Content-Disposition", 
-		    		"attachment; filename=\""+
-		    		FileUtils.getFileNameFromPath(fPath)+"\""
+		    		"attachment; filename=\""+fileName +"\"; "
+		    				+ "filename*=UTF-8' '"+URLEncoder.encode(fileName, "UTF-8")
 		    		);
 		  //ファイルの読み込み
 		    int bytes = 0;

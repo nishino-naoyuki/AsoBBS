@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,8 @@ public class UserService {
 	public List<UserListDto> getList(){
 		List<UserListDto> list = new ArrayList<UserListDto>();
 		
-		List<UserTblEntity> entityList = userRepository.findAll();
+		List<UserTblEntity> entityList = userRepository.findAll(
+				new Sort(Sort.Direction.DESC, "roleMaster.roleId").and(new Sort(Sort.Direction.ASC, "studentNo")));
 		
 		for( UserTblEntity entity : entityList ) {
 			UserListDto userDto = new UserListDto();
@@ -101,7 +103,8 @@ public class UserService {
 						where(mailContains(mail)).
 						and(courseEquals(courseId)).
 						and(nicknameContains(nickName)).
-						and(gradeEquals(grade))
+						and(gradeEquals(grade)),
+						new Sort(Sort.Direction.DESC, "roleMaster.roleId").and(new Sort(Sort.Direction.ASC, "studentNo"))
 				);
 
 		for( UserTblEntity entity : entityList ) {
