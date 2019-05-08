@@ -57,7 +57,8 @@ public class DownloadController {
 		    response.setHeader(
 		    		"Content-Disposition", 
 		    		"attachment; filename=\""+fileName +"\"; "
-		    				+ "filename*=UTF-8' '"+URLEncoder.encode(fileName, "UTF-8")
+		    				+ "filename*=UTF-8''"+URLEncoder.encode(fileName, "UTF-8")
+		    		//"attachment; filename*=utf-8''"+URLEncoder.encode(fileName, "UTF-8")
 		    		);
 		  //ファイルの読み込み
 		    int bytes = 0;

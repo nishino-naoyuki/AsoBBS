@@ -77,12 +77,12 @@
                             		<table class="table table-bordered table-hover" id="room-list" th:object="${dashBoadDto}" >
 				                       <tbody>
 				                       <tr th:each="bbsDto:*{bbsList}">
-				                       		<td>
+				                       		<td>				                       			
 				                       			<div th:if="${bbsDto.update}" >
-				                       				掲示板情報「<a th:href="@{'/bbs/detail?id='+${bbsDto.bbsId}}" th:text="${bbsDto.bbsName}"></a>」が更新されています
+				                       				「<a th:href="@{'/room/disp?id='+${bbsDto.roomId}+'&cid='+${bbsDto.categoryId}}" th:text="${bbsDto.roomName}"></a>」の掲示板「<a th:href="@{'/bbs/detail?id='+${bbsDto.bbsId}}" th:text="${bbsDto.bbsName}"></a>」が更新されています
 				                       			</div>
 				                       			<div th:unless="${bbsDto.update}" >
-				                       				掲示板情報「<a th:href="@{'/bbs/detail?id='+${bbsDto.bbsId}}" th:text="${bbsDto.bbsName}"></a>」が追加されています
+				                       				「<a th:href="@{'/room/disp?id='+${bbsDto.roomId}+'&cid='+${bbsDto.categoryId}}" th:text="${bbsDto.roomName}"></a>」の掲示板「<a th:href="@{'/bbs/detail?id='+${bbsDto.bbsId}}" th:text="${bbsDto.bbsName}"></a>」が追加されています
 				                       			</div>
 				                       		</td>
 				                       </tr>

@@ -77,7 +77,7 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<div class="col-xs-10">
-							                    	<input type="text" name="categoryName" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{categoryName}" list="category_list">
+							                    	<input type="text" name="categoryName" class="typeahead form-control" placeholder="カテゴリ名を記入してください"  th:field="*{categoryName}" list="category_list">
 	                                				<datalist id="category_list">
 	                                					<option>無分類</option>
 	                                					<option th:each="category:${categoryListDtoList}" th:text="${category.name}"></option>
@@ -91,7 +91,7 @@
 	                                		<td>
 	                                		<div class="form-group">
 	                                			<div class="col-xs-8">
-	                                				<input type="text" name="title" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{title}" >
+	                                				<input type="text" name="title" class="typeahead form-control" placeholder="タイトルを記入してください"  th:field="*{title}" >
 	                                			</div>
 	                                			<input type="checkbox" name="emergencyFlg" value="all" th:field="*{emergencyFlg}">緊急
 	                                		</div>

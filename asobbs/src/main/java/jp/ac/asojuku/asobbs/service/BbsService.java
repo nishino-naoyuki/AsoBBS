@@ -79,6 +79,9 @@ public class BbsService {
 		for(BbsTblEntity bbsTblEntity : bbsList ) {
 			DashBoadBbsDto bbsDto = new DashBoadBbsDto();
 			
+			bbsDto.setRoomId( bbsTblEntity.getCategoryTbl().getRoomId() );
+			bbsDto.setRoomName( bbsTblEntity.getCategoryTbl().getRoomTbl().getName() );
+			bbsDto.setCategoryId( bbsTblEntity.getCategoryTbl().getCategoryId() );
 			bbsDto.setBbsId(bbsTblEntity.getBbsId());
 			bbsDto.setBbsName(bbsTblEntity.getTitle());
 			bbsDto.setUpdate(!bbsTblEntity.getCreateDate().equals( bbsTblEntity.getUpdateDate() ));

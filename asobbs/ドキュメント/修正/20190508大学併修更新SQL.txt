@@ -1,0 +1,4 @@
+update user_tbl set student_no='1901026',mailadress='1901026@s.asojuku.ac.jp' where student_no='1701006';
+update user_tbl set student_no='1901027',mailadress='1901027@s.asojuku.ac.jp' where student_no='1701007';
+update user_tbl set student_no='1901028',mailadress='1901028@s.asojuku.ac.jp' where student_no='1701010';
+update user_tbl set student_no='1901029',mailadress='1901029@s.asojuku.ac.jp' where student_no='1701013';
