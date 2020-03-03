@@ -56,7 +56,7 @@ public class DownloadController {
 		    response.setContentLength((int) file.length());
 		    response.setHeader(
 		    		"Content-Disposition", 
-		    		"attachment; filename=\""+fileName +"\"; "
+		    		"inline; filename=\""+fileName +"\"; "
 		    				+ "filename*=UTF-8''"+URLEncoder.encode(fileName, "UTF-8")
 		    		//"attachment; filename*=utf-8''"+URLEncoder.encode(fileName, "UTF-8")
 		    		);
