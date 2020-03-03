@@ -4,3 +4,6 @@
 クローン設定ファイル：/etc/cron.d
 
 ヒント：FHS
+※バッチファイルがBAD　FILE　MODEで動かないとき
+https://qiita.com/aat00000/items/cfa9548308799635e661
+→権限を６４４に

@@ -1,10 +1,13 @@
 package jp.ac.asojuku.asobbs.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +32,6 @@ public class ChatController {
 
 	@Autowired
 	CourseService courseService;
-	
 	/**
 	 * チャット画面の表示
 	 * 
@@ -45,6 +47,8 @@ public class ChatController {
 		mv.setViewName("/view_chat");
         mv.addObject("courseList",list);
         mv.addObject("targetUserId",userId);
+        
+
 		
 		return mv;
     }

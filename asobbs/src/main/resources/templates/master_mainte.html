@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>マスターメンテ</title>
+
+	<meta id="parent" th:replace="/header/include1"></meta>
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="parent" th:replace="/header/title"></div>
+            </div>
+            <!-- /.navbar-header -->
+			<!-- ヘッダー -->
+			<div id="parent" th:replace="/header/header"></div>
+			<!-- ヘッダー -->
+            
+            <!-- /.navbar-top-links -->
+			<!-- サイドバー -->
+			<div id="parent" th:replace="/header/sidebar"></div>
+			<!-- サイドバー -->
+        </nav>
+
+        <div id="page-wrapper">
+            <ul class="nav nav-tabs">
+				<li class="active"><a href="#home" data-toggle="tab">学科</a></li>
+				<li><a href="#profile" data-toggle="tab">タブメニュー２</a></li>
+				<li><a href="#messages" data-toggle="tab">タブメニュー３</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="home">
+					&nbsp;
+                	<div class="panel panel-primary">
+                        <div class="panel-heading">
+                        学科一覧
+                        </div>
+		               	<div class="panel-body">
+		               		<div class="table-responsive">
+	                           		<table class="table table-bordered table-hover" id="course-list">
+	                           			<thead class="thead-light">
+	                           			<tr>
+	                           				<th>No</th>
+	                           				<th>学科名</th>
+	                           				<th>&nbsp;</th>
+	                           			</tr>
+	                           			</thead>
+				                       <tbody>
+				                       </tbody>
+	                           		</table>
+		               		</div>
+		            	</div>
+	            	</div>
+				</div>
+				<div class="tab-pane" id="profile">いいいいいいいいいい</div>
+				<div class="tab-pane" id="messages">ううううううううううう</div>
+			</div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+	
+	<div id="parent" th:replace="/header/include2"></div>
+	<div  th:replace="/header/datatable"></div>
+	
+	<script th:inline="javascript">
+	var modalemptable;
+	
+	$(function(){
+		modalemptable = $("#course-list").DataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"paging": true,
+			"bFilter": true,
+			"bSort": true,
+			"bInfo": true,
+			"language": {
+                "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
+            },
+            "ajax": { url: /*[[@{/getcouselist}]]*/' /getcouselist', dataSrc: '' },
+            "columns": [
+            	{
+            		data:"" 
+            	},
+                { 
+                	data: "courseName" ,
+                	render: function ( data, type, row ) {
+                		var url = /*[[@{/room/disp}]]*/ "/room/detail";
+                		return '<a href="'+url+'?id='+row.courseId+'">'+row.courseName+'</a>';
+                	}
+                },
+                { 
+                	data: "" 
+                }
+            ]
+		});
+	});
+	</script>
+	}
+</body>
+</html>

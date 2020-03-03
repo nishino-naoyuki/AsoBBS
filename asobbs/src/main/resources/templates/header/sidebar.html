@@ -26,7 +26,7 @@
                             <a th:href="@{/room/list}"><i class="fa fa-home fa-fw"></i> 全ルーム一覧</a>
                         </li>
                         <li th:if="${session['LoginInfo'].isManager()}">
-                            <a th:href="@{forms.html}"><i class="fa fa-edit fa-fw"></i> マスタメンテ</a>
+                            <a th:href="@{/master/list}"><i class="fa fa-edit fa-fw"></i> マスタメンテ</a>
                         </li>
                     </ul>
                 </div>

@@ -18,7 +18,8 @@ extends JpaRepository<BbsTblEntity,Integer>,
 	@Query("select b from BbsTblEntity b "
 			+ "left join b.categoryTbl c "
 			+ "left join c.roomTbl r "
-			+ "  where (now() - b.updateDate) <= 6048000 "
+			//+ "  where (now() - b.updateDate) <= 6048000 "
+			+ "  where DATEDIFF(now() ,b.updateDate) <= 7 "
 			+ " and (exists(select 1 from RoomUserTblEntity ru where ru.roomId = r.roomId and ru.userId = :userId) or r.allFlg = 1 ) "
 			+ " and b.parentBbsId is null "
 			+ "order by b.updateDate DESC")

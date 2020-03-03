@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
@@ -42,6 +43,7 @@ public class RoomListController {
 	 * @return
 	 */
 	@RequestMapping("/getroomalllist")
+	@ResponseBody
     public List<RoomListDto> getAllList(RoomSearchForm form) {
 		//セッションからログイン情報を取得する
 		LoginInfoDto loginInfo = (LoginInfoDto)session.getAttribute(SessionConst.LOGININFO);
