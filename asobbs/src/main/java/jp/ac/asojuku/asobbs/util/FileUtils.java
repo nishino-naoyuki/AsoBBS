@@ -85,7 +85,7 @@ public class FileUtils {
 	public static String getExt(String fileName){
 
 	    if (fileName == null)
-	        return null;
+	        return "";
 	    int point = fileName.lastIndexOf(".");
 	    if(point == -1){
 	    	return "";

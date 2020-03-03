@@ -11,9 +11,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +42,11 @@ public class DownloadController {
 	 * @throws IOException
 	 */
 	@RequestMapping("/bbs")
-    public void bbsDownload(@ModelAttribute("fid")Integer fid,@ModelAttribute("fsize")Long fsize,HttpServletResponse response) throws IOException {
+    public void bbsDownload(
+    		@RequestHeader(value="User-Agent",required=false) String userAgent,
+    		@ModelAttribute("fid")Integer fid,
+    		@ModelAttribute("fsize")Long fsize,
+    		HttpServletResponse response) throws IOException {
 		
 		File file = null;
 		OutputStream os = null;
@@ -52,11 +58,26 @@ public class DownloadController {
 
 			String fileName = FileUtils.getFileNameFromPath(fPath);
 			//fileName = new String(fileName.getBytes(StringConst.DLFILE_NAME_ENCODE), StringConst.DLFILE_NAME_ENCODE);
-		    response.setContentType("application/octet-stream");
+		   
+			//PDFファイルの場合はブラウザ内に展開できるようにする
+			if( isPDFFile(fileName)) {
+				response.setContentType("application/pdf");
+			}else {
+				response.setContentType("application/octet-stream");
+			}
+		    
 		    response.setContentLength((int) file.length());
+		    String headerDisposition = "";
+		    if( isPDFFile(fileName)) {
+		    	//pdfの場合はinlineにして、ブラウザ内で表示するようにする
+		    	headerDisposition = "inline";
+		    }else {
+			    //ケータイの場合はinline、PCの場合はattachmentにする
+		    	headerDisposition = ( isSmartPhone(userAgent) ? "inline":"attachment");
+		    }
 		    response.setHeader(
 		    		"Content-Disposition", 
-		    		"inline; filename=\""+fileName +"\"; "
+		    		headerDisposition+"; filename=\""+fileName +"\"; "
 		    				+ "filename*=UTF-8''"+URLEncoder.encode(fileName, "UTF-8")
 		    		//"attachment; filename*=utf-8''"+URLEncoder.encode(fileName, "UTF-8")
 		    		);
@@ -75,4 +96,30 @@ public class DownloadController {
 		}
 		
     }
+	
+	/**
+	 * スマホかどうかを判定する
+	 * 
+	 * UserAgentをみて、キーワードが含まれているかどうかをチェックする
+	 * 参考：https://weback.net/mobile/2114/
+	 * 
+	 * @param userAgent
+	 * @return
+	 */
+	private boolean isSmartPhone(String userAgent) {
+		return( 
+				userAgent.contains("Android") ||
+				userAgent.contains("iPhone") ||
+				userAgent.contains("Windows Phone") );
+	}
+	
+	/**
+	 * ダウンロード対象がPDFかどうかを判定する
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	private boolean isPDFFile(String filename) {
+		return ( StringUtils.equalsIgnoreCase(FileUtils.getExt(filename), "pdf")) ;
+	}
 }
