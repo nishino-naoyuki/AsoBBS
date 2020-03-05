@@ -93,8 +93,9 @@ public class BbsController {
 		form.setEmergencyFlg( bbsDetailDto.getEmergencyFlg() );
 		form.setContent( bbsDetailDto.getContent() );
 		form.setRoomId( bbsDetailDto.getRoomId()  );
-		for(  AttachedFileDto attachedFileDto : bbsDetailDto.getAttachedFileList() ) {
-			form.addNowFilePath(attachedFileDto);
+		for( int i = 0 ; i < bbsDetailDto.getAttachedFileList().size(); i++) {
+			form.addNowFilePath( i,
+											bbsDetailDto.getAttachedFileList().get(i));
 		}
 		
         mv.setViewName("/edit_bbs");
@@ -152,8 +153,9 @@ public class BbsController {
 		//掲示板情報を取得
 		BbsDetailDto bbsDetailDto = bbsService.getBy(bbsInputForm.getBbsId(),loginInfo);
 		//現状のファイル状況を保存する
-		for(  AttachedFileDto attachedFileDto : bbsDetailDto.getAttachedFileList() ) {
-			bbsInputForm.addNowFilePath(attachedFileDto);
+		for( int i = 0 ; i < bbsDetailDto.getAttachedFileList().size(); i++) {
+			bbsInputForm.addNowFilePath( i,
+											bbsDetailDto.getAttachedFileList().get(i));
 		}
 
 		//エラーがある場合は入力画面へ戻る
@@ -336,7 +338,9 @@ public class BbsController {
 		
 		File uploadDir = null;
 		//ファイルがあれば保存して、パスを覚えておく
-		for( MultipartFile uploadFile : uploadFiles) {
+		//for( MultipartFile uploadFile : uploadFiles) {
+		for(int i = 0; i < uploadFiles.length; i++) {
+			MultipartFile uploadFile = uploadFiles[i];
 			if( !uploadFile.isEmpty() ) {
 				//アップロードディレクトリを取得する
 				uploadDir = (uploadDir == null ? mkdirs() : uploadDir);
@@ -345,7 +349,7 @@ public class BbsController {
 			    //ファイルコピー
 			    uploadFile.transferTo(uploadFilePath);
 			    //アップロードしたファイル名を覚えておく
-			    bbsInputForm.addUploadFilePath(uploadFilePath.toString(),uploadFile.getSize());
+			    bbsInputForm.addUploadFilePath(i,uploadFilePath.toString(),uploadFile.getSize());
 			}
 		}
 		//削除チェック

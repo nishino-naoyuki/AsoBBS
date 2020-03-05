@@ -66,7 +66,7 @@
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-core</artifactId>
-		    <version>2.9.5</version><!--$NO-MVN-MAN-VER$-->
+		    <version>[2.9.10.1,)</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<!-- warファイルのために追加scopeをprovidedにすることでtomcatを梱包しない -->
 		<dependency>

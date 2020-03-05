@@ -27,69 +27,93 @@ public class BbsInputForm {
 	@Size(max = 15000, message="{errmsg0305}")
 	private String content;
 	
+	private final int UPLOAD_FILE_NUM = 3;
 	private Integer roomId;
 	
 	private MultipartFile multipartFile1;
 	private MultipartFile multipartFile2;
 	private MultipartFile multipartFile3;
 	
-	private List<AttachedFileDto> uploadFilePathList = new ArrayList<AttachedFileDto>();
+	//private List<AttachedFileDto> uploadFilePathList = new ArrayList<AttachedFileDto>();
+	private AttachedFileDto[] uploadFilePaths = new AttachedFileDto[UPLOAD_FILE_NUM];
 	
 	//更新用情報
-	private List<AttachedFileDto> nowFilePathList = new ArrayList<AttachedFileDto>();	//更新前ファイルリスト
+	//private List<AttachedFileDto> nowFilePathList = new ArrayList<AttachedFileDto>();	//更新前ファイルリスト
+	private AttachedFileDto[] nowFilePaths = new AttachedFileDto[UPLOAD_FILE_NUM];
+	
 	private Boolean multipartFile1DelFlg;
 	private Boolean multipartFile2DelFlg;
 	private Boolean multipartFile3DelFlg;
 	//更新用BBSID
 	private Integer bbsId;
 	
+	public BbsInputForm() {
+		//nullを返さないように空オブジェクトを入れておく
+		for(int i = 0; i < uploadFilePaths.length; i++) {
+			uploadFilePaths[i] = new AttachedFileDto();
+		}
+		for(int i = 0; i < nowFilePaths.length; i++) {
+			nowFilePaths[i] = new AttachedFileDto();
+		}
+	}
 
-	public void addNowFilePath(AttachedFileDto filePath) {
-		nowFilePathList.add(filePath);
+	public void addNowFilePath(int idx,AttachedFileDto filePath) {
+		//nowFilePathList.add(filePath);
+		if( idx < 0 || idx >= UPLOAD_FILE_NUM ) {
+			return;
+		}
+		nowFilePaths[idx] = filePath;
 	}
 	
-	public void addUploadFilePath(AttachedFileDto filePath) {
-		uploadFilePathList.add(filePath);
+	public void addUploadFilePath(int idx,AttachedFileDto filePath) {
+		if( idx < 0 || idx >= UPLOAD_FILE_NUM ) {
+			return;
+		}
+		uploadFilePaths[idx] = filePath;
+		//uploadFilePathList.add(filePath);
 	}
 	public AttachedFileDto getUploadFilePath(Integer index) {
 		AttachedFileDto attachedFileDto = null;
-		try{
-			attachedFileDto = uploadFilePathList.get(index);
-		}catch(IndexOutOfBoundsException e) {
-			attachedFileDto = new AttachedFileDto();
+//		try{
+//			attachedFileDto = uploadFilePathList.get(index);
+//		}catch(IndexOutOfBoundsException e) {
+//			attachedFileDto = new AttachedFileDto();
+//		}
+		if( index < 0 || index >= UPLOAD_FILE_NUM ) {
+			return attachedFileDto;
 		}
 		
-		return attachedFileDto;
+		return uploadFilePaths[index];
 	}
 
 	public AttachedFileDto getNowFilePath(Integer index) {
 		AttachedFileDto attachedFileDto = null;
-		try{
-			attachedFileDto = nowFilePathList.get(index);
-		}catch(IndexOutOfBoundsException e) {
-			attachedFileDto = new AttachedFileDto();
+//		try{
+//			attachedFileDto = nowFilePathList.get(index);
+//		}catch(IndexOutOfBoundsException e) {
+//			attachedFileDto = new AttachedFileDto();
+//		}
+
+		if( index < 0 || index >= UPLOAD_FILE_NUM ) {
+			return attachedFileDto;
 		}
 		
-		return attachedFileDto;
+		return nowFilePaths[index];
 	}
 	public void deleteUploadFilePath(Integer index) {
-		try{
-			uploadFilePathList.remove((int)index);
-		}catch(IndexOutOfBoundsException e) {
-			;//無処理
+//		try{
+//			uploadFilePathList.remove((int)index);
+//		}catch(IndexOutOfBoundsException e) {
+//			;//無処理
+//		}
+		if( index < 0 || index >= UPLOAD_FILE_NUM ) {
+			return;
 		}
-	}
-	public void addUploadFilePath(String filePath,Long size) {
-		AttachedFileDto dto = new AttachedFileDto();
 		
-		dto.setFileName(FileUtils.getFileNameFromPath(filePath));
-		dto.setFilePath(filePath);
-		dto.setSize(size);
-		
-		uploadFilePathList.add(dto);
+		uploadFilePaths[index] = null;
 	}
 
-	public void addUploadFilePath(Integer id,String filePath,Long size) {
+	public void addUploadFilePath(int index,Integer id,String filePath,Long size) {
 		AttachedFileDto dto = new AttachedFileDto();
 
 		dto.setFileName(FileUtils.getFileNameFromPath(filePath));
@@ -97,6 +121,20 @@ public class BbsInputForm {
 		dto.setFilePath(filePath);
 		dto.setSize(size);
 		
-		uploadFilePathList.add(dto);
+
+		addUploadFilePath(index,dto);
+		//uploadFilePathList.add(dto);
 	}
+	
+	public void addUploadFilePath(int index,String filePath,Long size) {
+		AttachedFileDto dto = new AttachedFileDto();
+		
+		dto.setFileName(FileUtils.getFileNameFromPath(filePath));
+		dto.setFilePath(filePath);
+		dto.setSize(size);
+		
+		addUploadFilePath(index,dto);
+		//uploadFilePathList.add(dto);
+	}
+
 }

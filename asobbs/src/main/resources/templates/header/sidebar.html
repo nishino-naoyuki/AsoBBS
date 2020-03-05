@@ -25,8 +25,14 @@
                         <li th:unless="${session['LoginInfo'].isStudent()}">
                             <a th:href="@{/room/list}"><i class="fa fa-home fa-fw"></i> 全ルーム一覧</a>
                         </li>
-                        <li th:if="${session['LoginInfo'].isManager()}">
-                            <a th:href="@{/master/list}"><i class="fa fa-edit fa-fw"></i> マスタメンテ</a>
+                        <li th:if="${session['LoginInfo'].isManager()}">                            
+                            <a href="#" class="master_mainte_drop" ><i class="fa fa-edit fa-fw"></i> マスタメンテ<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level" id="master_mainte_top" >
+                            	<li>
+                            		<a th:href="@{/master/courselist}" >学科マスタ</a>
+                            		<a href="#" >学生マスタ</a>
+                            	</li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

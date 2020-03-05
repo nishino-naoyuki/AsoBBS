@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>学科マスター</title>
+
+	<meta  th:replace="/header/include1">
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="parent" th:replace="/header/title"></div>
+            </div>
+            <!-- /.navbar-header -->
+			<!-- ヘッダー -->
+			<div id="parent" th:replace="/header/header"></div>
+			<!-- ヘッダー -->
+            
+            <!-- /.navbar-top-links -->
+			<!-- サイドバー -->
+			<div id="parent" th:replace="/header/sidebar"></div>
+			<!-- サイドバー -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">学科マスター</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        </div>
+		               	<div class="panel-body">
+                            <div class="row">
+                            <p>学科一覧です。IDについては自動採番となりますので変更不可能です。</p>
+                            <p>削除については、削除したいデータにチェックを入れて削除ボタンをクリックしてい下さい。</p>
+                            </div>
+		               		<div class="table-responsive">
+                            		<table class="table table-bordered table-hover" id="course-list">
+                            			<thead class="thead-light">
+                            			<tr>
+                            				<th>&nbsp;</th>
+                            				<th>ID</th>
+                            				<th>学科名</th>
+                            			</tr>
+                            			</thead>
+				                       <tbody>
+				                       </tbody>
+                            		</table>
+		               		</div>
+		               	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<div th:replace="/header/include2"></div>
+	<div  th:replace="/header/datatable"></div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	var modalemptable;
+	$(function(){
+		// datatableの設定を変更
+		modalemptable = $("#course-list").DataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"paging": true,
+			"bFilter": true,
+			"bSort": true,
+			"bInfo": true,
+			"rowId":"courseId",
+			"language": {
+                "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
+            },
+            "ajax": { url: /*[[@{/getcouselist}]]*/' /getcouselist', dataSrc: '' },
+            "columns": [
+            	{
+                		data:"courseId" ,
+	                	render: function ( data, type, row ) {
+	                		return '<input type="checkbox" class="check_course" name="chk-'+data+'">';
+	                	}
+            	},
+                { data: "courseId" },
+                { 
+                	data: "courseName" ,
+                	render: function ( data, type, row ) {
+                		var url = /*[[@{/room/disp}]]*/ "/room/detail";
+                		return '<a href="#" onClick="changeCourseName('+row.courseId+',\''+data+'\')" >'+data+'</a>';
+                	}
+                },
+            ]
+		});
+	})
+	/*]]>*/
+	
+	function changeCourseName( courseId,data ){
+		result =  prompt("新しい学科名を入力してください",data);
+		
+		if( result != null ){
+			//入力された項目をサーバへ送る
+			$.ajax({
+		        type : "POST",                  // HTTP通信の種類
+		        url  : /*[[@{/updatecoursename}]]*/' /updatecoursename',                 // リクエストを送信する先のURL
+		        dataType : "text",              // サーバーから返されるデータの型
+		        data : {courseId: courseId, courseName: result}
+			}).done(function(data) {
+				if( data == "OK"){
+					alert("更新に成功しました");
+				}else{
+					alert("更新に失敗しました");
+				}
+			}).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
+		        alert("更新に失敗しました");
+		    });
+		}
+		
+	}
+	</script>
+</body>
+</html>

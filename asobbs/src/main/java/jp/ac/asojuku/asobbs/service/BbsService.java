@@ -190,7 +190,7 @@ public class BbsService {
 	 * @throws AsoBbsSystemErrException 
 	 */
 	private void saveAttachedFiles(BbsInputForm bbsInputForm,BbsTblEntity bbsEntity) throws IllegalStateException, IOException, AsoBbsSystemErrException {
-		if( bbsInputForm.getUploadFilePathList() == null ) {
+		if( bbsInputForm.getUploadFilePaths() == null ) {
 			return;
 		}
 

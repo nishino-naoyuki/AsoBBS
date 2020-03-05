@@ -13,6 +13,11 @@ import jp.ac.asojuku.asobbs.dto.CourseDto;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.service.CourseService;
 
+/**
+ * マスターメンテのコントローラ
+ * @author nishino
+ *
+ */
 @Controller
 @RequestMapping(value= {"/master"})
 public class MasterMainteController {
@@ -28,5 +33,22 @@ public class MasterMainteController {
         
         return mv;
     }
+
+	/**
+	 * 学科一覧の表示画面
+	 * 
+	 * @param mv
+	 * @return
+	 * @throws AsoBbsSystemErrException
+	 */
+	@RequestMapping(value= {"/courselist"}, method=RequestMethod.GET)
+	public ModelAndView courseList(
+    		ModelAndView mv) throws AsoBbsSystemErrException {
+
+        mv.setViewName("list_course_master");
+        
+        return mv;
+    }
+	
 
 }

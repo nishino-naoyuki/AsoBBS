@@ -106,7 +106,33 @@
 	                                		<th>添付ファイル</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<div class="form-group" th:each="fileDto:${session['bbsConfirmDto'].uploadFilePathList}" th:text="${fileDto.fileName}"></div>
+	                                			<!--/* 添付ファイル名の表示　新規で追加されたファイルを優先して表示 */-->
+	                                			
+	                                			<div class="form-group" th:if="${session['bbsConfirmDto'].multipartFile1.isEmpty()}">	
+		                                				<div th:if="${session['bbsConfirmDto'].multipartFile1DelFlg}" th:text="'[削除]'+${session['bbsConfirmDto'].nowFilePaths[0].fileName}"></div>
+		                                				<div th:unless="${session['bbsConfirmDto'].multipartFile1DelFlg}" th:text="${session['bbsConfirmDto'].nowFilePaths[0].fileName}"></div>                  				
+	                                			</div>
+	                                			<div class="form-group" th:unless="${session['bbsConfirmDto'].multipartFile1.isEmpty()}">	
+	                                				<div th:text="'[追加/更新]'+${session['bbsConfirmDto'].multipartFile1.getOriginalFilename()}"></div>
+	                                			</div>
+	                                	
+	                                			
+	                                			<div class="form-group" th:if="${session['bbsConfirmDto'].multipartFile2.isEmpty()}">	
+		                                				<div th:if="${session['bbsConfirmDto'].multipartFile2DelFlg}" th:text="'[削除]'+${session['bbsConfirmDto'].nowFilePaths[1].fileName}"></div>
+		                                				<div th:unless="${session['bbsConfirmDto'].multipartFile2DelFlg}" th:text="${session['bbsConfirmDto'].nowFilePaths[1].fileName}"></div>                   				
+	                                			</div>
+	                                			<div class="form-group" th:unless="${session['bbsConfirmDto'].multipartFile2.isEmpty()}">	
+	                                				<div th:text="'[追加/更新]'+${session['bbsConfirmDto'].multipartFile2.getOriginalFilename()}"></div>
+	                                			</div>
+	                                			
+	                                			<div class="form-group" th:if="${session['bbsConfirmDto'].multipartFile3.isEmpty()}">	
+		                                				<div th:if="${session['bbsConfirmDto'].multipartFile3DelFlg}" th:text="'[削除]'+${session['bbsConfirmDto'].nowFilePaths[2].fileName}"></div>
+		                                				<div th:unless="${session['bbsConfirmDto'].multipartFile3DelFlg}" th:text="${session['bbsConfirmDto'].nowFilePaths[2].fileName}"></div>                       				
+	                                			</div>
+	                                			<div class="form-group" th:unless="${session['bbsConfirmDto'].multipartFile3.isEmpty()}">	
+	                                				<div th:text="'[追加/更新]'+${session['bbsConfirmDto'].multipartFile3.getOriginalFilename()}"></div>
+	                                			</div>
+	                                			
 	                                		</div>
 	                                		</td>
 	                                	</tr>
