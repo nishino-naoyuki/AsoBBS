@@ -66,6 +66,11 @@
                             <p>学科一覧です。IDについては自動採番となりますので変更不可能です。</p>
                             <p>削除については、削除したいデータにチェックを入れて削除ボタンをクリックしてい下さい。</p>
                             </div>
+                            <div class="row text-right">
+                            	<div class="col-xl-12">
+                            sss
+                            	</div>
+                            </div>
 		               		<div class="table-responsive">
                             		<table class="table table-bordered table-hover" id="course-list">
                             			<thead class="thead-light">
@@ -138,7 +143,8 @@
 		        dataType : "text",              // サーバーから返されるデータの型
 		        data : {courseId: courseId, courseName: result}
 			}).done(function(data) {
-				if( data == "OK"){
+				if( data == "ok:"+courseId+":"+result){
+					drawTable();
 					alert("更新に成功しました");
 				}else{
 					alert("更新に失敗しました");
@@ -147,7 +153,45 @@
 		        alert("更新に失敗しました");
 		    });
 		}
-		
+	}
+	
+	function drawTable(){
+		if( modalemptable == null ){
+			return;
+		}
+    	//いったんクリア
+    	modalemptable.clear();
+    	modalemptable.destroy();
+		// datatableの設定を変更
+		modalemptable = $("#course-list").DataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"paging": true,
+			"bFilter": true,
+			"bSort": true,
+			"bInfo": true,
+			"rowId":"courseId",
+			"language": {
+                "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
+            },
+            "ajax": { url: /*[[@{/getcouselist}]]*/' /getcouselist', dataSrc: '' },
+            "columns": [
+            	{
+                		data:"courseId" ,
+	                	render: function ( data, type, row ) {
+	                		return '<input type="checkbox" class="check_course" name="chk-'+data+'">';
+	                	}
+            	},
+                { data: "courseId" },
+                { 
+                	data: "courseName" ,
+                	render: function ( data, type, row ) {
+                		var url = /*[[@{/room/disp}]]*/ "/room/detail";
+                		return '<a href="#" onClick="changeCourseName('+row.courseId+',\''+data+'\')" >'+data+'</a>';
+                	}
+                },
+            ]
+		});
 	}
 	</script>
 </body>

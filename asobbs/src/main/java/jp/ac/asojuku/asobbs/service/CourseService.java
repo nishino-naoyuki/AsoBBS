@@ -38,5 +38,36 @@ public class CourseService {
 		
 		return list;
 	}
+	
+	/**
+	 * 学科名の更新処理
+	 * 
+	 * @param courseId
+	 * @param courseName
+	 * @return
+	 */
+	public void update(int courseId,String courseName) {
+		
+		CourseMasterEntity entity = courseRepository.getOne(courseId);
+		
+		entity.setCourseName(courseName);
+		
+		courseRepository.save(entity) ;
+		
+	}
+	
+	/**
+	 * 学科の挿入
+	 * 
+	 * @param courseName
+	 */
+	public void insert(String courseName) {
+		CourseMasterEntity entity = new CourseMasterEntity();
+		
+		entity.setCourseName(courseName);
+		
+		courseRepository.save(entity);
+	}
+	
 
 }

@@ -41,12 +41,13 @@ public class MasterMainteListController {
 	 */
 	@RequestMapping(value= {"/updatecoursename"}, method=RequestMethod.POST)
 	public String updateCourseName(
-    		@RequestParam("courseId")String courseId, 
+    		@RequestParam("courseId")Integer courseId, 
     		@RequestParam("courseName")String courseName
 			){
 		//権限チェック
 		
 		//更新する
+		courseService.update(courseId, courseName);
 		
         return "ok:"+courseId+":"+courseName;
 	}
