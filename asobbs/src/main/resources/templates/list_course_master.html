@@ -62,13 +62,13 @@
                         <div class="panel-heading">
                         </div>
 		               	<div class="panel-body">
-                            <div class="row">
+                            <div class="row col-xs-12">
                             <p>学科一覧です。IDについては自動採番となりますので変更不可能です。</p>
                             <p>削除については、削除したいデータにチェックを入れて削除ボタンをクリックしてい下さい。</p>
                             </div>
                             <div class="row text-right">
-                            	<div class="col-xl-12">
-                            sss
+                            	<div class="col-xs-12">
+                            		<button class="form-control-sm bg-default btn btn-default"  id="add_course">学科追加</button>
                             	</div>
                             </div>
 		               		<div class="table-responsive">
@@ -132,6 +132,7 @@
 	})
 	/*]]>*/
 	
+	//学科名の変更
 	function changeCourseName( courseId,data ){
 		result =  prompt("新しい学科名を入力してください",data);
 		
@@ -155,6 +156,7 @@
 		}
 	}
 	
+	//表の描画
 	function drawTable(){
 		if( modalemptable == null ){
 			return;
@@ -193,6 +195,30 @@
             ]
 		});
 	}
+	
+	$("#add_course").on("click",function(){
+		result =  prompt("新しい学科名を入力してください","学科名");
+
+		if( result != null ){
+			//入力された項目をサーバへ送る
+			$.ajax({
+		        type : "POST",                  // HTTP通信の種類
+		        url  : /*[[@{/insertcoursename}]]*/' /insertcoursename',                 // リクエストを送信する先のURL
+		        dataType : "text",              // サーバーから返されるデータの型
+		        data : {courseName: result}
+			}).done(function(data) {
+				ret = data.substring(0,2)
+				if( ret == "ok"){
+					drawTable();
+					alert("追加に成功しました");
+				}else{
+					alert("追加に失敗しました");
+				}
+			}).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
+		        alert("追加に失敗しました");
+		    });
+		}
+	});
 	</script>
 </body>
 </html>

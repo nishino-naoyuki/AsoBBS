@@ -51,4 +51,14 @@ public class MasterMainteListController {
 		
         return "ok:"+courseId+":"+courseName;
 	}
+
+	@RequestMapping(value= {"/insertcoursename"}, method=RequestMethod.POST)
+	public String addCourseName(
+    		@RequestParam("courseName")String courseName
+			) {
+
+		int courseId = courseService.insert( courseName);
+		
+        return "ok:"+courseId+":"+courseName;
+	}
 }

@@ -61,12 +61,14 @@ public class CourseService {
 	 * 
 	 * @param courseName
 	 */
-	public void insert(String courseName) {
+	public int insert(String courseName) {
 		CourseMasterEntity entity = new CourseMasterEntity();
 		
 		entity.setCourseName(courseName);
 		
-		courseRepository.save(entity);
+		entity = courseRepository.save(entity);
+		
+		return entity.getCourseId();
 	}
 	
 
