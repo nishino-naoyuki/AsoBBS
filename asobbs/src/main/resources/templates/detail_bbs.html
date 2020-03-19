@@ -69,7 +69,6 @@
                         	<div class="row">
 	                        	<div class="h3 col-xs-8" th:text="'タイトル：'+*{title}" style=" word-wrap: break-word;"></div>
 	                        	<div class="text-right col-xs-4">
-	                        		<button class="form-control-sm bg-default btn btn-primary"  id="emergency_reply">BookMarkに追加</button>
 		                        	<div th:unless="${session['LoginInfo'].isStudent()}">
 		                        		<button class="form-control-sm bg-default btn btn-default"  id="edit_bbs">修正</button>
 		                        	</div>

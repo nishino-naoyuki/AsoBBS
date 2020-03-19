@@ -335,6 +335,8 @@ public class BbsService {
 		UserTblEntity createUserTbl = userRepository.getOne(userId);
 		if( !update ) {
 			entity.setCreateUserId(createUserTbl);
+		}else {
+			entity.onPreUpdate();
 		}
 		entity.setUpdateUserId(createUserTbl);
 		
