@@ -1,0 +1,12 @@
+df -hT
+ファイルシス                       タイプ   サイズ  使用  残り 使用% マウント位置
+/dev/mapper/centos-root            xfs         45G  4.0G   41G    9% /
+devtmpfs                           devtmpfs   1.9G     0  1.9G    0% /dev
+tmpfs                              tmpfs      1.9G     0  1.9G    0% /dev/shm
+tmpfs                              tmpfs      1.9G   33M  1.9G    2% /run
+tmpfs                              tmpfs      1.9G     0  1.9G    0% /sys/fs/cgroup
+/dev/mapper/centos-var_db          xfs         14G   33M   14G    1% /var/db
+/dev/mapper/centos-var_attachments xfs         77G  268M   76G    1% /var/attachments
+/dev/sda1                          xfs       1014M  189M  826M   19% /boot
+tmpfs                              tmpfs      379M     0  379M    0% /run/user/1000
+[root@stintra01 abcc]# 

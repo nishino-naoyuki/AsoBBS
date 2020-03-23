@@ -85,6 +85,12 @@
 	                                		<td>
 	                                		<div class="form-group" th:utext="*{content}">
 	                                		</div>
+	                                		<p>
+	                                			<button class="form-control-sm bg-info btn btn-info"  id="bookmark">
+	                                			<i class="glyphicon glyphicon-bookmark"></i>
+	                                			お気に入り登録
+	                                			</button>
+	                                		</p>
 	                                		</td>
 	                                	</tr>
 	                                	<tr th:if="*{replyDtoList.size()}">
@@ -169,6 +175,30 @@
 			var url = /*[[@{/download/bbs}]]*/ "/download/bbs";
 			location.href = url+"?"+params;
 		})
+		
+	$("#bookmark").on("click",function(){
+		ret = confirm("この記事をお気に入りに登録しますか？");
+		if( ret == true ){
+			var param = $("#hiddenBbsId").val();
+			//入力された項目をサーバへ送る
+			$.ajax({
+		        type : "POST",                  // HTTP通信の種類
+		        url  : /*[[@{/bookmark/insert}]]*/' /bookmark/insert',                 // リクエストを送信する先のURL
+		        dataType : "text",              // サーバーから返されるデータの型
+		        data : {bbsId: param}
+			}).done(function(data) {
+				if( data == "ok"){
+					alert("お気に入りに登録しました");
+				}else if( data=="duplicate"){
+					alert("この記事はすでにお気に入りに登録されています");
+				}else{
+					alert("登録に失敗しました");
+				}
+			}).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
+		        alert("登録に失敗しました");
+		    });
+		}
+	})
 	</script>
 	<script th:unless="${session['LoginInfo'].isStudent()}" th:inline="javascript">
 	$("#edit_bbs").on("click",function(){
@@ -176,6 +206,7 @@
 		var url = /*[[@{/bbs/edit_input}]]*/ "/bbs/edit_input";
 		location.href = url + '?bbsId='+bbsId;
 	})
+	
 	</script>
 </body>
 

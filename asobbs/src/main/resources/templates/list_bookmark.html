@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>お気に入り一覧</title>
+
+	<meta  th:replace="/header/include1">
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="parent" th:replace="/header/title"></div>
+            </div>
+            <!-- /.navbar-header -->
+			<!-- ヘッダー -->
+			<div id="parent" th:replace="/header/header"></div>
+			<!-- ヘッダー -->
+            
+            <!-- /.navbar-top-links -->
+			<!-- サイドバー -->
+			<div id="parent" th:replace="/header/sidebar"></div>
+			<!-- サイドバー -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">お気に入り一覧</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        </div>
+		               	<div class="panel-body">
+                            <div class="row col-xs-12">
+                            <p>お気に入りの一覧です</p>
+                            </div>
+                            <div class="row text-right">
+                            	<div class="col-xs-12">
+                            		<button class="form-control-sm bg-default btn btn-default"  id="delete_bookmark">削除</button>
+                            	</div>
+                            </div>
+		               		<div class="table-responsive">
+                            		<table class="table table-bordered table-hover" id="bookmark-list">
+                            			<thead class="thead-light">
+                            			<tr>
+                            				<th>ルーム名</th>
+                            				<th>カテゴリ名</th>
+                            				<th>タイトル</th>
+                            				<th>登録日</th>
+                            				<th>&nbsp;</th>
+                            			</tr>
+                            			</thead>
+				                       <tbody>
+				                       </tbody>
+                            		</table>
+		               		</div>
+		               	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<div th:replace="/header/include2"></div>
+	<div  th:replace="/header/datatable"></div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	var modalemptable;
+	$(function(){
+		// datatableの設定を変更
+		redrawList();
+	})
+	/*]]>*/
+	function deleteBookmark( bookmarkId ){
+		//alert("del:"+bookmarkId);
+
+		ret = confirm("この記事をお気に入りにから削除しますか？");
+		if( ret == false ){
+			return;
+		}
+		//入力された項目をサーバへ送る
+		$.ajax({
+	        type : "POST",                  // HTTP通信の種類
+	        url  : /*[[@{/bookmark/delete}]]*/' /bookmark/delete',                 // リクエストを送信する先のURL
+	        dataType : "text",              // サーバーから返されるデータの型
+	        data : {bookmarkId: bookmarkId}
+		}).done(function(data) {
+			if( data == "ok"){
+				redrawList();
+				alert("お気に入りを削除しました");
+			}else{
+				alert("登録に失敗しました");
+			}
+		}).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
+	        alert("登録に失敗しました");
+	    });
+		
+	}
+	
+	function redrawList(){
+	
+		if( modalemptable != null ){
+	    	//いったんクリア
+	    	modalemptable.clear();
+	    	modalemptable.destroy();
+		}
+    	
+		modalemptable = $("#bookmark-list").DataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"paging": true,
+			"bFilter": true,
+			"bSort": true,
+			"bInfo": true,
+			"rowId":"bookmarkId",
+			"language": {
+                "url": /*[[@{/DataTables-1.10.16/Japanese.json}]]*/ 'Japanese.json'
+            },
+            "ajax": { url: /*[[@{/bookmark/getlist}]]*/' /bookmark/getlist', dataSrc: '' },
+            "columns": [
+                { data: "roomName" },
+                { data: "categoryName" },
+                { 
+                	data: "title" ,
+                	render: function ( data, type, row ) {
+                		var url = /*[[@{/bookmark/dispbbs}]]*/ "/bookmark/dispbbs";
+                		return '<a href="'+url+'?bookmarkId='+row.bookmarkId+'">'+data+'</a>';
+               		}
+                },
+                { data: "date" },
+            	{
+            		data:"bookmarkId" ,
+                	render: function ( data, type, row ) {
+                		return '<button class="form-control-sm bg-default btn btn-default"  id="delete_bookmark" onClick="deleteBookmark('+data+')" >削除</button>';
+	                }
+	        	}
+            ]
+		});
+	}
+	</script>
+</body>
+</html>

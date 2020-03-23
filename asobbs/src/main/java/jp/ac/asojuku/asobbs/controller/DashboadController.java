@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jp.ac.asojuku.asobbs.dto.DashBoadDto;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
-import jp.ac.asojuku.asobbs.entity.BbsTblEntity;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.service.BbsService;
 

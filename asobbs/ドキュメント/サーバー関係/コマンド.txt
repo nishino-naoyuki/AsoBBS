@@ -17,3 +17,6 @@ Abcc123.#
 #catalina.outの監視
 tail -f /opt/apache-tomcat/apache-tomcat-9.0.16/logs/catalina.out
 
+#ディスク容量を確認する
+df -hT
+

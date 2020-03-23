@@ -23,8 +23,9 @@ DROP TABLE IF EXISTS history_tbl;
 DROP TABLE IF EXISTS action_master;
 DROP TABLE IF EXISTS attached_file_tbl;
 DROP TABLE IF EXISTS autologin_tbl;
-DROP TABLE IF EXISTS bbscheck_tbl;
-DROP TABLE IF EXISTS bbstbl;
+DROP TABLE IF EXISTS bbs_check_tbl;
+DROP TABLE IF EXISTS bookmark_tbl;
+DROP TABLE IF EXISTS bbs_tbl;
 DROP TABLE IF EXISTS category_tbl;
 DROP TABLE IF EXISTS chat_table;
 DROP TABLE IF EXISTS room_user_tbl;
@@ -50,7 +51,7 @@ CREATE TABLE action_master
 CREATE TABLE attached_file_tbl
 (
 	attached_file_id int NOT NULL AUTO_INCREMENT,
-	bbsid int NOT NULL,
+	bbs_id int NOT NULL,
 	-- ファイルのフルパス
 	file_path varchar(600) NOT NULL COMMENT 'ファイルのフルパス',
 	-- 不正防止用に、ファイルをDLさせるときは必ずファイルidとファイルサイズとをマッチングさせる
@@ -74,22 +75,22 @@ CREATE TABLE autologin_tbl
 );
 
 
-CREATE TABLE bbscheck_tbl
+CREATE TABLE bbs_check_tbl
 (
-	bbsid int NOT NULL,
+	bbs_id int NOT NULL,
 	-- ユーザーid
 	user_id int NOT NULL COMMENT 'ユーザーid',
 	check_date datetime NOT NULL,
-	PRIMARY KEY (bbsid, user_id)
+	PRIMARY KEY (bbs_id, user_id)
 );
 
 
-CREATE TABLE bbstbl
+CREATE TABLE bbs_tbl
 (
-	bbsid int NOT NULL AUTO_INCREMENT,
+	bbs_id int NOT NULL AUTO_INCREMENT,
 	-- ルーム毎に設定されている掲示板のカテゴリ
 	category_id int NOT NULL COMMENT 'ルーム毎に設定されている掲示板のカテゴリ',
-	title varchar(100) NOT NULL,
+	title varchar(300) NOT NULL,
 	message varchar(16000) NOT NULL,
 	-- 緊急の書き込みの場合はONにする
 	-- 1:緊急の書き込み
@@ -107,7 +108,18 @@ CREATE TABLE bbstbl
 	create_user_id int NOT NULL,
 	update_date datetime NOT NULL,
 	update_user_id int NOT NULL,
-	PRIMARY KEY (bbsid)
+	PRIMARY KEY (bbs_id)
+);
+
+
+CREATE TABLE bookmark_tbl
+(
+	bookmark_id int NOT NULL AUTO_INCREMENT,
+	-- ユーザーid
+	user_id int NOT NULL COMMENT 'ユーザーid',
+	bbs_id int NOT NULL,
+	create_date_time datetime NOT NULL,
+	PRIMARY KEY (bookmark_id)
 );
 
 
@@ -117,7 +129,7 @@ CREATE TABLE category_tbl
 	category_id int NOT NULL AUTO_INCREMENT COMMENT 'ルーム毎に設定されている掲示板のカテゴリ',
 	-- カテゴリが属しているルームid
 	room_id int NOT NULL COMMENT 'カテゴリが属しているルームid',
-	name varchar(100) NOT NULL,
+	name varchar(300) NOT NULL,
 	count int NOT NULL,
 	PRIMARY KEY (category_id),
 	CONSTRAINT UNIQUE_CaTEGORY_BY_room_Cname UNIQUE (room_id, name)
@@ -316,22 +328,30 @@ ALTER TABLE history_tbl
 
 
 ALTER TABLE attached_file_tbl
-	ADD FOREIGN KEY (bbsid)
-	REFERENCES bbstbl (bbsid)
+	ADD FOREIGN KEY (bbs_id)
+	REFERENCES bbs_tbl (bbs_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
-ALTER TABLE bbscheck_tbl
-	ADD FOREIGN KEY (bbsid)
-	REFERENCES bbstbl (bbsid)
+ALTER TABLE bbs_check_tbl
+	ADD FOREIGN KEY (bbs_id)
+	REFERENCES bbs_tbl (bbs_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
-ALTER TABLE bbstbl
+ALTER TABLE bookmark_tbl
+	ADD FOREIGN KEY (bbs_id)
+	REFERENCES bbs_tbl (bbs_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE bbs_tbl
 	ADD FOREIGN KEY (category_id)
 	REFERENCES category_tbl (category_id)
 	ON UPDATE RESTRICT
@@ -379,7 +399,15 @@ ALTER TABLE autologin_tbl
 ;
 
 
-ALTER TABLE bbscheck_tbl
+ALTER TABLE bbs_check_tbl
+	ADD FOREIGN KEY (user_id)
+	REFERENCES user_tbl (user_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE bookmark_tbl
 	ADD FOREIGN KEY (user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
@@ -388,7 +416,7 @@ ALTER TABLE bbscheck_tbl
 
 
 ALTER TABLE chat_table
-	ADD FOREIGN KEY (from_user_id)
+	ADD FOREIGN KEY (to_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -396,7 +424,7 @@ ALTER TABLE chat_table
 
 
 ALTER TABLE chat_table
-	ADD FOREIGN KEY (to_user_id)
+	ADD FOREIGN KEY (from_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -412,7 +440,7 @@ ALTER TABLE history_tbl
 
 
 ALTER TABLE room_tbl
-	ADD FOREIGN KEY (create_user_id)
+	ADD FOREIGN KEY (update_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -420,7 +448,7 @@ ALTER TABLE room_tbl
 
 
 ALTER TABLE room_tbl
-	ADD FOREIGN KEY (update_user_id)
+	ADD FOREIGN KEY (create_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -438,7 +466,7 @@ ALTER TABLE room_user_tbl
 
 /* Create Indexes */
 
-CREATE INDEX idX_aTTaCED_FILE_BBSid ON attached_file_tbl (bbsid ASC);
+CREATE INDEX idX_aTTaCED_FILE_BBSid ON attached_file_tbl (bbs_id ASC);
 CREATE INDEX IDX_AUTOLOGIN_TOKEN ON autologin_tbl (token ASC);
 CREATE INDEX INDEX_CaTEGORYtbl_roomid ON category_tbl (room_id ASC);
 CREATE INDEX idX_His_user_id ON history_tbl (user_id ASC);

@@ -2,6 +2,8 @@ package jp.ac.asojuku.asobbs.filter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -35,11 +37,12 @@ public class PermitCheckFilter  implements Filter{
 			"/user","/room/input","/room/confirm","/room/insert"
 	};
 	
-	//教員・管理者アクセス可能
-	String[] permitKyoin = {
-			"/pwd/reset_input","/pwd/reset",
-			"/room/edit","/room/confirm_edit","/room/update","/room/complete",
-			"bbs/input", "bbs/insert", "bbs/comfirm", "bbs/complete"
+	//学生がアクセス不可のURLを正規表現で記載
+	String[] sudentDeniedList = {
+			"^/pwd/(reset_input|reset)$",	//パスワードリセット
+			"^/room/(?!disp)",	//ルームのdisp以外
+			"^/bbs/(?!detail)",	//掲示板は詳細画面のみ
+			"^/master.*"
 	};
 
 	@Override
@@ -69,15 +72,37 @@ public class PermitCheckFilter  implements Filter{
 
 		//管理者・教員のみ
 		if( loginInfo.getRole() == RoleId.STUDENT ) {
-			if( Arrays.asList(permitKyoin).contains(servletPath) ) {
+			if( isDeniedStudent(servletPath) ) {
 				//アクセス不可能
 				logger.warn("Filter!!! [permit deny2] mail= "+loginInfo.getMail()+" url="+servletPath);
+				//あえて４０４の画面へ遷移（「権限がない」ページだと存在することがばれる）
 				((HttpServletResponse)response).sendRedirect("/error/error");
 			}
 		}
 		
 		chain.doFilter(request, response);
 		
+	}
+	
+	/**
+	 * 学生権限でアクセス不可能なページかどうかを判定する
+	 * 
+	 * @param servletPath
+	 * @return true:アクセス不可能　false：アクセス可能
+	 */
+	private boolean isDeniedStudent(String servletPath) {
+		boolean bDenid = false;
+		//sudentDeniedListにあるパス以下のURLはアクセスNGとする
+		for(String deniedPtn: sudentDeniedList) {
+			Pattern p = Pattern.compile(deniedPtn);
+			Matcher m = p.matcher(servletPath);
+			if( m.find()) {
+				bDenid = true;
+				break;
+			}
+		}
+		
+		return bDenid;
 	}
 
 }
