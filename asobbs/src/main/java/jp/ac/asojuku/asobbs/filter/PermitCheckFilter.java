@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jp.ac.asojuku.asobbs.config.AppSettingProperty;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.param.RoleId;
@@ -38,13 +40,24 @@ public class PermitCheckFilter  implements Filter{
 	};
 	
 	//学生がアクセス不可のURLを正規表現で記載
-	String[] sudentDeniedList = {
+	String[] sudentDeniedList;
+/*	= {
 			"^/pwd/(reset_input|reset)$",	//パスワードリセット
 			"^/room/(?!disp)",	//ルームのdisp以外
 			"^/bbs/(?!detail)",	//掲示板は詳細画面のみ
 			"^/master.*"
-	};
+	};*/
 
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		try {
+			sudentDeniedList = 
+					AppSettingProperty.getInstance().getStudentDenied();
+		} catch (AsoBbsSystemErrException e) {
+			logger.error("設定ファイルの読み込みエラー:getStudentDenied");
+		}
+	}
+	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -62,11 +75,12 @@ public class PermitCheckFilter  implements Filter{
 		logger.trace("PermitCheckFilter:"+servletPath);
 		
 		//管理者のみ
-		if( loginInfo.getRole() != RoleId.MANAGER ) {
+		if( loginInfo.getRole() == RoleId.TEACHER ) {
 			if( Arrays.asList(permitMangerOnly).contains(servletPath) ) {
 				//アクセス不可能
 				logger.warn("Filter!!! [permit deny1] mail= "+loginInfo.getMail()+" url="+servletPath);
 				((HttpServletResponse)response).sendRedirect("/error/accessdeny");
+				return;
 			}
 		}
 
@@ -76,7 +90,7 @@ public class PermitCheckFilter  implements Filter{
 				//アクセス不可能
 				logger.warn("Filter!!! [permit deny2] mail= "+loginInfo.getMail()+" url="+servletPath);
 				//あえて４０４の画面へ遷移（「権限がない」ページだと存在することがばれる）
-				((HttpServletResponse)response).sendRedirect("/error/error");
+				((HttpServletResponse)response).sendRedirect("/error/404");
 			}
 		}
 		

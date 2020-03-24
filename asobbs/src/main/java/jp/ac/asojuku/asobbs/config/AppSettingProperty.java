@@ -38,6 +38,7 @@ public class AppSettingProperty extends ConfigBase {
 	private static final String DB_STRING = "db.connect.string";
 	private static final String JSP_DIR = "jsp.directory";
 	private static final String TOKEN_LIMIT_DAY = "token.limit.day";
+	private static final String STUDENT_DENIED = "student.denied";
 
 	//設定値
 	private final String ASP_PWD_SALT = "pwd.hash.salt";	//パスワードソルト
@@ -222,5 +223,20 @@ public class AppSettingProperty extends ConfigBase {
 	 */
 	public Integer getTokenLimitDayString(){
 		return getProperty(TOKEN_LIMIT_DAY,10);
+	}
+	
+	/**
+	 * 学生のアクセス禁止URLの正規表現を取得する
+	 * 
+	 * @return
+	 */
+	public String[] getStudentDenied() {
+		String[] denidList = null;
+		String denidCSVString = getProperty(STUDENT_DENIED);
+		if( denidCSVString != null ) {
+			denidList = denidCSVString.split(",");
+		}
+		
+		return denidList;
 	}
 }
