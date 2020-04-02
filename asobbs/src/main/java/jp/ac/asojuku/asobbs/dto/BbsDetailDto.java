@@ -15,6 +15,7 @@ public class BbsDetailDto {
 	private String categoryName;
 	private String title;
 	private Boolean emergencyFlg;
+	private Boolean anyoneFlg;
 	private Boolean replyOkFlg;
 	private String content;
 	private String updateDate;

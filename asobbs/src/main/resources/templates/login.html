@@ -28,8 +28,7 @@
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                    
+                    <div class="panel-heading">                    
                     	<div class="row text-center">
                     		<img th:src="@{/img/logo.png}" class="img-fluid img-responsive center-block" >
                     	</div>
@@ -49,10 +48,33 @@
                                 <!-- Change this to a button or input when using this as a form -->
                                 <button class="btn btn-lg btn-success btn-block">ログイン</button>
                             </fieldset>
-                        </form>
+                        </form>                        
                     </div>
                 </div>
             </div>
+        </div>
+        <div  class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                    	お知らせ情報
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                        	<tr>
+                        		<th>タイトル</th>
+                        		<th>更新日</th>
+                        	</tr>
+                        	<tr th:each="bbs : ${infoList}">
+                        		<td>
+                        			<a th:href="@{'/info/disp?id='+${bbs.id}}" th:text="${bbs.title}"></a>
+                        		</td>
+                        		<td th:text="${bbs.updateDate}" ></td>
+                        	</tr>
+                        </table>
+                      </div>
+            	</div>
+        	</div>
         </div>
     </div>
 

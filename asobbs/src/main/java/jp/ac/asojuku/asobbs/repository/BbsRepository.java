@@ -31,6 +31,9 @@ extends JpaRepository<BbsTblEntity,Integer>,
 	@Query("select b from BbsTblEntity b where categoryTbl = :categoryTblEntity and b.parentBbsId is null order by b.updateDate desc")
 	public List<BbsTblEntity> getList(@Param("categoryTblEntity")CategoryTblEntity categoryTblEntity);
 
+	@Query("select b from BbsTblEntity b where anyoneFlg=1 and b.parentBbsId is null order by b.updateDate desc")
+	public List<BbsTblEntity> getInfoList();
+	
 	@Query("select b from BbsTblEntity b "
 			+ "left join b.categoryTbl c "
 			+ "left join c.roomTbl r "

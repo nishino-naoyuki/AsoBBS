@@ -91,6 +91,7 @@ public class BbsController {
 		form.setCategoryName( bbsDetailDto.getCategoryName());
 		form.setTitle( bbsDetailDto.getTitle() );
 		form.setEmergencyFlg( bbsDetailDto.getEmergencyFlg() );
+		form.setAnyoneFlg(bbsDetailDto.getAnyoneFlg());
 		form.setContent( bbsDetailDto.getContent() );
 		form.setRoomId( bbsDetailDto.getRoomId()  );
 		for( int i = 0 ; i < bbsDetailDto.getAttachedFileList().size(); i++) {
@@ -341,7 +342,7 @@ public class BbsController {
 		//for( MultipartFile uploadFile : uploadFiles) {
 		for(int i = 0; i < uploadFiles.length; i++) {
 			MultipartFile uploadFile = uploadFiles[i];
-			if( !uploadFile.isEmpty() ) {
+			if( uploadFile != null && !uploadFile.isEmpty() ) {
 				//アップロードディレクトリを取得する
 				uploadDir = (uploadDir == null ? mkdirs() : uploadDir);
 			    //出力ファイル名を決定する

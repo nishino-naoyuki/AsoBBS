@@ -39,6 +39,7 @@ public class AppSettingProperty extends ConfigBase {
 	private static final String JSP_DIR = "jsp.directory";
 	private static final String TOKEN_LIMIT_DAY = "token.limit.day";
 	private static final String STUDENT_DENIED = "student.denied";
+	private static final String NOLOGIN_DISPLAY = "nologin.display";
 
 	//設定値
 	private final String ASP_PWD_SALT = "pwd.hash.salt";	//パスワードソルト
@@ -233,6 +234,21 @@ public class AppSettingProperty extends ConfigBase {
 	public String[] getStudentDenied() {
 		String[] denidList = null;
 		String denidCSVString = getProperty(STUDENT_DENIED);
+		if( denidCSVString != null ) {
+			denidList = denidCSVString.split(",");
+		}
+		
+		return denidList;
+	}
+	
+	/**
+	 * 未ログインでも閲覧可能な画面のリストを取得する
+	 * 
+	 * @return
+	 */
+	public String[] getNoLoginDisplay() {
+		String[] denidList = null;
+		String denidCSVString = getProperty(NOLOGIN_DISPLAY);
 		if( denidCSVString != null ) {
 			denidList = denidCSVString.split(",");
 		}

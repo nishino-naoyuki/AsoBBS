@@ -21,7 +21,9 @@ public class BbsInputForm {
 	@NotEmpty(message = "{errmsg0303}")
 	@Size(max = 60, message="{errmsg0305}")
 	private String title;
+	
 	private Boolean emergencyFlg;
+	private Boolean anyoneFlg;
 	
 	@NotEmpty(message = "{errmsg0303}")
 	@Size(max = 15000, message="{errmsg0305}")
@@ -137,4 +139,5 @@ public class BbsInputForm {
 		//uploadFilePathList.add(dto);
 	}
 
+	
 }

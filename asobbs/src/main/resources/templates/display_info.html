@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ルーム作成ダイアログ</title>
+
+	<meta  th:replace="/header/include1">
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="parent" th:replace="/header/title"></div>
+            </div>
+        </nav>
+        <div id="page-wrapper" th:object="${bbsDetailDto}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">掲示板</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                	お知らせ情報
+					
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        	<div class="row">
+	                        	<div class="h3 col-xs-8" th:text="'タイトル：'+*{title}" style=" word-wrap: break-word;"></div>
+	                        	<div class="text-right col-xs-4">
+	                        		<div th:text="'更新者：'+*{updateName}"></div>
+	                        		<div th:text="'更新日：'+*{updateDate}"></div>
+	                        	</div>
+                        	</div>
+                        </div>
+		               	<div class="panel-body">
+		               		<div class="table-responsive">
+		               			<table class="table" id="bbs">
+		               				<tbody>
+	                                	<tr>
+	                                		<td>
+	                                		<div class="form-group" th:utext="*{content}">
+	                                		</div>
+	                                		</td>
+	                                	</tr>
+	                                	<tr th:if="*{replyDtoList.size()}">
+	                                		<td>
+	                                			<table class="table table-striped" >
+	                                			<tr>
+	                                				<th colspan="2">返信</th>
+	                                			</tr>
+			                                	<tr th:each="replyDto:*{replyDtoList}" class="reply" >
+			                                		<td class="col-xs-9"><div  th:text="${replyDto.content}"></div></td>
+			                                		<td>
+				                                		<div th:text="'返信者：'+${replyDto.writerName}"></div>
+				                                		<div th:text="${replyDto.writeDate}"></div>
+			                                		</td>		
+			                                	</tr>
+			                                	</table>
+	                                		</td>
+	                                	</tr>
+		               				</tbody>
+		               			</table>
+		               			<table class="table table-bordered table-hover" id="bbs" th:if="${bbsDetailDto.isExistAttachedFile()}">
+		               				<tbody>
+		               					<tr><th>添付ファイル</th></tr>
+			               				<tr th:each="attachedFile:*{attachedFileList}" class="attachedfile" >
+			               					<td th:text="${attachedFile.fileName}">
+			               					</td>
+			               					<td>
+			               						<button class="form-control-sm bg-default btn btn-primary download-btn"  th:data-fid="${attachedFile.id}" th:data-fsize="${attachedFile.size}" >ダウンロード</button>
+			               					</td>
+			               				</tr>
+		               				</tbody>
+		               			</table>
+		               		</div>
+		               	</div>
+                    </div>
+                </div>
+            </div>
+			<input type="hidden" name="bbsId" id="hiddenBbsId" th:value="*{bbsId}" >
+        </div>
+	<div th:replace="/header/include2"></div>
+	<div  th:replace="/header/datatable"></div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+		
+</body>
+
+</html>

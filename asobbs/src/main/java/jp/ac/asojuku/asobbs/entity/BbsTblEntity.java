@@ -52,6 +52,9 @@ public class BbsTblEntity implements Serializable {
 	/** 緊急フラグ. */
 	private Integer emergencyFlg;
 
+	/** お知らせフラグ. */
+	private Integer anyoneFlg;
+
 	/** 親書き込みID. */
 	private Integer parentBbsId;
 
@@ -88,6 +91,7 @@ public class BbsTblEntity implements Serializable {
 		this.bbsCheckTblSet = new HashSet<BbsCheckTblEntity>();
 		this.attachedFileTblSet = new HashSet<AttachedFileTblEntity>();
 	}
+	
 
 	@PrePersist
     public void onPrePersist() {

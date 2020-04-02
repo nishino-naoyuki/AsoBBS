@@ -108,6 +108,10 @@ CREATE TABLE bbs_tbl
 	create_user_id int NOT NULL,
 	update_date datetime NOT NULL,
 	update_user_id int NOT NULL,
+	-- この値が1の場合はログインしなくても閲覧可能
+	-- （お知らせ情報）
+	anyone_flg int DEFAULT NULL COMMENT 'この値が1の場合はログインしなくても閲覧可能
+（お知らせ情報）',
 	PRIMARY KEY (bbs_id)
 );
 
@@ -416,7 +420,7 @@ ALTER TABLE bookmark_tbl
 
 
 ALTER TABLE chat_table
-	ADD FOREIGN KEY (to_user_id)
+	ADD FOREIGN KEY (from_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -424,7 +428,7 @@ ALTER TABLE chat_table
 
 
 ALTER TABLE chat_table
-	ADD FOREIGN KEY (from_user_id)
+	ADD FOREIGN KEY (to_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -440,7 +444,7 @@ ALTER TABLE history_tbl
 
 
 ALTER TABLE room_tbl
-	ADD FOREIGN KEY (update_user_id)
+	ADD FOREIGN KEY (create_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -448,7 +452,7 @@ ALTER TABLE room_tbl
 
 
 ALTER TABLE room_tbl
-	ADD FOREIGN KEY (create_user_id)
+	ADD FOREIGN KEY (update_user_id)
 	REFERENCES user_tbl (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>掲示板 編集画面</title>
+    <title>お知らせ 新規作成</title>
 
 	<meta  th:replace="/header/include1">
     <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
@@ -53,7 +53,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">掲示板 編集画面</h1>
+                    <h1 class="page-header">お知らせ 新規作成</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -62,41 +62,23 @@
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                        	掲示板 編集画面
+                        	お知らせ 新規作成
                         </div>
 		               	<div class="panel-body" th:object="${bbsInputForm}" >
+		               	
 		               		<p id="error" th:each="error : ${#fields.detailedErrors()}" th:text="${error.message}">
 		               		
 		               		<div class="table-responsive">
-		               			<form th:action="@{/bbs/edit_confirm}" method="POST" th:object="${bbsInputForm}" enctype="multipart/form-data">
-		               			<input type="hidden" th:field="*{bbsId}">
+		               			<form th:action="@{/info/confirm}" method="POST" th:object="${bbsInputForm}" enctype="multipart/form-data">
 		               			<table class="table table-bordered table-hover" id="form">
 		               				<tbody>
-		               					<div th:if="*{anyoneFlg}">
-		               						<input type="hidden"   name="categoryName"  th:field="*{categoryName}"  >
-		               					</div>
-	                                	<tr th:unless="*{anyoneFlg}">
-	                                		<th>カテゴリ名[必須]</th>
-	                                		<td>
-	                                		<div class="form-group">
-	                                			<div class="col-xs-10">
-							                    	<input type="text" name="categoryName" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{categoryName}" list="category_list">
-	                                				<datalist id="category_list">
-	                                					<option>無分類</option>
-	                                					<option th:each="category:${categoryListDtoList}" th:text="${category.name}"></option>
-	                                				</datalist>
-	                                			</div>
-	                                		</div>
-	                                		</td>
-	                                	</tr>
 	                                	<tr>
 	                                		<th>タイトル[必須]</th>
 	                                		<td>
 	                                		<div class="form-group">
-	                                			<div class="col-xs-8">
-	                                				<input type="text" name="title" class="typeahead form-control" placeholder="ルーム名を記入してください"  th:field="*{title}" >
+	                                			<div class="col-xs-12">
+	                                				<input type="text" name="title" class="typeahead form-control" placeholder="タイトルを記入してください"  th:field="*{title}" >
 	                                			</div>
-	                                			<input type="checkbox" name="emergencyFlg" value="all" th:field="*{emergencyFlg}">緊急
 	                                		</div>
 	                                		</td>
 	                                	</tr>
@@ -163,91 +145,13 @@
 	                                		</div>
 	                                		</td>
 	                                	</tr>
-	                                	<tr th:unless="*{anyoneFlg}">
-	                                		<th>
-	                                			<p>添付ファイル</p>1ファイル30Mまでにしてください
-	                                		</th>
-	                                		<td>
-	                                			<table class="table table-bordered table-hover" id="form">
-	                                				<thead>
-	                                				<tr>
-	                                					<th>ファイル名</th>
-	                                					<th>削除ボタン</th>
-	                                					<th>変更ボタン</th>
-	                                				</tr>
-	                                				</thead>
-	                                				<tbody>
-	                                				<tr>
-	                                					<td>
-				                                			<div th:if="*{getNowFilePath(0).fileName }">
-				                                				<div th:text="*{getNowFilePath(0).fileName}"></div>
-				                                			</div>
-				                                			<div th:unless="*{getNowFilePath(0).fileName }">
-				                                				添付ファイルなし
-				                                			</div>
-	                                					</td>
-	                                					<td>
-				                                			<div th:if="*{getNowFilePath(0).fileName }">
-				                                				<input type="checkbox" value="true" th:field="*{multipartFile1DelFlg}">削除
-				                                			</div>
-				                                			<div th:unless="*{getNowFilePath(0).fileName }">
-				                                				-
-				                                			</div>
-	                                					</td>
-	                                					<td>
-	                                							添付ファイル１変更<input type="file" th:field="*{multipartFile1}" />
-	                                					</td>
-	                                				</tr>
-	                                				<tr>
-	                                					<td>
-				                                			<div th:if="*{getNowFilePath(1).fileName }">
-				                                				<div th:text="*{getNowFilePath(1).fileName}"></div>
-				                                			</div>
-				                                			<div th:unless="*{getNowFilePath(1).fileName }">
-				                                				添付ファイルなし
-				                                			</div>
-	                                					</td>
-	                                					<td>
-				                                			<div th:if="*{getNowFilePath(1).fileName }">
-				                                				<input type="checkbox" value="true" th:field="*{multipartFile2DelFlg}">削除
-				                                			</div>
-				                                			<div th:unless="*{getNowFilePath(1).fileName }">
-				                                				-
-				                                			</div>
-	                                					</td>
-	                                					<td>
-	                                							添付ファイル２変更<input type="file" th:field="*{multipartFile2}" />
-	                                					</td>
-	                                				</tr>
-	                                				<tr>
-	                                					<td>
-				                                			<div th:if="*{getNowFilePath(2).fileName }">
-				                                				<div th:text="*{getNowFilePath(2).fileName}"></div>
-				                                			</div>
-				                                			<div th:unless="*{getNowFilePath(2).fileName }">
-				                                				添付ファイルなし
-				                                			</div>
-	                                					</td>
-	                                					<td>
-				                                			<div th:if="*{getNowFilePath(2).fileName }">
-				                                				<input type="checkbox" value="true" th:field="*{multipartFile3DelFlg}">削除
-				                                			</div>
-				                                			<div th:unless="*{getNowFilePath(2).fileName }">
-				                                				-
-				                                			</div>
-	                                					</td>
-	                                					<td>
-	                                							添付ファイル3変更<input type="file" th:field="*{multipartFile3}" />
-	                                					</td>
-	                                				</tr>
-	                                				</tbody>
-	                                			</table>
-	                                		</td>
-	                                	</tr>
+	                                	
 		               				</tbody>
 		               			</table>
+		               			<input type="hidden"   name="emergencyFlg"  value="false"  >
+		               			<input type="hidden"   name="anyoneFlg" value="true" >
+		               			<input type="hidden"   name="categoryName"  th:field="*{categoryName}"  >
 		               			<input type="hidden"   th:field="*{roomId}" >
-		               			<input type="hidden"   name="anyoneFlg"  th:field="*{anyoneFlg}"  >
 		               			<button type="submit" class="form-control-sm bg-default btn btn-primary" id="bbs_confirm">確認</button>
 		               			</form>
 		               		</div>
@@ -269,19 +173,28 @@
 	  $('#file_select').click();
 	});
 
-	$('#bbs_confirm').on('click', function() {
-	  $('#bbs_content').val($('#editor').html());
-	});
-
 	$('#editor').on('DOMSubtreeModified propertychange', function() {
-        //alert('Change!');
+		leftString();
+    });
+	
+	//残り文字数のチェック
+	function leftString(){
         var left_strings = 15000 - $('#editor').html().length;
         if( left_strings < 0){
         	$('#left_strings').html("文字が多すぎます。減らしてください。オーバーした文字数："+(0-left_strings)+"文字");
         	return;
         }
         $('#left_strings').html("あと"+left_strings+"文字入力できます。（画像も文字数に含みます）");
-    });
+	}
+	
+	$('#bbs_confirm').on('click', function() {
+		//入力した内容をhiddenに入れてsubmit
+	  $('#bbs_content').val($('#editor').html());
+		
+	});
+	
+	leftString();
+
  </script>
     </div>
     <!-- /#wrapper -->

@@ -330,6 +330,7 @@ public class BbsService {
 		entity.setTitle(bbsInputForm.getTitle());
 		entity.setMessage(bbsInputForm.getContent());
 		entity.setEmergencyFlg(  (bbsInputForm.getEmergencyFlg() ? 1:0)  );
+		entity.setAnyoneFlg(  (bbsInputForm.getAnyoneFlg() ? 1:0)  );
 		entity.setReplyOkFlg(1);
 		//作成情報
 		UserTblEntity createUserTbl = userRepository.getOne(userId);
@@ -402,7 +403,27 @@ public class BbsService {
 		
 		return bbsList;
 	}
-	
+
+	/**
+	 * 掲示板お知らせリストを取得する
+	 * 
+	 * @param categoryId
+	 * @return
+	 */
+	public List<BbsListDto> getInfoBbsListDto(){
+		
+		List<BbsTblEntity> entityList =  null;
+		//お知らせ情報フラグ（anyoneFlg=1）のものを取得する
+		entityList = bbsRepository.getInfoList();
+		
+		List<BbsListDto> bbsList = new ArrayList<BbsListDto>();
+		
+		for(BbsTblEntity bbsEntity : entityList) {
+			bbsList.add( getBbsListDtoFrom(bbsEntity) );
+		}
+		
+		return bbsList;
+	}
 	/**
 	 * 添付ファイルのパスを取得する
 	 * IDとサイズを渡すのは、セキュリティ保護のため
@@ -458,19 +479,61 @@ public class BbsService {
 			throw new AsoBbsIllegalException( ValidationConfig.getInstance().getMsg(ErrorCode.ERR_INVLIDATE) );
 		}
 		
+		BbsDetailDto bbsDetailDto = getBbsDetailDtoFrom(bbsTblEntity,loginInfo);
+		
+		return bbsDetailDto;
+	}
+	
+	/**
+	 * お知らせ情報を取得する
+	 * 
+	 * @param bbsId
+	 * @return
+	 * @throws AsoBbsIllegalException
+	 * @throws AsoBbsSystemErrException
+	 */
+	public BbsDetailDto getInfoBbsBy(Integer bbsId) throws AsoBbsIllegalException, AsoBbsSystemErrException {
+
+		BbsTblEntity bbsTblEntity = null;
+		
+		bbsTblEntity = bbsRepository.getOne(bbsId);
+		
+		if( bbsTblEntity == null || bbsTblEntity.getAnyoneFlg() != 1) {
+			//取得できないということは不正にURLを変更してパラメータを取得しようと
+			//した恐れがある（＝パラメータを手動で変更したなど）
+			throw new AsoBbsIllegalException( ValidationConfig.getInstance().getMsg(ErrorCode.ERR_INVLIDATE) );
+		}
+		
+		BbsDetailDto bbsDetailDto = getBbsDetailDtoFrom(bbsTblEntity,null);
+		
+		return bbsDetailDto;
+	}
+	
+	/**
+	 * @param bbsTblEntity
+	 * @param loginInfo
+	 * @return
+	 */
+	private BbsDetailDto getBbsDetailDtoFrom(BbsTblEntity bbsTblEntity,LoginInfoDto loginInfo) {
+
 		BbsDetailDto bbsDetailDto = new BbsDetailDto();
 		
 		//基本情報を設定
 		bbsDetailDto.setBbsId( bbsTblEntity.getBbsId() );
 		bbsDetailDto.setTitle( bbsTblEntity.getTitle() );
 		bbsDetailDto.setEmergencyFlg( (bbsTblEntity.getEmergencyFlg() == 1 ? true:false) );
+		bbsDetailDto.setAnyoneFlg( (bbsTblEntity.getAnyoneFlg() == 1 ? true:false) );
 		bbsDetailDto.setReplyOkFlg((bbsTblEntity.getReplyOkFlg() == 1 ? true:false));
 		bbsDetailDto.setContent( bbsTblEntity.getMessage() );
 		bbsDetailDto.setRoomId(bbsTblEntity.getCategoryTbl().getRoomTbl().getRoomId());
 		bbsDetailDto.setRoomName(bbsTblEntity.getCategoryTbl().getRoomTbl().getName());
 		bbsDetailDto.setCategoryId(bbsTblEntity.getCategoryTbl().getCategoryId());
 		bbsDetailDto.setCategoryName( bbsTblEntity.getCategoryTbl().getName() );
-		bbsDetailDto.setEmergencyReplyFlg( (bbsCheckRepository.getCount(bbsTblEntity.getBbsId(),loginInfo.getUserId()) > 0 ? true:false));
+		if( loginInfo != null ) {
+			bbsDetailDto.setEmergencyReplyFlg( (bbsCheckRepository.getCount(bbsTblEntity.getBbsId(),loginInfo.getUserId()) > 0 ? true:false));
+		}else {
+			bbsDetailDto.setEmergencyReplyFlg(false);
+		}
 		bbsDetailDto.setUpdateDate(DateUtil.formattedDate(bbsTblEntity.getUpdateDate(), StringConst.DATE_FMT));
 		bbsDetailDto.setUpdateName(bbsTblEntity.getUpdateUserId().getNickName());
 		//添付ファイル情報をセット
@@ -486,7 +549,7 @@ public class BbsService {
 		}
 		
 		//返信情報を設定
-		List<BbsTblEntity> bbsReplyEntityList = bbsRepository.getReply(bbsId);
+		List<BbsTblEntity> bbsReplyEntityList = bbsRepository.getReply(bbsTblEntity.getBbsId());
 		for( BbsTblEntity replyEntity : bbsReplyEntityList ) {
 			ReplyDto replyDto = new ReplyDto();
 			

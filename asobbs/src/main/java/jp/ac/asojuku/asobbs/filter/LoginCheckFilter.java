@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -16,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jp.ac.asojuku.asobbs.config.AppSettingProperty;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
+import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 
 @Component
@@ -24,14 +27,21 @@ public class LoginCheckFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(LoginCheckFilter.class);
 
 	//チェック除外画面
-	private String excludeDispList[] =
-		{
-			"/","/login","/auth","/logout","/css/.+","/img/.+","/sbadmin/.+","/favicon.ico","/error/.*"
-		};
+	private String excludeDispList[];
 
 	@Autowired
 	HttpSession session;
 	
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		try {
+			excludeDispList = 
+					AppSettingProperty.getInstance().getNoLoginDisplay();
+		} catch (AsoBbsSystemErrException e) {
+			logger.error("設定ファイルの読み込みエラー:getNoLoginDisplay");
+		}
+	}
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {

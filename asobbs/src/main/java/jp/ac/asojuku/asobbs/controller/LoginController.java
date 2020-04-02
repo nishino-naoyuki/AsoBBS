@@ -1,5 +1,7 @@
 package jp.ac.asojuku.asobbs.controller;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +19,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.ac.asojuku.asobbs.config.MessageProperty;
+import jp.ac.asojuku.asobbs.dto.BbsListDto;
 import jp.ac.asojuku.asobbs.dto.LoginInfoDto;
 import jp.ac.asojuku.asobbs.exception.AsoBbsSystemErrException;
 import jp.ac.asojuku.asobbs.form.LoginForm;
 import jp.ac.asojuku.asobbs.param.IntConst;
 import jp.ac.asojuku.asobbs.param.SessionConst;
 import jp.ac.asojuku.asobbs.param.StringConst;
+import jp.ac.asojuku.asobbs.service.BbsService;
 import jp.ac.asojuku.asobbs.service.LoginService;
 
 /**
@@ -37,6 +41,8 @@ public class LoginController {
 	LoginService loginService;
 	@Autowired
 	HttpSession session;
+	@Autowired
+	BbsService bbsService;
 	
 	@RequestMapping(value= {"/","/login"}, method=RequestMethod.GET)
     public ModelAndView login(
@@ -61,6 +67,10 @@ public class LoginController {
         form.setMail(mail);
     	mv.addObject("loginForm", form);
         mv.setViewName("login");
+        
+        //お知らせ情報の取得
+        List<BbsListDto> infoList = bbsService.getInfoBbsListDto();
+    	mv.addObject("infoList", infoList);
         
         return mv;
     }
