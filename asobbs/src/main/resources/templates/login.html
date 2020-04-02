@@ -60,17 +60,21 @@
                     	お知らせ情報
                     </div>
                     <div class="panel-body">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover" id="info_list">
+                        	<thead class="thead-light">
                         	<tr>
                         		<th>タイトル</th>
                         		<th>更新日</th>
                         	</tr>
+                        	</thead>
+                        	<tbody>
                         	<tr th:each="bbs : ${infoList}">
                         		<td>
                         			<a th:href="@{'/info/disp?id='+${bbs.id}}" th:text="${bbs.title}"></a>
                         		</td>
                         		<td th:text="${bbs.updateDate}" ></td>
                         	</tr>
+                        	</tbody>
                         </table>
                       </div>
             	</div>
@@ -79,7 +83,23 @@
     </div>
 
 	<div th:replace="/header/include2"></div>
-
+	<div  th:replace="/header/datatable"></div>
+	
+	<script th:inline="javascript">
+	var information_table;
+	$(function(){
+		// datatableの設定を変更
+		information_table = $("#info_list").DataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"paging": true,
+			"bFilter": true,
+			"bSort": true,
+			"bInfo": true,
+			"aaSorting":[]
+		});
+	})
+	</script>
 </body>
 
 </html>
