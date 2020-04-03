@@ -368,6 +368,7 @@ public class BbsService {
 		entity.setTitle("reply:"+bbsReplyInputForm.getBbsId());
 		entity.setMessage(bbsReplyInputForm.getComment());
 		entity.setEmergencyFlg(0);
+		entity.setAnyoneFlg(0);
 		entity.setReplyOkFlg(0);
 		//作成情報
 		UserTblEntity createUserTbl = userRepository.getOne(userId);
