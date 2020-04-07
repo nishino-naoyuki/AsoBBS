@@ -91,6 +91,7 @@ public class PermitCheckFilter  implements Filter{
 				logger.warn("Filter!!! [permit deny2] mail= "+loginInfo.getMail()+" url="+servletPath);
 				//あえて４０４の画面へ遷移（「権限がない」ページだと存在することがばれる）
 				((HttpServletResponse)response).sendRedirect("/error/404");
+				return;
 			}
 		}
 		
